@@ -1,6 +1,45 @@
+import { FormEvent, useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import axios from "axios";
+
+interface Project {
+  title: string;
+  description: string;
+}
 
 export function CreateProjectModal() {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+
+  useEffect(() => {
+    axios("http://localhost:3333/projects")
+      .then((response) => setProjects(response.data));
+  }, []);
+
+  async function handleCreateProject(event: FormEvent) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const data = Object.fromEntries(formData);
+
+    if(!data.title || !data.description) {
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:3333/projects", {
+        title: data.title,
+        description: data.description,
+      })
+
+      alert("Projeto criado com sucesso!");
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao criar projeto!");
+    }
+
+  }
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/60 inset-0 fixed">
@@ -8,9 +47,9 @@ export function CreateProjectModal() {
           <Dialog.Title className="text-3xl font-black text-white mb-6 text-center">
             Crie um novo projeto{" "}
           </Dialog.Title>
-          <form className="flex flex-col gap-4" method="POST" action="/projects">
-            <input type="text" placeholder="Nome do projeto" className="rounded mb-2 text-white bg-black/20 p-4" />
-            <input type="text" placeholder="Descrição" className="rounded mb-2 text-white bg-black/20 p-4" />
+          <form className="flex flex-col gap-4" onSubmit={handleCreateProject}>
+            <input name="title" id="title" type="text" placeholder="Nome do projeto" className="rounded mb-2 text-white bg-black/20 p-4" />
+            <input name="description" id="description" type="text" placeholder="Descrição" className="rounded mb-2 text-white bg-black/20 p-4" />
             <button type="submit" className="rounded text-3xl font-black text-white hover:bg-black/20 p-4">Submit</button>
           </form>
         </Dialog.Content>
