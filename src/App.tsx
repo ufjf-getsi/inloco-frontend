@@ -25,16 +25,17 @@ function App() {
   }, []);
 
   return (
-    <div className="max-w-[1344px] mx-auto flex flex-col items-center my-10">
-      <h1 className="text-5xl text-red-800 font-bold mt-5">In Loco</h1>
+    <article className="max-w-[1344px] mx-auto flex flex-col items-center mb-10">
+      <nav className="w-full flex pt-5 px-10 justify-between">
+        <h1 className="text-5xl text-red-800 font-bold">In Loco</h1>
+        <Dialog.Root>
+          <CreateProjectButton />
+          <CreateProjectModal />
+        </Dialog.Root>
+      </nav>
 
       <ProjectsTable projects={projects} />
-
-      <Dialog.Root>
-        <CreateProjectButton />
-        <CreateProjectModal />
-      </Dialog.Root>
-    </div>
+    </article>
   );
 }
 
