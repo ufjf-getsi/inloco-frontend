@@ -17,20 +17,28 @@ interface Project {
 
 function App() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    fetchTableData();
+  }, []);
+
+  function fetchTableData() {
     axios("http://localhost:3333/projects").then((response) => {
       setProjects(response.data);
     });
-  }, []);
+  }
 
   return (
     <article className="max-w-[1344px] mx-auto flex flex-col items-center mb-10">
       <nav className="w-full flex pt-5 px-10 justify-between">
         <h1 className="text-5xl text-red-800 font-bold">In Loco</h1>
-        <Dialog.Root>
+        <Dialog.Root open={open} onOpenChange={setOpen}>
           <CreateProjectButton />
-          <CreateProjectModal />
+          <CreateProjectModal
+            fetchTableData={fetchTableData}
+            setOpen={setOpen}
+          />
         </Dialog.Root>
       </nav>
 
