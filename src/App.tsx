@@ -7,6 +7,7 @@ import { CreateProjectButton } from "./components/CreateProjectButton";
 import { CreateProjectModal } from "./components/CreateProjectModal";
 
 import "./styles/main.css";
+import { ProjectsTable } from "./components/ProjectsTable";
 
 interface Project {
   id: string;
@@ -16,33 +17,33 @@ interface Project {
 
 function App() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    fetchTableData();
+  }, []);
+
+  function fetchTableData() {
     axios("http://localhost:3333/projects").then((response) => {
       setProjects(response.data);
     });
-  }, []);
+  }
 
   return (
-    <div className="max-w-[1344px] mx-auto flex flex-col items-center my-10">
-      <h1 className="text-5xl text-red-800 font-bold mt-5">In Loco</h1>
+    <article className="max-w-[1344px] mx-auto flex flex-col items-center mb-10">
+      <nav className="w-full flex pt-5 px-10 justify-between">
+        <h1 className="text-5xl text-red-800 font-bold">In Loco</h1>
+        <Dialog.Root open={open} onOpenChange={setOpen}>
+          <CreateProjectButton />
+          <CreateProjectModal
+            fetchTableData={fetchTableData}
+            setOpen={setOpen}
+          />
+        </Dialog.Root>
+      </nav>
 
-      <div className="flex flex-col items-center mt-10 mb-10">
-        {projects.map((project) => {
-          return (
-            <Project
-              key={project.id}
-              title={project.title}
-              description={project.description}
-            />
-          );
-        })}
-      </div>
-      <Dialog.Root>
-        <CreateProjectButton />
-        <CreateProjectModal />
-      </Dialog.Root>
-    </div>
+      <ProjectsTable projects={projects} />
+    </article>
   );
 }
 
