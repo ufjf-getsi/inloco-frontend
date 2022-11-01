@@ -10,11 +10,11 @@ interface Project {
 interface CreateProjectModalInterface {
   fetchTableData: Function;
   setOpen: Function;
+  setToastOpen: Function;
 }
 
 export function CreateProjectModal(props: CreateProjectModalInterface) {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     axios("http://localhost:3333/projects").then((response) =>
@@ -39,8 +39,8 @@ export function CreateProjectModal(props: CreateProjectModalInterface) {
       });
 
       props.fetchTableData();
-      alert("Projeto criado com sucesso!");
       props.setOpen(false);
+      props.setToastOpen(true);
     } catch (error) {
       console.log(error);
       alert("Erro ao criar projeto!");
