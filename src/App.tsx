@@ -30,7 +30,7 @@ function App() {
   }
 
   return (
-    <article className="max-w-[1344px] mx-auto flex flex-col items-center mb-10">
+    <article className="max-w-[1344px] mx-auto flex flex-col items-center mb-10 font-inter">
       <nav className="w-full flex pt-5 px-10 justify-between">
         <h1 className="text-5xl text-red-800 font-bold">In Loco</h1>
         <Dialog.Root open={open} onOpenChange={setOpen}>
