@@ -3,5 +3,15 @@
 @tailwind utilities;
 
 @layer components {
+    thead > tr {
+        background-color: hsl(0, 0%, 90%);
+      }
 
+    tbody > tr:nth-child(even) {
+        background-color: hsl(0, 0%, 95%);
+      }
+
+      tbody > tr:nth-child(odd) {
+        background-color: hsl(0, 0%, 99%);
+      }
   }
