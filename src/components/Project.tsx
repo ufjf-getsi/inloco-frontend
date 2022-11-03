@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { ProjectPage } from "./pages/ProjectPage";
+import { Link } from "react-router-dom";
 
 export interface ProjectProps {
   id: string;
@@ -9,16 +8,11 @@ export interface ProjectProps {
 
 export function Project(props: ProjectProps) {
   return (
-    <BrowserRouter>
-      <tr>
-        <td className="font-bold">
-          <Link to={"/projetos/" + props.id}>{props.title}</Link>
-          <Routes>
-            <Route path={"/projetos/" + props.id} element={<ProjectPage />} />
-          </Routes>
-        </td>
-        <td>{props.description}</td>
-      </tr>
-    </BrowserRouter>
+        <tr>
+          <td className="font-bold">
+            <Link to={"/projetos/" + props.id}>{props.title}</Link>
+          </td>
+          <td>{props.description}</td>
+        </tr>
   );
 }
