@@ -11,8 +11,6 @@ export function ProjectPage() {
   let { id } = useParams();
 
   const [project, setProject] = useState<Project>();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [toastOpen, setToastOpen] = useState(false);
 
   useEffect(() => {
     fetchTableData();

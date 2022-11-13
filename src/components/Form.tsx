@@ -66,7 +66,7 @@ export function FormContent(props: FormProps, { errorText = null }) {
       <Form
         actions={
           <SpaceBetween direction="horizontal" size="xs">
-            <Button formAction="none" variant="link">
+            <Button formAction="none" variant="link" href="/">
               Cancelar
             </Button>
             <Button variant="primary">Criar projeto</Button>
