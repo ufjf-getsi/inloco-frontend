@@ -1,15 +1,18 @@
+import axios from "axios";
+import { Project } from "../types";
+
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import { Navbar } from "../components/Navbar";
 import { Article } from "../components/Article";
-
-import { Project } from "../types";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 
 export function ProjectPage() {
   let { id } = useParams();
 
   const [project, setProject] = useState<Project>();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
 
   useEffect(() => {
     fetchTableData();
@@ -25,6 +28,7 @@ export function ProjectPage() {
     <Article>
       <Navbar />
       <h1 className="text-xl font-bold">{project?.title}</h1>
+      <section></section>
     </Article>
   );
 }

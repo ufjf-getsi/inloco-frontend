@@ -12,7 +12,7 @@ export function ProjectsTable(props: ProjectsTableProps) {
   });
 
   return (
-    <table className="w-11/12 my-10 text-center">
+    <table className="w-11/12 my-10 text-center m-auto">
       <thead>
         <tr>
           <th className="text-xl" scope="col">

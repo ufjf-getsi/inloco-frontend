@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import axios from "axios";
-
-import "../styles/main.css";
-
-import { CreateProjectButton } from "../components/CreateProjectButton";
-import { CreateProjectModal } from "../components/CreateProjectModal";
-import { ProjectsTable } from "../components/ProjectsTable";
-import { ResponseToast } from "../components/ResponseToast";
-import { Navbar } from "../components/Navbar";
-import { Article } from "../components/Article";
 import { Project } from "../types";
+
+import { useEffect, useState } from "react";
+
+import {
+  AppLayout,
+  ContentLayout,
+  Container,
+  BreadcrumbGroup,
+  Header,
+  SpaceBetween,
+  Button,
+} from "@cloudscape-design/components";
+import { ProjectsTable } from "../components/ProjectsTable";
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [toastOpen, setToastOpen] = useState(false);
 
   useEffect(() => {
     fetchTableData();
@@ -28,19 +28,41 @@ export function HomePage() {
   }
 
   return (
-    <Article>
-      <Navbar>
-        <Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
-          <CreateProjectButton />
-          <CreateProjectModal
-            fetchTableData={fetchTableData}
-            setOpen={setDialogOpen}
-            setToastOpen={setToastOpen}
-          />
-        </Dialog.Root>
-      </Navbar>
-      <ProjectsTable projects={projects} />
-      {toastOpen && <ResponseToast />}
-    </Article>
+    <AppLayout
+      navigationHide
+      toolsHide
+      contentType="form"
+      content={
+        <ContentLayout
+          header={
+            <Header
+              variant="h1"
+              description="InLoco é seu sistema de gerenciamento de informações sobre Limnologia."
+              actions={
+                <SpaceBetween direction="horizontal" size="xs">
+                  <Button variant="primary" href="projects">
+                    Novo projeto
+                  </Button>
+                </SpaceBetween>
+              }
+            >
+              InLoco
+            </Header>
+          }
+        >
+          <Container>
+            <ProjectsTable projects={projects} />
+          </Container>
+        </ContentLayout>
+      }
+      headerSelector="#header"
+      breadcrumbs={
+        <BreadcrumbGroup
+          items={[{ text: "Projetos", href: "#" }]}
+          expandAriaLabel="Mostrar caminho"
+          ariaLabel="Breadcrumbs"
+        />
+      }
+    />
   );
 }
