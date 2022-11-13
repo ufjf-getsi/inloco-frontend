@@ -1,19 +1,14 @@
-import { Project, ProjectProps } from "./Project";
+import { ProjectRow } from "./ProjectRow";
+
+import { Project } from "../types";
 
 interface ProjectsTableProps {
-  projects: Array<ProjectProps>;
+  projects: Array<Project>;
 }
 
 export function ProjectsTable(props: ProjectsTableProps) {
   const tableRowsList = props.projects.map((project) => {
-    return (
-      <Project
-        key={project.id}
-        id={project.id}
-        title={project.title}
-        description={project.description}
-      />
-    );
+    return <ProjectRow key={project.id} project={project} />;
   });
 
   return (

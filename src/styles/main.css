@@ -10,9 +10,12 @@
   tbody > tr:nth-child(even) {
     background-color: hsl(0, 0%, 95%);
   }
-
   tbody > tr:nth-child(odd) {
     background-color: hsl(0, 0%, 99%);
+  }
+  tbody > tr:hover {
+    background-color: hsl(0, 0%, 92.5%);
+    cursor: pointer;
   }
 
   .toast {

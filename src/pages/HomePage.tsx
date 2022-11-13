@@ -4,19 +4,13 @@ import axios from "axios";
 
 import "../styles/main.css";
 
-import { Project } from "../components/Project";
 import { CreateProjectButton } from "../components/CreateProjectButton";
 import { CreateProjectModal } from "../components/CreateProjectModal";
 import { ProjectsTable } from "../components/ProjectsTable";
 import { ResponseToast } from "../components/ResponseToast";
 import { Navbar } from "../components/Navbar";
 import { Article } from "../components/Article";
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-}
+import { Project } from "../types";
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>([]);
