@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Project } from "../types";
+import { Project } from "../../types";
 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -13,9 +13,9 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import { DeleteProjectModal } from "../components/DeleteProjectModal";
+import { DeleteProjectModal } from "../../components/DeleteProjectModal";
 
-export function ProjectPage() {
+export function ViewProject() {
   let { id } = useParams();
 
   const [project, setProject] = useState<Project>({
@@ -26,10 +26,10 @@ export function ProjectPage() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    fetchTableData();
+    fetchProjectData();
   }, []);
 
-  function fetchTableData() {
+  function fetchProjectData() {
     axios(`http://localhost:3333/projects/${id}`).then((response) => {
       setProject(response.data);
     });
@@ -48,7 +48,9 @@ export function ProjectPage() {
               description={project.description}
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                  <Button iconName="edit">Editar</Button>
+                  <Button iconName="edit" href={project.id + "/edit"}>
+                    Editar
+                  </Button>
                   <Button
                     iconName="close"
                     variant="primary"

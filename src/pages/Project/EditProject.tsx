@@ -1,4 +1,8 @@
-import { useState } from "react";
+import axios from "axios";
+import { Project } from "../../types";
+
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import {
   AppLayout,
@@ -8,14 +12,31 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-import { FormHeader, FormContent } from "../../components/FormCreateProject";
+import { FormHeader, FormContent } from "../../components/FormEditProject";
 
-export function CreateProject() {
+export function EditProject() {
+  let { id } = useParams();
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [alertText, setAlertText] = useState(
-    "O projeto foi criado com sucesso!"
+    "O projeto foi editado com sucesso!"
   );
+  const [project, setProject] = useState<Project>({
+    id: "",
+    title: "404",
+    description: "Este projeto não está cadastrado no sistema.",
+  });
+
+  useEffect(() => {
+    fetchProjectData();
+  }, []);
+
+  function fetchProjectData() {
+    axios(`http://localhost:3333/projects/${id}`).then((response) => {
+      setProject(response.data);
+    });
+  }
 
   return (
     <AppLayout
@@ -26,6 +47,8 @@ export function CreateProject() {
         <ContentLayout header={<FormHeader />}>
           <Container>
             <FormContent
+              project={project}
+              setProject={setProject}
               setAlertVisible={setAlertVisible}
               setAlertType={setAlertType}
               setAlertText={setAlertText}
@@ -48,7 +71,7 @@ export function CreateProject() {
         <BreadcrumbGroup
           items={[
             { text: "Projetos", href: "/" },
-            { text: "Criar projeto", href: "#" },
+            { text: "Editar projeto", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
