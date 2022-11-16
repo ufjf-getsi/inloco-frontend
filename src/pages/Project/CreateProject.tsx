@@ -8,7 +8,7 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-import { FormHeader, FormContent } from "../components/Form";
+import { FormHeader, FormContent } from "../../components/Form";
 
 export function CreateProject() {
   const [alertVisible, setAlertVisible] = useState(false);

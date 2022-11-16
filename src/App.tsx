@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { ProjectPage } from "./pages/ProjectPage";
-import { CreateProject } from "./pages/CreateProject";
+import { CreateProject } from "./pages/Project/CreateProject";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
