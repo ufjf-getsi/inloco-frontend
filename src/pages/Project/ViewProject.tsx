@@ -67,6 +67,7 @@ export function ViewProject() {
         >
           <Container></Container>
           <DeleteProjectModal
+            projectId={project.id}
             visible={visible}
             setVisible={setVisible}
             projectTitle={project.title}

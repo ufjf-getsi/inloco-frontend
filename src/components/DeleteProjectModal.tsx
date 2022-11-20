@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import axios from "axios";
+
 import {
   SpaceBetween,
   Button,
@@ -9,12 +11,17 @@ import {
 } from "@cloudscape-design/components";
 
 interface DeleteProjectModalProps {
+  projectId: string;
   visible: boolean;
   setVisible: Function;
   projectTitle: String;
 }
 
 export function DeleteProjectModal(props: DeleteProjectModalProps) {
+  function deleteProject(id: String) {
+    axios.delete(`http://localhost:3333/projects/${id}`);
+  }
+
   return (
     <Modal
       onDismiss={() => props.setVisible(false)}
@@ -26,7 +33,13 @@ export function DeleteProjectModal(props: DeleteProjectModalProps) {
             <Button variant="link" onClick={() => props.setVisible(false)}>
               Cancelar
             </Button>
-            <Button variant="primary">Excluir</Button>
+            <Button
+              variant="primary"
+              onClick={() => deleteProject(props.projectId)}
+              href="/"
+            >
+              Excluir
+            </Button>
           </SpaceBetween>
         </Box>
       }
