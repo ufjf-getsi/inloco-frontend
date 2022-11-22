@@ -43,10 +43,10 @@ export function FormContent(props: FormProps, { errorText = null }) {
     }
 
     try {
-      // await axios.post("http://localhost:3333/projects", {
-      //   title: props.project.title,
-      //   description: props.project.description,
-      // });
+      await axios.patch(`http://localhost:3333/projects/${props.project.id}`, {
+        title: props.project.title,
+        description: props.project.description,
+      });
 
       props.setAlertVisible(true);
 

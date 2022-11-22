@@ -18,7 +18,7 @@ interface DeleteProjectModalProps {
 }
 
 export function DeleteProjectModal(props: DeleteProjectModalProps) {
-  function deleteProject(id: String) {
+  function deleteProject(id: string) {
     axios.delete(`http://localhost:3333/projects/${id}`);
   }
 
