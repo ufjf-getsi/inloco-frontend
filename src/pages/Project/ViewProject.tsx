@@ -12,8 +12,11 @@ import {
   Header,
   SpaceBetween,
   Button,
+  TextContent,
 } from "@cloudscape-design/components";
+
 import { DeleteProjectModal } from "../../components/DeleteProjectModal";
+import { ToolsList } from "../../components/ToolsList";
 
 export function ViewProject() {
   let { id } = useParams();
@@ -24,6 +27,7 @@ export function ViewProject() {
     description: "Este projeto não está cadastrado no sistema.",
   });
   const [visible, setVisible] = useState(false);
+  const [toolsModalVisible, setToolsModalVisible] = useState(false);
 
   useEffect(() => {
     fetchProjectData();
@@ -65,7 +69,28 @@ export function ViewProject() {
             </Header>
           }
         >
-          <Container></Container>
+          <Container>
+            <TextContent>
+              <h2>Coleta</h2>
+              <br />
+              <h3>Pontos</h3>
+              <strong onClick={() => setToolsModalVisible(true)}>
+                Ponto 1
+              </strong>
+              <br />
+              <strong onClick={() => setToolsModalVisible(true)}>
+                Ponto 2
+              </strong>
+              <br />
+              <strong onClick={() => setToolsModalVisible(true)}>
+                Ponto 3
+              </strong>
+            </TextContent>
+          </Container>
+          <ToolsList
+            toolsModalVisible={toolsModalVisible}
+            setToolsModalVisible={setToolsModalVisible}
+          />
           <DeleteProjectModal
             projectId={project.id}
             visible={visible}
