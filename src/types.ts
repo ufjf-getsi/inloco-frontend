@@ -1,34 +1,53 @@
-//Projeto
+// Projeto
 export interface Project {
   id: string;
   title: string;
   description: string;
+  collections: Collection[];
+  notes: Note[];
 }
 
-//Coleta
-export interface Gathering {
+// Coleta
+export interface Collection {
   id: string;
-  title: string;
   projectId: string;
+  title: string;
+  points: Point[];
 }
 
-//Ponto
+// Ponto
 export interface Point {
   id: string;
-  //coordinates: String
-  gatheringId: string;
+  coordinates?: string;
+  measurements: Measurement[];
 }
 
-//Parâmetro
+// Medição (leitura)
+export interface Measurement {
+  id: string;
+  pendency: boolean;
+  result: string;
+  parameter: Parameter;
+}
+
+// Parâmetro
 export interface Parameter {
   id: string;
-  title: string;
-  pointId: string;
+  name: string;
+  dataType: string;
+  equipmentList: Equipment[];
 }
 
-//Equipamento
+// Equipamento
 export interface Equipment {
   id: string;
-  title: string;
-  parameterId: string;
+  name: string;
+}
+
+// Nota
+export interface Note {
+  id: string;
+  date: Date;
+  author: string;
+  description: string;
 }

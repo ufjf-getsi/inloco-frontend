@@ -15,8 +15,9 @@ import {
   TextContent,
 } from "@cloudscape-design/components";
 
-import { DeleteProjectModal } from "../../components/DeleteProjectModal";
+import { DeleteProjectModal } from "../../components/Project/DeleteProjectModal";
 import { ToolsList } from "../../components/ToolsList";
+import { CollectionsTable } from "../../components/Collection/CollectionsTable";
 
 export function ViewProject() {
   let { id } = useParams();
@@ -25,6 +26,8 @@ export function ViewProject() {
     id: "",
     title: "404",
     description: "Este projeto não está cadastrado no sistema.",
+    collections: [],
+    notes: [],
   });
   const [visible, setVisible] = useState(false);
   const [toolsModalVisible, setToolsModalVisible] = useState(false);
@@ -52,14 +55,17 @@ export function ViewProject() {
               description={project.description}
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
+                  <Button
+                    iconName="add-plus"
+                    variant="primary"
+                    href={project.id + "/collections"}
+                  >
+                    Nova Coleta
+                  </Button>
                   <Button iconName="edit" href={project.id + "/edit"}>
                     Editar
                   </Button>
-                  <Button
-                    iconName="close"
-                    variant="primary"
-                    onClick={() => setVisible(true)}
-                  >
+                  <Button iconName="close" onClick={() => setVisible(true)}>
                     Excluir
                   </Button>
                 </SpaceBetween>
@@ -71,9 +77,10 @@ export function ViewProject() {
         >
           <Container>
             <TextContent>
-              <h2>Coleta</h2>
-              <br />
-              <h3>Pontos</h3>
+              <h1>Coletas</h1>
+              <CollectionsTable collections={project.collections} />
+
+              <h1 className="my-2">Pontos</h1>
               <strong onClick={() => setToolsModalVisible(true)}>
                 Ponto 1
               </strong>

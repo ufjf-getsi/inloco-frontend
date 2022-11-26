@@ -12,7 +12,7 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import { ProjectsTable } from "../components/ProjectsTable";
+import { ProjectsTable } from "../components/Project/ProjectsTable";
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -40,7 +40,7 @@ export function HomePage() {
               description="InLoco é seu sistema de gerenciamento de informações sobre Limnologia."
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                  <Button variant="primary" href="projects">
+                  <Button iconName="add-plus" variant="primary" href="projects">
                     Novo projeto
                   </Button>
                 </SpaceBetween>
