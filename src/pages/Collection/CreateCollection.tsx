@@ -11,13 +11,13 @@ import {
 import {
   FormHeader,
   FormContent,
-} from "../../components/Project/FormCreateProject";
+} from "../../components/Collection/FormCreateCollection";
 
-export function CreateProject() {
+export function CreateCollection() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [alertText, setAlertText] = useState(
-    "O projeto foi criado com sucesso!"
+    "A coleta foi criada com sucesso!"
   );
 
   return (

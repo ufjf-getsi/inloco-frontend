@@ -12,7 +12,10 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-import { FormHeader, FormContent } from "../../components/FormEditProject";
+import {
+  FormHeader,
+  FormContent,
+} from "../../components/Project/FormEditProject";
 
 export function EditProject() {
   let { id } = useParams();
@@ -26,6 +29,8 @@ export function EditProject() {
     id: "",
     title: "404",
     description: "Este projeto não está cadastrado no sistema.",
+    collections: [],
+    notes: [],
   });
 
   useEffect(() => {
