@@ -16,8 +16,8 @@ import {
 } from "@cloudscape-design/components";
 
 import { DeleteProjectModal } from "../../components/Project/DeleteProjectModal";
-import { ToolsList } from "../../components/ToolsList";
 import { CollectionsTable } from "../../components/Collection/CollectionsTable";
+import Tasks from "../../components/Tasks";
 
 export function ViewProject() {
   let { id } = useParams();
@@ -30,7 +30,6 @@ export function ViewProject() {
     notes: [],
   });
   const [visible, setVisible] = useState(false);
-  const [toolsModalVisible, setToolsModalVisible] = useState(false);
 
   useEffect(() => {
     fetchProjectData();
@@ -79,25 +78,14 @@ export function ViewProject() {
             <TextContent>
               <h1>Coletas</h1>
               <CollectionsTable collections={project.collections} />
-
-              <h1 className="my-2">Pontos</h1>
-              <strong onClick={() => setToolsModalVisible(true)}>
-                Ponto 1
-              </strong>
-              <br />
-              <strong onClick={() => setToolsModalVisible(true)}>
-                Ponto 2
-              </strong>
-              <br />
-              <strong onClick={() => setToolsModalVisible(true)}>
-                Ponto 3
-              </strong>
+              <table className="w-11/12 my-10 text-center m-auto">
+                <th className="text-xl" scope="col">
+                  Tarefas
+                </th>
+              </table>
+              <Tasks />
             </TextContent>
           </Container>
-          <ToolsList
-            toolsModalVisible={toolsModalVisible}
-            setToolsModalVisible={setToolsModalVisible}
-          />
           <DeleteProjectModal
             projectId={project.id}
             visible={visible}

@@ -8,13 +8,15 @@ import {
   Box,
 } from "@cloudscape-design/components";
 
+import { Equipment } from "../types";
+
 interface ModalProps {
   toolsModalVisible: boolean;
   setToolsModalVisible: Function;
 }
 
 export function ToolsList(props: ModalProps) {
-  const [selectedItems, setSelectedItems] = useState([{ name: "Item 2" }]);
+  const [selectedItems, setSelectedItems] = useState([{}]);
 
   return (
     <Modal
@@ -56,7 +58,7 @@ export function ToolsList(props: ModalProps) {
         }}
         columnDefinitions={[
           {
-            id: "variable",
+            id: "name",
             header: "Item",
             cell: (e: any) => e.name,
             sortingField: "name",
@@ -121,7 +123,7 @@ export function ToolsList(props: ModalProps) {
         loadingText="Loading resources"
         selectionType="multi"
         trackBy="name"
-        visibleColumns={["variable", "value", "type", "description"]}
+        visibleColumns={["name", "value", "type", "description"]}
         empty={
           <Box textAlign="center" color="inherit">
             <b>No resources</b>
