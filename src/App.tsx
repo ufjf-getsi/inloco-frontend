@@ -3,10 +3,11 @@ import { HomePage } from "./pages/HomePage";
 import { ViewProject } from "./pages/Project/ViewProject";
 import { CreateProject } from "./pages/Project/CreateProject";
 import { CreateCollection } from "./pages/Collection/CreateCollection";
+import { EditProject } from "./pages/Project/EditProject";
+import { ViewCollection } from "./pages/Collection/ViewCollection";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
-import { EditProject } from "./pages/Project/EditProject";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           path={"projects/:projectId/collections"}
           element={<CreateCollection />}
         />
+        <Route path={"/collection/:id"} element={<ViewCollection />} />
       </Routes>
     </BrowserRouter>
   );
