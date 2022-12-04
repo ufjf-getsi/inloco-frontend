@@ -57,11 +57,11 @@ export function ViewProject() {
                   <Button
                     iconName="add-plus"
                     variant="primary"
-                    href={project.id + "/collections"}
+                    href={`/projects/${project.id}/collections`}
                   >
                     Nova Coleta
                   </Button>
-                  <Button iconName="edit" href={project.id + "/edit"}>
+                  <Button iconName="edit" href={`/projects/${project.id}/edit`}>
                     Editar
                   </Button>
                   <Button iconName="close" onClick={() => setVisible(true)}>
