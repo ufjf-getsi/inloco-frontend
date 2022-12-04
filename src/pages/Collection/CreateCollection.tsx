@@ -51,7 +51,8 @@ export function CreateCollection() {
         <BreadcrumbGroup
           items={[
             { text: "Projetos", href: "/" },
-            { text: "Criar projeto", href: "#" },
+            { text: "Projeto", href: "./" },
+            { text: "Criar coleta", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"

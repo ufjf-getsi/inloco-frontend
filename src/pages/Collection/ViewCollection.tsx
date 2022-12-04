@@ -1,4 +1,8 @@
-import { useState } from "react";
+import axios from "axios";
+import { Collection } from "../../types";
+
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import {
   AppLayout,
@@ -10,10 +14,28 @@ import {
 } from "@cloudscape-design/components";
 
 import { ToolsList } from "../../components/ToolsList";
-import { Collection } from "../../types";
 
 export function ViewCollection() {
+  let { id } = useParams();
+
+  const [collection, setCollection] = useState<Collection>({
+    id: "",
+    projectId: "",
+    title: "404",
+    points: [],
+  });
+  const [visible, setVisible] = useState(false);
   const [toolsModalVisible, setToolsModalVisible] = useState(false);
+
+  useEffect(() => {
+    fetchCollectionData();
+  }, []);
+
+  function fetchCollectionData() {
+    axios(`http://localhost:3333/collections/${id}`).then((response) => {
+      setCollection(response.data);
+    });
+  }
 
   return (
     <AppLayout
@@ -45,7 +67,15 @@ export function ViewCollection() {
         <BreadcrumbGroup
           items={[
             { text: "Projetos", href: "/" },
-            { text: "Visualizar projeto", href: "#" },
+            {
+              text: "Projeto",
+              href: `/${
+                collection.projectId !== ""
+                  ? "projects/" + collection.projectId
+                  : ""
+              }`,
+            },
+            { text: "Coleta", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"

@@ -76,6 +76,7 @@ export function EditProject() {
         <BreadcrumbGroup
           items={[
             { text: "Projetos", href: "/" },
+            { text: "Projeto", href: "./" },
             { text: "Editar projeto", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
