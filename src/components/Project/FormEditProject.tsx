@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Project } from "../types";
+import { Project } from "../../types";
 
 import { useNavigate } from "react-router-dom";
 import { FormEvent } from "react";

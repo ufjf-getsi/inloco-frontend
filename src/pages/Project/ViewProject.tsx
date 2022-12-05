@@ -17,7 +17,6 @@ import {
 
 import { DeleteProjectModal } from "../../components/Project/DeleteProjectModal";
 import { CollectionsTable } from "../../components/Collection/CollectionsTable";
-import Tasks from "../../components/Tasks";
 
 export function ViewProject() {
   let { id } = useParams();
@@ -78,12 +77,6 @@ export function ViewProject() {
             <TextContent>
               <h1>Coletas</h1>
               <CollectionsTable collections={project.collections} />
-              <table className="w-11/12 my-10 text-center m-auto">
-                <th className="text-xl" scope="col">
-                  Tarefas
-                </th>
-              </table>
-              <Tasks />
             </TextContent>
           </Container>
           <DeleteProjectModal

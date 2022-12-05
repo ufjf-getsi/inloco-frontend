@@ -21,7 +21,7 @@ function App() {
           path={"projects/:projectId/collections"}
           element={<CreateCollection />}
         />
-        <Route path={"/collection/:id"} element={<ViewCollection />} />
+        <Route path={"/collections/:id"} element={<ViewCollection />} />
       </Routes>
     </BrowserRouter>
   );
