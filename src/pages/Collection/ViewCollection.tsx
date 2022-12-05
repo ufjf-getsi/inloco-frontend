@@ -11,9 +11,16 @@ import {
   Container,
   TextContent,
   BreadcrumbGroup,
+  SpaceBetween,
+  Button,
+  Alert,
+  AlertProps,
 } from "@cloudscape-design/components";
 
 import { ToolsList } from "../../components/ToolsList";
+import { PointsTable } from "../../components/Point/PointsTable";
+import { CreatePointForm } from "../../components/Point/FormCreatePoint";
+import { DeleteCollectionModal } from "../../components/Collection/DeleteCollectionModal";
 
 export function ViewCollection() {
   let { id } = useParams();
@@ -24,12 +31,28 @@ export function ViewCollection() {
     title: "404",
     points: [],
   });
-  const [visible, setVisible] = useState(false);
+  const [createPointModalVisible, setCreatePointModalVisible] = useState(false);
+  const [deleteCollectionModalVisible, setDeleteCollectionModalVisible] =
+    useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertType, setAlertType] = useState<AlertProps.Type>("success");
+  const [alertText, setAlertText] = useState(
+    "O ponto foi adicionado com sucesso!"
+  );
   const [toolsModalVisible, setToolsModalVisible] = useState(false);
 
   useEffect(() => {
     fetchCollectionData();
   }, []);
+
+  // Hide alert after 3 seconds if success
+  useEffect(() => {
+    if (alertType === "success") {
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 3000);
+    }
+  }, [alertVisible]);
 
   function fetchCollectionData() {
     axios(`http://localhost:3333/collections/${id}`).then((response) => {
@@ -41,25 +64,74 @@ export function ViewCollection() {
     <AppLayout
       navigationHide
       toolsHide
-      contentType="form"
       content={
-        <ContentLayout header={<Header variant="h2">Coleta</Header>}>
+        <ContentLayout
+          header={
+            <Header
+              variant="h2"
+              actions={
+                <SpaceBetween direction="horizontal" size="xs">
+                  <Button
+                    iconName="add-plus"
+                    variant="primary"
+                    onClick={() => {
+                      setCreatePointModalVisible(true);
+                    }}
+                  >
+                    Novo Ponto
+                  </Button>
+                  <Button
+                    iconName="edit"
+                    href={`/collections/${collection.id}/edit`}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    iconName="close"
+                    onClick={() => setDeleteCollectionModalVisible(true)}
+                  >
+                    Excluir
+                  </Button>
+                </SpaceBetween>
+              }
+            >
+              {"Coleta"}
+            </Header>
+          }
+        >
           <Container>
             <TextContent>
               <h1 className="my-2">Pontos</h1>
-              <strong onClick={() => setToolsModalVisible(true)}>
-                Ponto 1
-              </strong>
-              <br />
-              <strong onClick={() => setToolsModalVisible(true)}>
-                Ponto 2
-              </strong>
+              <PointsTable
+                points={collection.points}
+                setToolsModalVisible={setToolsModalVisible}
+              />
               <ToolsList
                 toolsModalVisible={toolsModalVisible}
                 setToolsModalVisible={setToolsModalVisible}
               />
             </TextContent>
           </Container>
+          <CreatePointForm
+            collectionId={collection.id}
+            createPointModalVisible={createPointModalVisible}
+            setCreatePointModalVisible={setCreatePointModalVisible}
+            setAlertVisible={setAlertVisible}
+            setAlertType={setAlertType}
+            setAlertText={setAlertText}
+            fetchCollectionData={fetchCollectionData}
+          />
+
+          <Alert
+            onDismiss={() => setAlertVisible(false)}
+            visible={alertVisible}
+            dismissAriaLabel="Fechar alerta"
+            dismissible
+            type={alertType}
+            className="absolute right-0 w-fit mt-8 mr-8"
+          >
+            {alertText}
+          </Alert>
         </ContentLayout>
       }
       headerSelector="#header"
