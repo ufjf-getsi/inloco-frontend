@@ -121,7 +121,12 @@ export function ViewCollection() {
             setAlertText={setAlertText}
             fetchCollectionData={fetchCollectionData}
           />
-
+          <DeleteCollectionModal
+            collectionId={collection.id}
+            collectionTitle={collection.title}
+            visible={deleteCollectionModalVisible}
+            setVisible={setDeleteCollectionModalVisible}
+          />
           <Alert
             onDismiss={() => setAlertVisible(false)}
             visible={alertVisible}
