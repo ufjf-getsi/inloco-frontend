@@ -46,12 +46,10 @@ export function FormContent(props: FormProps, { errorText = null }) {
     }
 
     try {
-      await axios.post(
-        `http://localhost:3333/projects/${projectId}/collections`,
-        {
-          title: inputValues.title,
-        }
-      );
+      await axios.post(`http://localhost:3333/collections`, {
+        title: inputValues.title,
+        projectId: `${projectId}`,
+      });
 
       props.setAlertVisible(true);
 

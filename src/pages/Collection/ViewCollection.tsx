@@ -124,6 +124,7 @@ export function ViewCollection() {
           <DeleteCollectionModal
             collectionId={collection.id}
             collectionTitle={collection.title}
+            projectId={collection.projectId}
             visible={deleteCollectionModalVisible}
             setVisible={setDeleteCollectionModalVisible}
           />
