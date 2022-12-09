@@ -11,6 +11,7 @@ import {
 interface DeleteCollectionModalProps {
   collectionId: string;
   collectionTitle: String;
+  projectId: string;
   visible: boolean;
   setVisible: Function;
 }
