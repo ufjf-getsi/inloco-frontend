@@ -10,8 +10,8 @@ import {
 } from "@cloudscape-design/components";
 import {
   FormHeader,
-  FormContent,
-} from "../../components/Project/FormCreateProject";
+  FormConnection,
+} from "../../components/Project/FormProject";
 
 export function CreateProject() {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -26,9 +26,9 @@ export function CreateProject() {
       toolsHide
       contentType="form"
       content={
-        <ContentLayout header={<FormHeader />}>
+        <ContentLayout header={<FormHeader edit={false} />}>
           <Container>
-            <FormContent
+            <FormConnection
               setAlertVisible={setAlertVisible}
               setAlertType={setAlertType}
               setAlertText={setAlertText}
