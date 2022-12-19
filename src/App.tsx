@@ -6,10 +6,13 @@ import { CreateCollection } from "./pages/Collection/CreateCollection";
 import { EditProject } from "./pages/Project/EditProject";
 import { ViewCollection } from "./pages/Collection/ViewCollection";
 import { EditCollection } from "./pages/Collection/EditCollection";
-// import { MeasurementList } from "./pages/Measurement/MeasurementList";
+import { ParametersList } from "./pages/Parameter/ParametersList";
+import { CreateParameter } from "./pages/Parameter/CreateParameter";
+import { EditParameter } from "./pages/Parameter/EditParameter";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
+import { ViewParameter } from "./pages/Parameter/ViewParameter";
 
 function App() {
   return (
@@ -26,7 +29,10 @@ function App() {
         />
         <Route path={"/collections/:id"} element={<ViewCollection />} />
         <Route path={"/collections/:id/edit"} element={<EditCollection />} />
-        {/* <Route path={"/measurements"} element={<MeasurementList />} /> */}
+        <Route path={"/parameters"} element={<ParametersList />} />
+        <Route path={"parameters/create"} element={<CreateParameter />} />
+        <Route path={"parameters/:id"} element={<ViewParameter />} />
+        <Route path={"parameters/:id/edit"} element={<EditParameter />} />
       </Routes>
     </BrowserRouter>
   );
