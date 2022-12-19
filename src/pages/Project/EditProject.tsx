@@ -14,8 +14,8 @@ import {
 } from "@cloudscape-design/components";
 import {
   FormHeader,
-  FormContent,
-} from "../../components/Project/FormEditProject";
+  FormConnection,
+} from "../../components/Project/FormProject";
 
 export function EditProject() {
   let { id } = useParams();
@@ -49,11 +49,11 @@ export function EditProject() {
       toolsHide
       contentType="form"
       content={
-        <ContentLayout header={<FormHeader />}>
+        <ContentLayout header={<FormHeader edit={true} />}>
           <Container>
-            <FormContent
+            <FormConnection
+              edit={true}
               project={project}
-              setProject={setProject}
               setAlertVisible={setAlertVisible}
               setAlertType={setAlertType}
               setAlertText={setAlertText}
