@@ -95,7 +95,7 @@ export function ViewCollection() {
                 </SpaceBetween>
               }
             >
-              {"Coleta"}
+              {collection.title}
             </Header>
           }
         >

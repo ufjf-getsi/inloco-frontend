@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import {
   AppLayout,
@@ -11,14 +12,35 @@ import {
 import {
   FormHeader,
   FormConnection,
-} from "../../components/Project/FormProject";
+} from "../../components/Collection/FormCollection";
+import { Collection } from "../../types";
+import axios from "axios";
 
-export function CreateProject() {
+export function EditCollection() {
+  let { id } = useParams();
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [alertText, setAlertText] = useState(
-    "O projeto foi criado com sucesso!"
+    "A coleta foi editada com sucesso!"
   );
+
+  const [collection, setCollection] = useState<Collection>({
+    id: "",
+    projectId: "",
+    title: "404",
+    points: [],
+  });
+
+  useEffect(() => {
+    fetchCollectionData();
+  }, []);
+
+  function fetchCollectionData() {
+    axios(`http://localhost:3333/collections/${id}`).then((response) => {
+      setCollection(response.data);
+    });
+  }
 
   return (
     <AppLayout
@@ -26,9 +48,11 @@ export function CreateProject() {
       toolsHide
       contentType="form"
       content={
-        <ContentLayout header={<FormHeader />}>
+        <ContentLayout header={<FormHeader edit />}>
           <Container>
             <FormConnection
+              edit
+              collection={collection}
               setAlertVisible={setAlertVisible}
               setAlertType={setAlertType}
               setAlertText={setAlertText}
@@ -51,7 +75,8 @@ export function CreateProject() {
         <BreadcrumbGroup
           items={[
             { text: "Projetos", href: "/" },
-            { text: "Criar projeto", href: "#" },
+            { text: "Projeto", href: "./" },
+            { text: "Editar coleta", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"

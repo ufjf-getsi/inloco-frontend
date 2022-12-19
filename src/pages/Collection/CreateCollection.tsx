@@ -10,8 +10,8 @@ import {
 } from "@cloudscape-design/components";
 import {
   FormHeader,
-  FormContent,
-} from "../../components/Collection/FormCreateCollection";
+  FormConnection,
+} from "../../components/Collection/FormCollection";
 
 export function CreateCollection() {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -28,7 +28,7 @@ export function CreateCollection() {
       content={
         <ContentLayout header={<FormHeader />}>
           <Container>
-            <FormContent
+            <FormConnection
               setAlertVisible={setAlertVisible}
               setAlertType={setAlertType}
               setAlertText={setAlertText}

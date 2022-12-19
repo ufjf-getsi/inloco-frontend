@@ -1,6 +1,7 @@
 import axios from "axios";
-import { Project } from "../../types";
+import { Collection } from "../../types";
 
+import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 
 import {
@@ -11,14 +12,13 @@ import {
   FormField,
   Input,
 } from "@cloudscape-design/components";
-import { useNavigate } from "react-router-dom";
 
 interface FormProps {
   edit: boolean;
 }
 
 interface FormConnectionProps extends FormProps {
-  project?: Project;
+  collection?: Collection;
   setAlertVisible: Function;
   setAlertType: Function;
   setAlertText: Function;
@@ -26,7 +26,8 @@ interface FormConnectionProps extends FormProps {
 
 interface FormConnectionSpecificProps extends FormConnectionProps {
   navigate: Function;
-  projectId?: string;
+  projectId: string;
+  collectionId?: string;
   inputValues: Fields;
   setInputValues: Function;
 }
@@ -37,7 +38,6 @@ interface FormBodyProps extends FormConnectionSpecificProps {
 
 interface Fields {
   title: string;
-  description: string;
 }
 
 FormHeader.defaultProps = {
@@ -52,33 +52,33 @@ export function FormHeader({ edit }: FormProps) {
   return (
     <Header
       variant="h1"
-      description="Um projeto é uma coleção que guarda registros de todas as coletas realizadas com um propósito em comum."
+      description="Uma coleta é uma expedição realizada a fim de obter dados de determinados pontos."
     >
-      {edit ? `Editar` : `Criar`} Projeto
+      {edit ? `Editar` : `Criar`} Coleta
     </Header>
   );
 }
 
-export function FormConnection({ project, ...props }: FormConnectionProps) {
+export function FormConnection({ collection, ...props }: FormConnectionProps) {
   const navigate = useNavigate();
+  let { projectId } = useParams();
 
   const [inputValues, setInputValues] = useState({
     title: "",
-    description: "",
   });
 
   useEffect(() => {
-    if (project)
+    if (collection)
       setInputValues({
-        title: project.title,
-        description: project.description,
+        title: collection.title,
       });
-  }, [project]);
+  }, [collection]);
 
-  if (props.edit && project) {
+  if (props.edit && collection) {
     return (
       <FormConnectionEdit
-        projectId={project.id}
+        projectId={projectId ?? ""}
+        collectionId={collection.id}
         navigate={navigate}
         inputValues={inputValues}
         setInputValues={setInputValues}
@@ -88,6 +88,7 @@ export function FormConnection({ project, ...props }: FormConnectionProps) {
   } else {
     return (
       <FormConnectionCreate
+        projectId={projectId ?? ""}
         navigate={navigate}
         inputValues={inputValues}
         setInputValues={setInputValues}
@@ -101,23 +102,23 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.title || !props.inputValues.description) {
+    if (!props.inputValues.title) {
       return;
     }
 
     try {
-      await axios.post("http://localhost:3333/projects", {
+      await axios.post("http://localhost:3333/collections", {
         title: props.inputValues.title,
-        description: props.inputValues.description,
+        projectId: props.projectId,
       });
 
       props.setAlertVisible(true);
 
-      setTimeout(() => props.navigate("/", { replace: true }), 1000);
+      setTimeout(() => props.navigate("./..", { replace: true }), 1000);
     } catch (error) {
       console.log(error);
       props.setAlertType("error");
-      props.setAlertText(`Não foi possível criar o projeto! Tente novamente.`);
+      props.setAlertText(`Não foi possível criar a coleta! Tente novamente.`);
       props.setAlertVisible(true);
     }
   }
@@ -129,23 +130,25 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.title || !props.inputValues.description) {
+    if (!props.inputValues.title) {
       return;
     }
 
     try {
-      await axios.patch(`http://localhost:3333/projects/${props.projectId}`, {
-        title: props.inputValues.title,
-        description: props.inputValues.description,
-      });
+      await axios.patch(
+        `http://localhost:3333/collections/${props.collectionId}`,
+        {
+          title: props.inputValues.title,
+        }
+      );
 
       props.setAlertVisible(true);
 
-      setTimeout(() => props.navigate("/", { replace: true }), 1000);
+      setTimeout(() => props.navigate("./..", { replace: true }), 1000);
     } catch (error) {
       console.log(error);
       props.setAlertType("error");
-      props.setAlertText("Não foi possível editar o projeto! Tente novamente.");
+      props.setAlertText("Não foi possível editar a coleta! Tente novamente.");
       props.setAlertVisible(true);
     }
   }
@@ -167,7 +170,7 @@ export function FormBody({
               Cancelar
             </Button>
             <Button variant="primary">
-              {edit ? `Editar` : `Criar`} Projeto
+              {edit ? `Editar` : `Criar`} Coleta
             </Button>
           </SpaceBetween>
         }
@@ -181,17 +184,6 @@ export function FormBody({
                 setInputValues((prevState: Fields) => ({
                   ...prevState,
                   title: event.detail.value,
-                }))
-              }
-            />
-          </FormField>
-          <FormField label="Descrição">
-            <Input
-              value={inputValues.description}
-              onChange={(event) =>
-                setInputValues((prevState: Fields) => ({
-                  ...prevState,
-                  description: event.detail.value,
                 }))
               }
             />
