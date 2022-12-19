@@ -22,7 +22,6 @@ export function Navbar(props: NavbarProps) {
       }}
       items={[
         { type: "link", text: "Projetos", href: "/projects" },
-        { type: "link", text: "Medições", href: "/measurements" },
         { type: "link", text: "Parâmetros", href: "/parameters" },
         { type: "link", text: "Equipamento", href: "/equipment" },
         { type: "divider" },
