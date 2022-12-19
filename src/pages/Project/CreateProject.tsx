@@ -12,6 +12,7 @@ import {
   FormHeader,
   FormConnection,
 } from "../../components/Project/FormProject";
+import { Navbar } from "../../components/Navbar";
 
 export function CreateProject() {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -22,7 +23,7 @@ export function CreateProject() {
 
   return (
     <AppLayout
-      navigationHide
+      navigation={<Navbar />}
       toolsHide
       contentType="form"
       content={
@@ -50,7 +51,7 @@ export function CreateProject() {
       breadcrumbs={
         <BreadcrumbGroup
           items={[
-            { text: "Projetos", href: "/" },
+            { text: "Projetos", href: "/projects" },
             { text: "Criar projeto", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"

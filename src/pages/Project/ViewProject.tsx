@@ -17,6 +17,7 @@ import {
 
 import { DeleteProjectModal } from "../../components/Project/DeleteProjectModal";
 import { CollectionsTable } from "../../components/Collection/CollectionsTable";
+import { Navbar } from "../../components/Navbar";
 
 export function ViewProject() {
   let { id } = useParams();
@@ -42,7 +43,7 @@ export function ViewProject() {
 
   return (
     <AppLayout
-      navigationHide
+      navigation={<Navbar />}
       toolsHide
       contentType="form"
       content={
@@ -91,7 +92,7 @@ export function ViewProject() {
       breadcrumbs={
         <BreadcrumbGroup
           items={[
-            { text: "Projetos", href: "/" },
+            { text: "Projetos", href: "/projects" },
             { text: "Visualizar projeto", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"

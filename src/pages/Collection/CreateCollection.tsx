@@ -12,6 +12,7 @@ import {
   FormHeader,
   FormConnection,
 } from "../../components/Collection/FormCollection";
+import { Navbar } from "../../components/Navbar";
 
 export function CreateCollection() {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -22,7 +23,7 @@ export function CreateCollection() {
 
   return (
     <AppLayout
-      navigationHide
+      navigation={<Navbar />}
       toolsHide
       contentType="form"
       content={

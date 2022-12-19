@@ -166,7 +166,7 @@ export function FormBody({
       <Form
         actions={
           <SpaceBetween direction="horizontal" size="xs">
-            <Button formAction="none" variant="link" href="/">
+            <Button formAction="none" variant="link" href={`./`}>
               Cancelar
             </Button>
             <Button variant="primary">
