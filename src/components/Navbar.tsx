@@ -1,16 +1,32 @@
-import { Link } from "react-router-dom";
+import * as React from "react";
+import SideNavigation from "@cloudscape-design/components/side-navigation";
 
 interface NavbarProps {
-  children?: React.ReactNode;
+  activeLink: string;
 }
 
+Navbar.defaultProps = {
+  activeLink: "",
+};
+
 export function Navbar(props: NavbarProps) {
+  const [activeHref, setActiveHref] = React.useState(props.activeLink);
   return (
-    <nav className="w-full flex pt-5 px-10 justify-between">
-      <Link to="/">
-        <h1 className="text-5xl text-red-800 font-bold">In Loco</h1>
-      </Link>
-      {props.children}
-    </nav>
+    <SideNavigation
+      activeHref={activeHref}
+      header={{ href: "/", text: "InLoco" }}
+      onFollow={(event) => {
+        if (!event.detail.external) {
+          setActiveHref(event.detail.href);
+        }
+      }}
+      items={[
+        { type: "link", text: "Projetos", href: "/projects" },
+        { type: "link", text: "Medições", href: "/measurements" },
+        { type: "link", text: "Parâmetros", href: "/parameters" },
+        { type: "link", text: "Equipamento", href: "/equipment" },
+        { type: "divider" },
+      ]}
+    />
   );
 }

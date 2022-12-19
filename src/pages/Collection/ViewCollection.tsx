@@ -21,6 +21,7 @@ import { ToolsList } from "../../components/ToolsList";
 import { PointsTable } from "../../components/Point/PointsTable";
 import { CreatePointForm } from "../../components/Point/FormCreatePoint";
 import { DeleteCollectionModal } from "../../components/Collection/DeleteCollectionModal";
+import { Navbar } from "../../components/Navbar";
 
 export function ViewCollection() {
   let { id } = useParams();
@@ -62,8 +63,9 @@ export function ViewCollection() {
 
   return (
     <AppLayout
-      navigationHide
+      navigation={<Navbar />}
       toolsHide
+      contentType="form"
       content={
         <ContentLayout
           header={

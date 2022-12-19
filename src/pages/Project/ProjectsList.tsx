@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Project } from "../types";
+import { Project } from "../../types";
 
 import { useEffect, useState } from "react";
 
@@ -12,9 +12,10 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import { ProjectsTable } from "../components/Project/ProjectsTable";
+import { ProjectsTable } from "../../components/Project/ProjectsTable";
+import { Navbar } from "../../components/Navbar";
 
-export function HomePage() {
+export function ProjectsList() {
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export function HomePage() {
 
   return (
     <AppLayout
-      navigationHide
+      navigation={<Navbar activeLink="/projects" />}
       toolsHide
       contentType="form"
       content={
@@ -40,7 +41,11 @@ export function HomePage() {
               description="InLoco é seu sistema de gerenciamento de informações sobre Limnologia."
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                  <Button iconName="add-plus" variant="primary" href="projects">
+                  <Button
+                    iconName="add-plus"
+                    variant="primary"
+                    href="projects/create"
+                  >
                     Novo projeto
                   </Button>
                 </SpaceBetween>

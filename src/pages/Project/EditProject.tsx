@@ -16,6 +16,7 @@ import {
   FormHeader,
   FormConnection,
 } from "../../components/Project/FormProject";
+import { Navbar } from "../../components/Navbar";
 
 export function EditProject() {
   let { id } = useParams();
@@ -45,7 +46,7 @@ export function EditProject() {
 
   return (
     <AppLayout
-      navigationHide
+      navigation={<Navbar />}
       toolsHide
       contentType="form"
       content={
@@ -75,7 +76,7 @@ export function EditProject() {
       breadcrumbs={
         <BreadcrumbGroup
           items={[
-            { text: "Projetos", href: "/" },
+            { text: "Projetos", href: "/projects" },
             { text: "Projeto", href: "./" },
             { text: "Editar projeto", href: "#" },
           ]}

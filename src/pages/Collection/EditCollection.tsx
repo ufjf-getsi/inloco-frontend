@@ -15,6 +15,7 @@ import {
 } from "../../components/Collection/FormCollection";
 import { Collection } from "../../types";
 import axios from "axios";
+import { Navbar } from "../../components/Navbar";
 
 export function EditCollection() {
   let { id } = useParams();
@@ -44,7 +45,7 @@ export function EditCollection() {
 
   return (
     <AppLayout
-      navigationHide
+      navigation={<Navbar />}
       toolsHide
       contentType="form"
       content={
