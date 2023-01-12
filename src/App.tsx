@@ -13,6 +13,10 @@ import { EditParameter } from "./pages/Parameter/EditParameter";
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
 import { ViewParameter } from "./pages/Parameter/ViewParameter";
+import { EquipmentList } from "./pages/Equipment/EquipmentList";
+import { CreateEquipment } from "./pages/Equipment/CreateEquipment";
+import { EditEquipment } from "./pages/Equipment/EditEquipment";
+import { ViewEquipment } from "./pages/Equipment/ViewEquipment";
 
 function App() {
   return (
@@ -29,10 +33,16 @@ function App() {
         />
         <Route path={"/collections/:id"} element={<ViewCollection />} />
         <Route path={"/collections/:id/edit"} element={<EditCollection />} />
+
         <Route path={"/parameters"} element={<ParametersList />} />
         <Route path={"parameters/create"} element={<CreateParameter />} />
         <Route path={"parameters/:id"} element={<ViewParameter />} />
         <Route path={"parameters/:id/edit"} element={<EditParameter />} />
+
+        <Route path={"/equipment"} element={<EquipmentList />} />
+        <Route path={"equipment/create"} element={<CreateEquipment />} />
+        <Route path={"equipment/:id"} element={<ViewEquipment />} />
+        <Route path={"equipment/:id/edit"} element={<EditEquipment />} />
       </Routes>
     </BrowserRouter>
   );
