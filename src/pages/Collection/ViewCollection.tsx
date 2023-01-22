@@ -17,11 +17,11 @@ import {
   AlertProps,
 } from "@cloudscape-design/components";
 
-import { ToolsList } from "../../components/ToolsList";
 import { PointsTable } from "../../components/Point/PointsTable";
-import { CreatePointForm } from "../../components/Point/FormCreatePoint";
+import { FormConnection as FormPoint } from "../../components/Point/FormPoint";
 import { DeleteCollectionModal } from "../../components/Collection/DeleteCollectionModal";
 import { Navbar } from "../../components/Navbar";
+import { DeletePointModal } from "../../components/Point/DeletePointModal";
 
 export function ViewCollection() {
   let { id } = useParams();
@@ -32,15 +32,34 @@ export function ViewCollection() {
     title: "404",
     points: [],
   });
-  const [createPointModalVisible, setCreatePointModalVisible] = useState(false);
+  const [pointModalVisible, setPointModalVisible] = useState(false);
+  const [selectedPoint, setSelectedPoint] = useState(undefined);
+  const [editPoint, setEditPoint] = useState(false);
+
   const [deleteCollectionModalVisible, setDeleteCollectionModalVisible] =
     useState(false);
+  const [deletePointModalVisible, setDeletePointModalVisible] = useState(false);
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [alertText, setAlertText] = useState(
     "O ponto foi adicionado com sucesso!"
   );
-  const [toolsModalVisible, setToolsModalVisible] = useState(false);
+  function updateAlert(success: boolean, edit: boolean) {
+    if (success) {
+      setAlertType("success");
+      setAlertText(
+        `O ponto foi ${edit ? "editado" : "adicionado"} com sucesso!`
+      );
+    } else {
+      setAlertType("error");
+      setAlertText(
+        `Não foi possível ${
+          edit ? "editar" : "adicionar"
+        } o ponto! Tente novamente.`
+      );
+    }
+  }
 
   useEffect(() => {
     fetchCollectionData();
@@ -77,7 +96,7 @@ export function ViewCollection() {
                     iconName="add-plus"
                     variant="primary"
                     onClick={() => {
-                      setCreatePointModalVisible(true);
+                      setPointModalVisible(true);
                     }}
                   >
                     Novo Ponto
@@ -106,23 +125,32 @@ export function ViewCollection() {
               <h1 className="my-2">Pontos</h1>
               <PointsTable
                 points={collection.points}
-                setToolsModalVisible={setToolsModalVisible}
-              />
-              <ToolsList
-                toolsModalVisible={toolsModalVisible}
-                setToolsModalVisible={setToolsModalVisible}
+                setModalVisible={setPointModalVisible}
+                setSelectedPoint={setSelectedPoint}
+                setEditPoint={setEditPoint}
               />
             </TextContent>
           </Container>
-          <CreatePointForm
+          <FormPoint
             collectionId={collection.id}
-            createPointModalVisible={createPointModalVisible}
-            setCreatePointModalVisible={setCreatePointModalVisible}
+            point={selectedPoint}
+            edit={editPoint}
+            setEditPoint={setEditPoint}
+            modalVisible={pointModalVisible}
+            setModalVisible={setPointModalVisible}
             setAlertVisible={setAlertVisible}
-            setAlertType={setAlertType}
-            setAlertText={setAlertText}
+            updateAlert={updateAlert}
             fetchCollectionData={fetchCollectionData}
+            setDeleteModalVisible={setDeletePointModalVisible}
           />
+          {selectedPoint && (
+            <DeletePointModal
+              point={selectedPoint}
+              visible={deletePointModalVisible}
+              setVisible={setDeletePointModalVisible}
+              fetchCollectionData={fetchCollectionData}
+            />
+          )}
           <DeleteCollectionModal
             collectionId={collection.id}
             collectionTitle={collection.title}

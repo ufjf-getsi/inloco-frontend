@@ -18,6 +18,7 @@ export interface Collection {
 // Ponto
 export interface Point {
   id: string;
+  name: string;
   coordinates?: string;
   measurements: Measurement[];
 }
