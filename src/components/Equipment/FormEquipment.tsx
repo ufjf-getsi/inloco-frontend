@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Equipment } from "../../types";
+import { Equipment, Parameter } from "../../types";
 
 import { FormEvent, useEffect, useState } from "react";
 
@@ -11,6 +11,7 @@ import {
   FormField,
   Input,
   Multiselect,
+  SelectProps,
 } from "@cloudscape-design/components";
 import { useNavigate } from "react-router-dom";
 
@@ -166,8 +167,24 @@ export function FormBody({
   inputValues,
   setInputValues,
 }: FormBodyProps) {
-  const [parameters, setParameters] = useState([]);
+  interface Option {
+    value: string;
+    label: string;
+  }
+  const [parameters, setParameters] = useState<Option[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<Parameter[]>("http://localhost:3333/parameters")
+      .then((response) => {
+        setParameters(
+          response.data.map((item) => ({ value: item.name, label: item.name }))
+        );
+      });
+  }, []);
+
   const [selectedOptions, setSelectedOptions] = useState([]);
+
   return (
     <form onSubmit={(event) => handleSubmit(event)}>
       <Form
@@ -199,7 +216,7 @@ export function FormBody({
               }
             />
           </FormField>
-          <FormField label="Parâmetro medido">
+          <FormField label="Parâmetro(s) medido(s)">
             <Multiselect
               selectedOptions={selectedOptions}
               onChange={({ detail }) =>
