@@ -17,8 +17,8 @@ interface DeletePointModalProps {
 }
 
 export function DeletePointModal(props: DeletePointModalProps) {
-  function deletePoint(id: string) {
-    axios.delete(`http://localhost:3333/points/${id}`);
+  async function deletePoint(id: string) {
+    await axios.delete(`http://localhost:3333/points/${id}`);
     props.setVisible(false);
     props.fetchCollectionData();
   }
