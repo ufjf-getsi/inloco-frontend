@@ -38,7 +38,7 @@ export function EquipmentTable(props: EquipmentTableProps) {
             Equipamento
           </th>
           <th className="text-xl" scope="col">
-            Parâmetro medido
+            Parâmetro(s) medido(s)
           </th>
         </tr>
       </thead>
