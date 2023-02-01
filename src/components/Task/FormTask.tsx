@@ -178,7 +178,7 @@ export function FormBody({
         errorIconAriaLabel="Erro"
       >
         <SpaceBetween size="l">
-          <FormField label="Nome">
+          <FormField label="Título">
             <Input
               value={inputValues.title}
               onChange={(event) =>
@@ -189,7 +189,7 @@ export function FormBody({
               }
             />
           </FormField>
-          <FormField label="Status">
+          <FormField label="Descrição">
             <Input
               value={inputValues.status}
               onChange={(event) =>

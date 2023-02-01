@@ -8,11 +8,9 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-import {
-  FormHeader,
-  FormConnection,
-} from "../../components/Project/FormProject";
+
 import { Navbar } from "../../components/Navbar";
+import { FormConnection, FormHeader } from "../../components/Task/FormTask";
 
 export function CreateTask() {
   const [alertVisible, setAlertVisible] = useState(false);
@@ -52,7 +50,7 @@ export function CreateTask() {
         <BreadcrumbGroup
           items={[
             { text: "Tarefas", href: "/tasks" },
-            { text: "Criar tarefa", href: "#" },
+            { text: "Criar tarefa", href: "# body.status" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"

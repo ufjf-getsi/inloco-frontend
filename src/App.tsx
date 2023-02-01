@@ -14,10 +14,13 @@ import { EquipmentList } from "./pages/Equipment/EquipmentList";
 import { CreateEquipment } from "./pages/Equipment/CreateEquipment";
 import { EditEquipment } from "./pages/Equipment/EditEquipment";
 import { ViewEquipment } from "./pages/Equipment/ViewEquipment";
-import { TaskPage } from "./pages/Task/TasksList";
+import { TasksList } from "./pages/Task/TasksList";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
+import { CreateTask } from "./pages/Task/CreateTask";
+import { EditTask } from "./pages/Task/EditTask";
+import { ViewTask } from "./pages/Task/ViewTask";
 
 function App() {
   return (
@@ -45,7 +48,7 @@ function App() {
         <Route path={"equipment/:id"} element={<ViewEquipment />} />
         <Route path={"equipment/:id/edit"} element={<EditEquipment />} />
 
-        <Route path={"/tasks"} element={<TaskPage />} />
+        <Route path={"/tasks"} element={<TasksList />} />
         <Route path={"/tasks/create"} element={<CreateTask />} />
         <Route path={"/tasks/:id"} element={<ViewTask />} />
         <Route path={"/tasks:id/edit"} element={<EditTask />} />

@@ -18,7 +18,7 @@ import {
 import { Navbar } from "../../components/Navbar";
 import { DeleteTaskModal } from "../../components/Task/DeleteTaskModal";
 
-export function ViewProject() {
+export function ViewTask() {
   let { id } = useParams();
 
   const [task, setTask] = useState<Task>({
