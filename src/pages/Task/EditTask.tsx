@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Project, Task } from "../../types";
+import { Task } from "../../types";
 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -12,11 +12,9 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-import {
-  FormHeader,
-  FormConnection,
-} from "../../components/Project/FormProject";
+
 import { Navbar } from "../../components/Navbar";
+import { FormConnection, FormHeader } from "../../components/Task/FormTask";
 
 export function EditTask() {
   let { id } = useParams();

@@ -26,7 +26,7 @@ function TaskRow(props: TaskRowProps) {
   );
 }
 
-export function ProjectsTable(props: TasksTableProps) {
+export function TasksTable(props: TasksTableProps) {
   const tableRowsList = props.tasks.map((task) => {
     return <TaskRow key={task.id} task={task} />;
   });

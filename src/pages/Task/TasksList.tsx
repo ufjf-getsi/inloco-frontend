@@ -12,8 +12,9 @@ import {
 } from "@cloudscape-design/components";
 import { useState } from "react";
 import { Navbar } from "../../components/Navbar";
+import { TasksTable } from "../../components/Task/TasksTable";
 
-export function TaskPage() {
+export function TasksList() {
   const [filteringText, setFilteringText] = useState("");
 
   return (
@@ -50,18 +51,18 @@ export function TaskPage() {
                 tabs={[
                   {
                     label: "Criadas",
-                    id: "first",
-                    content: "First tab content area",
+                    id: "created",
+                    content: "Tarefas criadas",
                   },
                   {
                     label: "Atribuídas",
-                    id: "second",
-                    content: "Second tab content area",
+                    id: "assigned",
+                    content: "Tarefas atribuídas",
                   },
                   {
                     label: "Menções",
-                    id: "third",
-                    content: "Third tab content area",
+                    id: "mentioned",
+                    content: "Tarefas em que você é mencionado(a)",
                   },
                 ]}
               />
