@@ -52,3 +52,10 @@ export interface Note {
   author: string;
   description: string;
 }
+
+export interface Task {
+  id: string;
+  title: string;
+  url: string;
+  status: string;
+}
