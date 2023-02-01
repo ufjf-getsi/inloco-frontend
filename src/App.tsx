@@ -9,14 +9,15 @@ import { EditCollection } from "./pages/Collection/EditCollection";
 import { ParametersList } from "./pages/Parameter/ParametersList";
 import { CreateParameter } from "./pages/Parameter/CreateParameter";
 import { EditParameter } from "./pages/Parameter/EditParameter";
-
-import "@cloudscape-design/global-styles/index.css";
-import "./styles/main.css";
 import { ViewParameter } from "./pages/Parameter/ViewParameter";
 import { EquipmentList } from "./pages/Equipment/EquipmentList";
 import { CreateEquipment } from "./pages/Equipment/CreateEquipment";
 import { EditEquipment } from "./pages/Equipment/EditEquipment";
 import { ViewEquipment } from "./pages/Equipment/ViewEquipment";
+import { TaskPage } from "./pages/Task/TaskPage";
+
+import "@cloudscape-design/global-styles/index.css";
+import "./styles/main.css";
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
         <Route path={"equipment/create"} element={<CreateEquipment />} />
         <Route path={"equipment/:id"} element={<ViewEquipment />} />
         <Route path={"equipment/:id/edit"} element={<EditEquipment />} />
+
+        <Route path={"/tasks"} element={<TaskPage />} />
       </Routes>
     </BrowserRouter>
   );
