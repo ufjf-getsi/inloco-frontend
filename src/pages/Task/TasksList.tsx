@@ -8,6 +8,7 @@ import {
   Button,
   TextFilter,
   TextContent,
+  Tabs,
 } from "@cloudscape-design/components";
 import { useState } from "react";
 import { Navbar } from "../../components/Navbar";
@@ -26,6 +27,15 @@ export function TaskPage() {
             <Header
               variant="h1"
               description="InLoco é seu sistema de gerenciamento de informações sobre Limnologia."
+              actions={
+                <Button
+                  iconName="add-plus"
+                  variant="primary"
+                  href="tasks/create"
+                >
+                  Nova tarefa
+                </Button>
+              }
             >
               InLoco
             </Header>
@@ -36,15 +46,25 @@ export function TaskPage() {
               <h1>Tarefas</h1>
             </TextContent>
             <SpaceBetween direction="horizontal" size="xs">
-              <TextFilter
-                filteringText={filteringText}
-                filteringPlaceholder="Find instances"
-                filteringAriaLabel="Filter instances"
-                onChange={({ detail }) =>
-                  setFilteringText(detail.filteringText)
-                }
+              <Tabs
+                tabs={[
+                  {
+                    label: "Criadas",
+                    id: "first",
+                    content: "First tab content area",
+                  },
+                  {
+                    label: "Atribuídas",
+                    id: "second",
+                    content: "Second tab content area",
+                  },
+                  {
+                    label: "Menções",
+                    id: "third",
+                    content: "Third tab content area",
+                  },
+                ]}
               />
-              <Button>Nova tarefa</Button>
             </SpaceBetween>
           </Container>
         </ContentLayout>
