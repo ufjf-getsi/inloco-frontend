@@ -24,6 +24,7 @@ export function Navbar(props: NavbarProps) {
         { type: "link", text: "Projetos", href: "/projects" },
         { type: "link", text: "Parâmetros", href: "/parameters" },
         { type: "link", text: "Equipamento", href: "/equipment" },
+        { type: "link", text: "Tarefas", href: "/tasks" },
         { type: "divider" },
       ]}
     />
