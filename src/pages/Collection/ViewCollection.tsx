@@ -29,12 +29,11 @@ export function ViewCollection() {
   const [collection, setCollection] = useState<Collection>({
     id: "",
     projectId: "",
-    title: "404",
+    title: "Carregando...",
     points: [],
   });
   const [pointModalVisible, setPointModalVisible] = useState(false);
   const [selectedPoint, setSelectedPoint] = useState(undefined);
-  const [editPoint, setEditPoint] = useState(false);
 
   const [deleteCollectionModalVisible, setDeleteCollectionModalVisible] =
     useState(false);
@@ -45,6 +44,7 @@ export function ViewCollection() {
   const [alertText, setAlertText] = useState(
     "O ponto foi adicionado com sucesso!"
   );
+
   function updateAlert(success: boolean, edit: boolean) {
     if (success) {
       setAlertType("success");
@@ -96,6 +96,7 @@ export function ViewCollection() {
                     iconName="add-plus"
                     variant="primary"
                     onClick={() => {
+                      setSelectedPoint(undefined);
                       setPointModalVisible(true);
                     }}
                   >
@@ -127,15 +128,12 @@ export function ViewCollection() {
                 points={collection.points}
                 setModalVisible={setPointModalVisible}
                 setSelectedPoint={setSelectedPoint}
-                setEditPoint={setEditPoint}
               />
             </TextContent>
           </Container>
           <FormPoint
             collectionId={collection.id}
             point={selectedPoint}
-            edit={editPoint}
-            setEditPoint={setEditPoint}
             modalVisible={pointModalVisible}
             setModalVisible={setPointModalVisible}
             setAlertVisible={setAlertVisible}

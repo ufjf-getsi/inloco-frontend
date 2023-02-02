@@ -4,7 +4,6 @@ interface PointsTableProps {
   points: Array<Point>;
   setModalVisible: Function;
   setSelectedPoint: Function;
-  setEditPoint: Function;
 }
 
 interface PointRowProps extends PointsTableProps {
@@ -16,7 +15,6 @@ function PointRow(props: PointRowProps) {
     <tr
       onClick={() => {
         props.setSelectedPoint(props.point);
-        props.setEditPoint(true);
         props.setModalVisible(true);
       }}
     >
