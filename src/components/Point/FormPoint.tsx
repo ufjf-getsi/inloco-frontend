@@ -13,6 +13,7 @@ import {
   Multiselect,
   SelectProps,
 } from "@cloudscape-design/components";
+import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
 interface FormProps {
   point?: Point;
@@ -45,6 +46,22 @@ interface Fields {
   coordinates: string;
   selectedOptions: SelectProps.Options;
 }
+
+// // Create Measurements with parameters' IDs
+// async function createMeasurement(pointId: string, parameterId: string) {
+//   try {
+//     await axios.post(`http://localhost:3333/measurements`, {
+//       pendency: true,
+//       result: null,
+//       pointId: pointId,
+//       parameterId: parameterId,
+//     });
+//     return true;
+//   } catch (error) {
+//     console.log(error);
+//     return false;
+//   }
+// }
 
 export function FormConnection({ ...props }: FormConnectionProps) {
   const [inputValues, setInputValues] = useState<Fields>({
@@ -105,7 +122,13 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.name || !props.inputValues.coordinates) {
+    if (
+      !(
+        props.inputValues.name &&
+        props.inputValues.coordinates &&
+        props.inputValues.selectedOptions.length > 0
+      )
+    ) {
       return;
     }
 
@@ -114,6 +137,14 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
         collectionId: props.collectionId,
         name: props.inputValues.name,
         coordinates: props.inputValues.coordinates,
+        measurements: props.inputValues.selectedOptions.map(
+          (selectedOption: OptionDefinition) => {
+            return {
+              pendency: true,
+              parameterId: selectedOption.value,
+            };
+          }
+        ),
       });
       props.fetchCollectionData();
       props.updateAlert(true, false);
@@ -134,16 +165,28 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.name || !props.inputValues.coordinates) {
+    if (
+      !(
+        props.inputValues.name &&
+        props.inputValues.coordinates &&
+        props.inputValues.selectedOptions.length > 0
+      )
+    ) {
       return;
     }
-
-    console.log(props.point);
 
     try {
       await axios.patch(`http://localhost:3333/points/${props.point?.id}`, {
         name: props.inputValues.name,
         coordinates: props.inputValues.coordinates,
+        measurements: props.inputValues.selectedOptions.map(
+          (selectedOption: OptionDefinition) => {
+            return {
+              pendency: true,
+              parameterId: selectedOption.value,
+            };
+          }
+        ),
       });
       props.fetchCollectionData();
       props.updateAlert(true, true);
