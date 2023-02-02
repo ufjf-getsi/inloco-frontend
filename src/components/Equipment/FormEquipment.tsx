@@ -167,6 +167,7 @@ export function FormBody({
   inputValues,
   setInputValues,
 }: FormBodyProps) {
+
   interface Option {
     value: string;
     label: string;
@@ -227,7 +228,7 @@ export function FormBody({
               loadingText="Carregando parâmetros"
               placeholder="Selecione os parâmetros"
               selectedAriaLabel="Selecionado"
-              statusType="loading"
+              statusType={parameters ? parameters.length > 0 ? "finished" : "loading" : "error"}
             />
           </FormField>
         </SpaceBetween>

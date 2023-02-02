@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Point } from "../../types";
+import { Point, Parameter } from "../../types";
 
 import { FormEvent, useEffect, useState } from "react";
 
@@ -11,6 +11,7 @@ import {
   Input,
   Modal,
   Multiselect,
+  SelectProps,
 } from "@cloudscape-design/components";
 
 interface FormProps {
@@ -30,7 +31,7 @@ interface FormConnectionProps extends FormProps {
 interface FormConnectionSpecificProps extends FormConnectionProps {
   inputValues: Fields;
   setInputValues: Function;
-  clearInputValues: Function;
+  resetInputValues: Function;
   closeModal: Function;
 }
 
@@ -42,42 +43,47 @@ interface FormModalProps extends FormConnectionSpecificProps {
 interface Fields {
   name: string;
   coordinates: string;
+  selectedOptions: SelectProps.Options;
 }
 
 export function FormConnection({ ...props }: FormConnectionProps) {
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<Fields>({
     name: "",
     coordinates: "",
+    selectedOptions: [],
   });
 
-  function clearInputValues() {
-    setInputValues({ name: "", coordinates: "" });
+  function resetInputValues() {
+    if (props.point) {
+      setInputValues({
+        name: props.point.name,
+        coordinates: props.point.coordinates ?? "",
+        selectedOptions: props.point.measurements.map((measurement) => {
+          return {
+            value: measurement.parameter.id,
+            label: measurement.parameter.name,
+          };
+        }),
+      });
+    } else {
+      setInputValues({ name: "", coordinates: "", selectedOptions: [] });
+    }
   }
+
+  useEffect(() => {
+    resetInputValues();
+  }, [props.point]);
 
   function closeModal() {
     props.setModalVisible(false);
   }
-
-  // const [selectedOptions, setSelectedOptions] = useState([]);
-  // const [parameters, setParameters] = useState([]);
-
-  useEffect(() => {
-    if (props.point)
-      setInputValues({
-        name: props.point.name,
-        coordinates: props.point.coordinates ?? "",
-      });
-      else{
-        clearInputValues();
-      }
-  }, [props.point]);
 
   if (props.point) {
     return (
       <FormConnectionEdit
         inputValues={inputValues}
         setInputValues={setInputValues}
-        clearInputValues={clearInputValues}
+        resetInputValues={resetInputValues}
         closeModal={closeModal}
         {...props}
       />
@@ -87,7 +93,7 @@ export function FormConnection({ ...props }: FormConnectionProps) {
       <FormConnectionCreate
         inputValues={inputValues}
         setInputValues={setInputValues}
-        clearInputValues={clearInputValues}
+        resetInputValues={resetInputValues}
         closeModal={closeModal}
         {...props}
       />
@@ -113,7 +119,7 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
       props.updateAlert(true, false);
       props.setAlertVisible(true);
       props.closeModal();
-      props.clearInputValues();
+      props.resetInputValues();
     } catch (error) {
       console.log(error);
       props.updateAlert(false, false);
@@ -132,7 +138,7 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
       return;
     }
 
-console.log(props.point);
+    console.log(props.point);
 
     try {
       await axios.patch(`http://localhost:3333/points/${props.point?.id}`, {
@@ -156,7 +162,10 @@ console.log(props.point);
 export function FormModal(props: FormModalProps) {
   return (
     <Modal
-      onDismiss={() => props.closeModal()}
+      onDismiss={() => {
+        props.closeModal();
+        props.resetInputValues();
+      }}
       visible={props.modalVisible}
       closeAriaLabel="Fechar formulário de criação de ponto."
       header={`${props.edit ? `Editar` : `Criar`} ponto`}
@@ -175,11 +184,22 @@ function FormBody(
     closeModal,
     setDeleteModalVisible,
     setModalVisible,
-    clearInputValues,
+    resetInputValues,
     edit,
   }: FormModalProps,
   { errorText = null }
 ) {
+  const [parameters, setParameters] = useState<SelectProps.Options>([]);
+  useEffect(() => {
+    axios
+      .get<Parameter[]>("http://localhost:3333/parameters")
+      .then((response) => {
+        setParameters(
+          response.data.map((item) => ({ value: item.id, label: item.name }))
+        );
+      });
+  }, []);
+
   return (
     <form onSubmit={(event) => handleSubmit(event)}>
       <Form
@@ -190,6 +210,7 @@ function FormBody(
               variant="link"
               onClick={() => {
                 closeModal();
+                resetInputValues();
               }}
             >
               Cancelar
@@ -201,7 +222,7 @@ function FormBody(
                 onClick={() => {
                   setModalVisible(false);
                   setDeleteModalVisible(true);
-                  clearInputValues();
+                  resetInputValues();
                 }}
               >
                 Deletar
@@ -236,20 +257,29 @@ function FormBody(
               }
             />
           </FormField>
-          {/* <FormField label="Parâmetros">
+          <FormField label="Parâmetros">
             <Multiselect
-              selectedOptions={selectedOptions}
+              selectedOptions={inputValues.selectedOptions}
               onChange={({ detail }) =>
-                setSelectedOptions(detail.selectedOptions)
+                setInputValues((prevState: Fields) => ({
+                  ...prevState,
+                  selectedOptions: detail.selectedOptions,
+                }))
               }
               deselectAriaLabel={(e) => `Remove ${e.label}`}
               options={parameters}
               loadingText="Carregando parâmetros"
               placeholder="Selecione os parâmetros"
               selectedAriaLabel="Selecionado"
-              statusType="loading"
+              statusType={
+                parameters
+                  ? parameters.length > 0
+                    ? "finished"
+                    : "loading"
+                  : "error"
+              }
             />
-          </FormField> */}
+          </FormField>
         </SpaceBetween>
       </Form>
     </form>
