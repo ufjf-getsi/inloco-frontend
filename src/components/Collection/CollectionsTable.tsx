@@ -14,7 +14,7 @@ interface CollectionRowProps {
 function CollectionRow(props: CollectionRowProps) {
   const navigate = useNavigate();
   const handleClick = useCallback(
-    (id: string) => navigate(`/collections/${id}`, { replace: true }),
+    (id: string) => navigate(`/collections/${id}`),
     [navigate]
   );
 

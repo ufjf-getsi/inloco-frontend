@@ -14,31 +14,29 @@ import {
 } from "@cloudscape-design/components";
 
 interface FormProps {
-  edit: boolean;
+  point?: Point;
   modalVisible: boolean;
 }
 
 interface FormConnectionProps extends FormProps {
-  point?: Point;
   collectionId: string;
-  setAlertVisible: Function;
-  updateAlert: Function;
-  setModalVisible: Function;
   fetchCollectionData: Function;
-  setEditPoint: Function;
+  updateAlert: Function;
+  setAlertVisible: Function;
+  setModalVisible: Function;
   setDeleteModalVisible: Function;
 }
 
 interface FormConnectionSpecificProps extends FormConnectionProps {
-  pointId?: string;
   inputValues: Fields;
   setInputValues: Function;
   clearInputValues: Function;
-  clearModal: Function;
+  closeModal: Function;
 }
 
 interface FormModalProps extends FormConnectionSpecificProps {
   handleSubmit: Function;
+  edit: boolean;
 }
 
 interface Fields {
@@ -46,43 +44,41 @@ interface Fields {
   coordinates: string;
 }
 
-FormConnection.defaultProps = {
-  edit: false,
-};
-
-export function FormConnection({ point, ...props }: FormConnectionProps) {
+export function FormConnection({ ...props }: FormConnectionProps) {
   const [inputValues, setInputValues] = useState({
     name: "",
     coordinates: "",
   });
+
   function clearInputValues() {
     setInputValues({ name: "", coordinates: "" });
   }
-  function clearModal() {
+
+  function closeModal() {
     props.setModalVisible(false);
-    props.setEditPoint(false);
-    clearInputValues();
   }
 
   // const [selectedOptions, setSelectedOptions] = useState([]);
   // const [parameters, setParameters] = useState([]);
 
   useEffect(() => {
-    if (point)
+    if (props.point)
       setInputValues({
-        name: point.name,
-        coordinates: point.coordinates ?? "",
+        name: props.point.name,
+        coordinates: props.point.coordinates ?? "",
       });
-  }, [point]);
+      else{
+        clearInputValues();
+      }
+  }, [props.point]);
 
-  if (props.edit && point) {
+  if (props.point) {
     return (
       <FormConnectionEdit
-        pointId={point.id}
         inputValues={inputValues}
         setInputValues={setInputValues}
         clearInputValues={clearInputValues}
-        clearModal={clearModal}
+        closeModal={closeModal}
         {...props}
       />
     );
@@ -92,7 +88,7 @@ export function FormConnection({ point, ...props }: FormConnectionProps) {
         inputValues={inputValues}
         setInputValues={setInputValues}
         clearInputValues={clearInputValues}
-        clearModal={clearModal}
+        closeModal={closeModal}
         {...props}
       />
     );
@@ -116,7 +112,8 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
       props.fetchCollectionData();
       props.updateAlert(true, false);
       props.setAlertVisible(true);
-      props.clearModal();
+      props.closeModal();
+      props.clearInputValues();
     } catch (error) {
       console.log(error);
       props.updateAlert(false, false);
@@ -124,7 +121,7 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
     }
   }
 
-  return <FormModal handleSubmit={handleSubmit} {...props} />;
+  return <FormModal handleSubmit={handleSubmit} edit={false} {...props} />;
 }
 
 export function FormConnectionEdit(props: FormConnectionSpecificProps) {
@@ -135,15 +132,17 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
       return;
     }
 
+console.log(props.point);
+
     try {
-      await axios.patch(`http://localhost:3333/points/${props.pointId}`, {
+      await axios.patch(`http://localhost:3333/points/${props.point?.id}`, {
         name: props.inputValues.name,
         coordinates: props.inputValues.coordinates,
       });
       props.fetchCollectionData();
       props.updateAlert(true, true);
       props.setAlertVisible(true);
-      props.clearModal();
+      props.closeModal();
     } catch (error) {
       console.log(error);
       props.updateAlert(false, true);
@@ -151,20 +150,33 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
     }
   }
 
-  return <FormModal handleSubmit={handleSubmit} {...props} />;
+  return <FormModal handleSubmit={handleSubmit} edit={true} {...props} />;
 }
 
-export function FormBody(
+export function FormModal(props: FormModalProps) {
+  return (
+    <Modal
+      onDismiss={() => props.closeModal()}
+      visible={props.modalVisible}
+      closeAriaLabel="Fechar formulário de criação de ponto."
+      header={`${props.edit ? `Editar` : `Criar`} ponto`}
+      size={`medium`}
+    >
+      <FormBody {...props} />
+    </Modal>
+  );
+}
+
+function FormBody(
   {
-    edit,
     handleSubmit,
     inputValues,
     setInputValues,
-    clearModal,
+    closeModal,
     setDeleteModalVisible,
     setModalVisible,
-    setEditPoint,
     clearInputValues,
+    edit,
   }: FormModalProps,
   { errorText = null }
 ) {
@@ -177,7 +189,7 @@ export function FormBody(
               formAction="none"
               variant="link"
               onClick={() => {
-                clearModal();
+                closeModal();
               }}
             >
               Cancelar
@@ -189,7 +201,6 @@ export function FormBody(
                 onClick={() => {
                   setModalVisible(false);
                   setDeleteModalVisible(true);
-                  setEditPoint(false);
                   clearInputValues();
                 }}
               >
@@ -242,19 +253,5 @@ export function FormBody(
         </SpaceBetween>
       </Form>
     </form>
-  );
-}
-
-export function FormModal(props: FormModalProps) {
-  return (
-    <Modal
-      onDismiss={() => props.clearModal()}
-      visible={props.modalVisible}
-      closeAriaLabel="Fechar formulário de criação de ponto."
-      header={`${props.edit ? `Editar` : `Criar`} ponto`}
-      size={`medium`}
-    >
-      <FormBody {...props} />
-    </Modal>
   );
 }
