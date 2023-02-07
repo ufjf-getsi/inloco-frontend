@@ -47,22 +47,6 @@ interface Fields {
   selectedOptions: SelectProps.Options;
 }
 
-// // Create Measurements with parameters' IDs
-// async function createMeasurement(pointId: string, parameterId: string) {
-//   try {
-//     await axios.post(`http://localhost:3333/measurements`, {
-//       pendency: true,
-//       result: null,
-//       pointId: pointId,
-//       parameterId: parameterId,
-//     });
-//     return true;
-//   } catch (error) {
-//     console.log(error);
-//     return false;
-//   }
-// }
-
 export function FormConnection({ ...props }: FormConnectionProps) {
   const [inputValues, setInputValues] = useState<Fields>({
     name: "",

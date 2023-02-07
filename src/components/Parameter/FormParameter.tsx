@@ -37,6 +37,7 @@ interface FormBodyProps extends FormConnectionSpecificProps {
 
 interface Fields {
   name: string;
+  unit: string;
   dataType: string;
 }
 
@@ -62,8 +63,9 @@ export function FormHeader({ edit }: FormProps) {
 export function FormConnection({ parameter, ...props }: FormConnectionProps) {
   const navigate = useNavigate();
 
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<Fields>({
     name: "",
+    unit: "",
     dataType: "",
   });
 
@@ -71,6 +73,7 @@ export function FormConnection({ parameter, ...props }: FormConnectionProps) {
     if (parameter)
       setInputValues({
         name: parameter.name,
+        unit: parameter.unit,
         dataType: parameter.dataType,
       });
   }, [parameter]);
@@ -101,13 +104,20 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.name || !props.inputValues.dataType) {
+    if (
+      !(
+        props.inputValues.name &&
+        props.inputValues.unit &&
+        props.inputValues.dataType
+      )
+    ) {
       return;
     }
 
     try {
       await axios.post("http://localhost:3333/parameters", {
         name: props.inputValues.name,
+        unit: props.inputValues.unit,
         dataType: props.inputValues.dataType,
       });
 
@@ -131,7 +141,13 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.name || !props.inputValues.dataType) {
+    if (
+      !(
+        props.inputValues.name &&
+        props.inputValues.unit &&
+        props.inputValues.dataType
+      )
+    ) {
       return;
     }
 
@@ -140,6 +156,7 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
         `http://localhost:3333/parameters/${props.parameterId}`,
         {
           name: props.inputValues.name,
+          unit: props.inputValues.unit,
           dataType: props.inputValues.dataType,
         }
       );
@@ -192,6 +209,17 @@ export function FormBody({
                 setInputValues((prevState: Fields) => ({
                   ...prevState,
                   name: event.detail.value,
+                }))
+              }
+            />
+          </FormField>
+          <FormField label="Unidade">
+            <Input
+              value={inputValues.unit}
+              onChange={(event) =>
+                setInputValues((prevState: Fields) => ({
+                  ...prevState,
+                  unit: event.detail.value,
                 }))
               }
             />
