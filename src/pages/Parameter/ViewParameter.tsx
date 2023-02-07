@@ -15,6 +15,7 @@ import {
 
 import { DeleteParameterModal } from "../../components/Parameter/DeleteParameterModal";
 import { Navbar } from "../../components/Navbar";
+import { formatDataType } from "../../components/Parameter/FormParameter";
 
 export function ViewParameter() {
   let { id } = useParams();
@@ -22,7 +23,7 @@ export function ViewParameter() {
   const [parameter, setParameter] = useState<Parameter>({
     id: "",
     name: "Carregando...",
-    symbol: "",
+    unit: "",
     dataType: "",
     equipmentList: [],
   });
@@ -69,21 +70,18 @@ export function ViewParameter() {
                 </SpaceBetween>
               }
             >
-              {parameter.name}
+              {parameter.name + ` (${parameter.unit})`}
+              <span className="ml-4 font-light">
+                {`_ ` + formatDataType(parameter.dataType)}
+              </span>
             </Header>
           }
         >
-          {/* <Container>
-            <TextContent>
-              <h1>Coletas</h1>
-              <CollectionsTable collections={parameter.collections} />
-            </TextContent>
-          </Container> */}
           <DeleteParameterModal
             parameterId={parameter.id}
             visible={visible}
             setVisible={setVisible}
-            parameterTitle={parameter.name}
+            parameterName={parameter.name}
           />
         </ContentLayout>
       }

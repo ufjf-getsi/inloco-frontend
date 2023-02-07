@@ -28,7 +28,8 @@ export function EditParameter() {
   );
   const [parameter, setParameter] = useState<Parameter>({
     id: "",
-    name: "404",
+    name: "Carregando...",
+    unit: "",
     dataType: "",
     equipmentList: [],
   });

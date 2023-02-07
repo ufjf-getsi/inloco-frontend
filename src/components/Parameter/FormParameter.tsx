@@ -10,6 +10,8 @@ import {
   Button,
   FormField,
   Input,
+  Select,
+  SelectProps,
 } from "@cloudscape-design/components";
 import { useNavigate } from "react-router-dom";
 
@@ -35,10 +37,15 @@ interface FormBodyProps extends FormConnectionSpecificProps {
   handleSubmit: Function;
 }
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 interface Fields {
   name: string;
   unit: string;
-  dataType: string;
+  dataType: Option;
 }
 
 FormHeader.defaultProps = {
@@ -60,13 +67,36 @@ export function FormHeader({ edit }: FormProps) {
   );
 }
 
+const options: Array<Option> = [
+  {
+    label: "Real",
+    value: "real",
+  },
+  {
+    label: "Inteiro",
+    value: "integer",
+  },
+  {
+    label: "Texto",
+    value: "text",
+  },
+];
+
+export function formatDataType(dataType: string): string {
+  return (
+    options.find((option) => {
+      return option.value === dataType;
+    })?.label ?? dataType
+  );
+}
+
 export function FormConnection({ parameter, ...props }: FormConnectionProps) {
   const navigate = useNavigate();
 
   const [inputValues, setInputValues] = useState<Fields>({
     name: "",
     unit: "",
-    dataType: "",
+    dataType: options[0],
   });
 
   useEffect(() => {
@@ -74,7 +104,10 @@ export function FormConnection({ parameter, ...props }: FormConnectionProps) {
       setInputValues({
         name: parameter.name,
         unit: parameter.unit,
-        dataType: parameter.dataType,
+        dataType: {
+          label: formatDataType(parameter.dataType),
+          value: parameter.dataType,
+        },
       });
   }, [parameter]);
 
@@ -100,25 +133,19 @@ export function FormConnection({ parameter, ...props }: FormConnectionProps) {
   }
 }
 
-export function FormConnectionCreate(props: FormConnectionSpecificProps) {
+function FormConnectionCreate(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (
-      !(
-        props.inputValues.name &&
-        props.inputValues.unit &&
-        props.inputValues.dataType
-      )
-    ) {
+    if (!(props.inputValues.name && props.inputValues.dataType.value)) {
       return;
     }
 
     try {
       await axios.post("http://localhost:3333/parameters", {
         name: props.inputValues.name,
-        unit: props.inputValues.unit,
-        dataType: props.inputValues.dataType,
+        unit: props.inputValues.unit === "" ? "N/A" : props.inputValues.unit,
+        dataType: props.inputValues.dataType.value,
       });
 
       props.setAlertVisible(true);
@@ -137,17 +164,11 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
   return <FormBody handleSubmit={handleSubmit} {...props} />;
 }
 
-export function FormConnectionEdit(props: FormConnectionSpecificProps) {
+function FormConnectionEdit(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (
-      !(
-        props.inputValues.name &&
-        props.inputValues.unit &&
-        props.inputValues.dataType
-      )
-    ) {
+    if (!(props.inputValues.name && props.inputValues.dataType.value)) {
       return;
     }
 
@@ -156,8 +177,8 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
         `http://localhost:3333/parameters/${props.parameterId}`,
         {
           name: props.inputValues.name,
-          unit: props.inputValues.unit,
-          dataType: props.inputValues.dataType,
+          unit: props.inputValues.unit === "" ? "N/A" : props.inputValues.unit,
+          dataType: props.inputValues.dataType.value,
         }
       );
 
@@ -176,7 +197,7 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
   return <FormBody handleSubmit={handleSubmit} {...props} />;
 }
 
-export function FormBody({
+function FormBody({
   edit,
   handleSubmit,
   inputValues,
@@ -205,6 +226,7 @@ export function FormBody({
           <FormField label="Parâmetro">
             <Input
               value={inputValues.name}
+              placeholder={`Nome do parâmetro`}
               onChange={(event) =>
                 setInputValues((prevState: Fields) => ({
                   ...prevState,
@@ -216,6 +238,7 @@ export function FormBody({
           <FormField label="Unidade">
             <Input
               value={inputValues.unit}
+              placeholder={`N/A`}
               onChange={(event) =>
                 setInputValues((prevState: Fields) => ({
                   ...prevState,
@@ -225,14 +248,16 @@ export function FormBody({
             />
           </FormField>
           <FormField label="Medida">
-            <Input
-              value={inputValues.dataType}
-              onChange={(event) =>
+            <Select
+              selectedOption={inputValues.dataType}
+              onChange={({ detail }) =>
                 setInputValues((prevState: Fields) => ({
                   ...prevState,
-                  dataType: event.detail.value,
+                  dataType: detail.selectedOption,
                 }))
               }
+              options={options}
+              selectedAriaLabel="Selected"
             />
           </FormField>
         </SpaceBetween>
