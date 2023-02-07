@@ -14,7 +14,7 @@ interface ParameterRowProps {
 function ParameterRow(props: ParameterRowProps) {
   const navigate = useNavigate();
   const handleClick = useCallback(
-    (id: string) => navigate("/parameters/" + id, { replace: true }),
+    (id: string) => navigate("/parameters/" + id),
     [navigate]
   );
 

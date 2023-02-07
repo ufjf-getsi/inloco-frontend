@@ -182,7 +182,6 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
         measurements: props.inputValues.selectedOptions.map(
           (selectedOption: OptionDefinition) => {
             return {
-              pendency: true,
               parameterId: selectedOption.value,
             };
           }

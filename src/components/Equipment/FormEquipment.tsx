@@ -115,7 +115,7 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
 
       props.setAlertVisible(true);
 
-      setTimeout(() => props.navigate("/equipment", { replace: true }), 1000);
+      setTimeout(() => props.navigate("/equipment"), 1000);
     } catch (error) {
       console.log(error);
       props.setAlertType("error");
@@ -148,7 +148,7 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
 
       props.setAlertVisible(true);
 
-      setTimeout(() => props.navigate("./..", { replace: true }), 1000);
+      setTimeout(() => props.navigate("./.."), 1000);
     } catch (error) {
       console.log(error);
       props.setAlertType("error");
@@ -167,7 +167,6 @@ export function FormBody({
   inputValues,
   setInputValues,
 }: FormBodyProps) {
-
   interface Option {
     value: string;
     label: string;
@@ -228,7 +227,13 @@ export function FormBody({
               loadingText="Carregando parâmetros"
               placeholder="Selecione os parâmetros"
               selectedAriaLabel="Selecionado"
-              statusType={parameters ? parameters.length > 0 ? "finished" : "loading" : "error"}
+              statusType={
+                parameters
+                  ? parameters.length > 0
+                    ? "finished"
+                    : "loading"
+                  : "error"
+              }
             />
           </FormField>
         </SpaceBetween>

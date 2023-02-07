@@ -14,7 +14,7 @@ interface EquipmentRowProps {
 function EquipmentRow(props: EquipmentRowProps) {
   const navigate = useNavigate();
   const handleClick = useCallback(
-    (id: string) => navigate("/equipment/" + id, { replace: true }),
+    (id: string) => navigate("/equipment/" + id),
     [navigate]
   );
 
