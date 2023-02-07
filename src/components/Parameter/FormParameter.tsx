@@ -113,7 +113,7 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
 
       props.setAlertVisible(true);
 
-      setTimeout(() => props.navigate("/parameters", { replace: true }), 1000);
+      setTimeout(() => props.navigate("/parameters"), 1000);
     } catch (error) {
       console.log(error);
       props.setAlertType("error");
@@ -146,7 +146,7 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
 
       props.setAlertVisible(true);
 
-      setTimeout(() => props.navigate("./..", { replace: true }), 1000);
+      setTimeout(() => props.navigate("./.."), 1000);
     } catch (error) {
       console.log(error);
       props.setAlertType("error");

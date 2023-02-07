@@ -14,7 +14,7 @@ interface ProjectRowProps {
 function ProjectRow(props: ProjectRowProps) {
   const navigate = useNavigate();
   const handleClick = useCallback(
-    (id: string) => navigate("/projects/" + id, { replace: true }),
+    (id: string) => navigate("/projects/" + id),
     [navigate]
   );
 

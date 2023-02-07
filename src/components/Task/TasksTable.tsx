@@ -13,7 +13,7 @@ interface TaskRowProps {
 function TaskRow(props: TaskRowProps) {
   const navigate = useNavigate();
   const handleClick = useCallback(
-    (id: string) => navigate("/tasks/" + id, { replace: true }),
+    (id: string) => navigate("/tasks/" + id),
     [navigate]
   );
 
