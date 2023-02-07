@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import {
   AppLayout,
   ContentLayout,
-  Container,
   BreadcrumbGroup,
   Header,
   SpaceBetween,
@@ -15,7 +14,6 @@ import {
 } from "@cloudscape-design/components";
 
 import { DeleteParameterModal } from "../../components/Parameter/DeleteParameterModal";
-// import { CollectionsTable } from "../../components/Collection/CollectionsTable";
 import { Navbar } from "../../components/Navbar";
 
 export function ViewParameter() {
@@ -23,7 +21,8 @@ export function ViewParameter() {
 
   const [parameter, setParameter] = useState<Parameter>({
     id: "",
-    name: "404",
+    name: "Carregando...",
+    symbol: "",
     dataType: "",
     equipmentList: [],
   });

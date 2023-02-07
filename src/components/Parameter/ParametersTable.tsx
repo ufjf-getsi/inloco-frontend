@@ -21,7 +21,7 @@ function ParameterRow(props: ParameterRowProps) {
   return (
     <tr onClick={() => handleClick(props.parameter.id)}>
       <td className="font-bold">{props.parameter.name}</td>
-      <td>{props.parameter.dataType}</td>
+      <td>{props.parameter.unit}</td>
     </tr>
   );
 }
@@ -39,7 +39,7 @@ export function ParametersTable(props: ParametersTableProps) {
             Parâmetro
           </th>
           <th className="text-xl" scope="col">
-            Medida
+            Unidade
           </th>
         </tr>
       </thead>

@@ -35,6 +35,7 @@ export interface Measurement {
 export interface Parameter {
   id: string;
   name: string;
+  unit: string;
   dataType: string;
   equipmentList: Equipment[];
 }
