@@ -67,7 +67,7 @@ export function ViewTask() {
         >
           <Container>
             <TextContent>
-              <h1>Tarefa</h1>
+              <h2>(Link para tarefa)</h2>
             </TextContent>
           </Container>
           <DeleteTaskModal

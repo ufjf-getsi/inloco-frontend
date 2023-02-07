@@ -10,11 +10,25 @@ import {
   TextContent,
   Tabs,
 } from "@cloudscape-design/components";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Navbar } from "../../components/Navbar";
 import { TasksTable } from "../../components/Task/TasksTable";
+import { Task } from "../../types";
 
 export function TasksList() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTableData();
+  }, []);
+
+  function fetchTableData() {
+    axios("http://localhost:3333/tasks").then((response) => {
+      setTasks(response.data);
+    });
+  }
+
   const [filteringText, setFilteringText] = useState("");
 
   return (
@@ -52,17 +66,17 @@ export function TasksList() {
                   {
                     label: "Criadas",
                     id: "created",
-                    content: "Tarefas criadas",
+                    content: <TasksTable tasks={tasks} />,
                   },
                   {
                     label: "Atribuídas",
                     id: "assigned",
-                    content: "Tarefas atribuídas",
+                    content: <TasksTable tasks={tasks} />,
                   },
                   {
                     label: "Menções",
                     id: "mentioned",
-                    content: "Tarefas em que você é mencionado(a)",
+                    content: <TasksTable tasks={tasks} />,
                   },
                 ]}
               />
