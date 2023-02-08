@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import {
   AppLayout,
   ContentLayout,
-  Container,
   BreadcrumbGroup,
   Header,
   SpaceBetween,
@@ -15,7 +14,6 @@ import {
 } from "@cloudscape-design/components";
 
 import { DeleteEquipmentModal } from "../../components/Equipment/DeleteEquipmentModal";
-// import { CollectionsTable } from "../../components/Collection/CollectionsTable";
 import { Navbar } from "../../components/Navbar";
 
 export function ViewEquipment() {
@@ -23,7 +21,7 @@ export function ViewEquipment() {
 
   const [equipment, setEquipment] = useState<Equipment>({
     id: "",
-    name: "404",
+    name: "Carregando...",
   });
   const [visible, setVisible] = useState(false);
 
@@ -49,13 +47,13 @@ export function ViewEquipment() {
               variant="h2"
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                  <Button
+                  {/* <Button
                     iconName="add-plus"
                     variant="primary"
                     href={`/equipment/${equipment.id}/collections`}
                   >
                     Adicionar equipamento
-                  </Button>
+                  </Button> */}
                   <Button
                     iconName="edit"
                     href={`/equipment/${equipment.id}/edit`}
@@ -72,12 +70,6 @@ export function ViewEquipment() {
             </Header>
           }
         >
-          {/* <Container>
-            <TextContent>
-              <h1>Coletas</h1>
-              <CollectionsTable collections={parameter.collections} />
-            </TextContent>
-          </Container> */}
           <DeleteEquipmentModal
             equipmentId={equipment.id}
             visible={visible}

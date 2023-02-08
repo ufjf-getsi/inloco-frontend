@@ -16,7 +16,7 @@ import { EquipmentTable } from "../../components/Equipment/EquipmentTable";
 import { Navbar } from "../../components/Navbar";
 
 export function EquipmentList() {
-  const [equipment, setEquipment] = useState<Equipment[]>([]);
+  const [equipmentArray, setEquipmentArray] = useState<Equipment[]>([]);
 
   useEffect(() => {
     fetchTableData();
@@ -24,7 +24,7 @@ export function EquipmentList() {
 
   function fetchTableData() {
     axios("http://localhost:3333/equipment").then((response) => {
-      setEquipment(response.data);
+      setEquipmentArray(response.data);
     });
   }
 
@@ -56,7 +56,7 @@ export function EquipmentList() {
           }
         >
           <Container>
-            <EquipmentTable equipment={equipment} />
+            <EquipmentTable equipmentArray={equipmentArray} />
           </Container>
         </ContentLayout>
       }

@@ -28,8 +28,20 @@ export function EditEquipment() {
   );
   const [equipment, setEquipment] = useState<Equipment>({
     id: "",
-    name: "404",
+    name: "Carregando...",
   });
+
+  function updateAlert(success: boolean) {
+    if (success) {
+      setAlertType("success");
+      setAlertText(`O equipamento foi adicionado com sucesso!`);
+    } else {
+      setAlertType("error");
+      setAlertText(
+        `Não foi possível adicionar o equipamento! Tente novamente.`
+      );
+    }
+  }
 
   useEffect(() => {
     fetchEquipmentData();
@@ -53,8 +65,7 @@ export function EditEquipment() {
               edit={true}
               equipment={equipment}
               setAlertVisible={setAlertVisible}
-              setAlertType={setAlertType}
-              setAlertText={setAlertText}
+              updateAlert={updateAlert}
             />
           </Container>
           <Alert
