@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface EquipmentTableProps {
-  equipment: Array<Equipment>;
+  equipmentArray: Array<Equipment>;
 }
 
 interface EquipmentRowProps {
@@ -26,7 +26,7 @@ function EquipmentRow(props: EquipmentRowProps) {
 }
 
 export function EquipmentTable(props: EquipmentTableProps) {
-  const tableRowsList = props.equipment.map((equipment) => {
+  const tableRowsList = props.equipmentArray.map((equipment) => {
     return <EquipmentRow key={equipment.id} equipment={equipment} />;
   });
 
@@ -36,9 +36,6 @@ export function EquipmentTable(props: EquipmentTableProps) {
         <tr>
           <th className="text-xl" scope="col">
             Equipamento
-          </th>
-          <th className="text-xl" scope="col">
-            Parâmetro(s) medido(s)
           </th>
         </tr>
       </thead>

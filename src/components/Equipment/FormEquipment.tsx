@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Equipment, Parameter } from "../../types";
+import { Equipment } from "../../types";
 
 import { FormEvent, useEffect, useState } from "react";
 
@@ -10,8 +10,8 @@ import {
   Button,
   FormField,
   Input,
-  Multiselect,
-  SelectProps,
+  // Multiselect,
+  // SelectProps,
 } from "@cloudscape-design/components";
 import { useNavigate } from "react-router-dom";
 
@@ -22,8 +22,7 @@ interface FormProps {
 interface FormConnectionProps extends FormProps {
   equipment?: Equipment;
   setAlertVisible: Function;
-  setAlertType: Function;
-  setAlertText: Function;
+  updateAlert: Function;
 }
 
 interface FormConnectionSpecificProps extends FormConnectionProps {
@@ -39,7 +38,7 @@ interface FormBodyProps extends FormConnectionSpecificProps {
 
 interface Fields {
   name: string;
-  id: string;
+  // selectedOptions: SelectProps.Options;
 }
 
 FormHeader.defaultProps = {
@@ -64,16 +63,16 @@ export function FormHeader({ edit }: FormProps) {
 export function FormConnection({ equipment, ...props }: FormConnectionProps) {
   const navigate = useNavigate();
 
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<Fields>({
     name: "",
-    id: "",
+    // selectedOptions: [],
   });
 
   useEffect(() => {
     if (equipment)
       setInputValues({
         name: equipment.name,
-        id: equipment.id,
+        // id: equipment.id,
       });
   }, [equipment]);
 
@@ -103,25 +102,21 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.name || !props.inputValues.id) {
+    if (!props.inputValues.name) {
       return;
     }
 
     try {
       await axios.post("http://localhost:3333/equipment", {
         name: props.inputValues.name,
-        id: props.inputValues.id,
+        // id: props.inputValues.id,
       });
-
+      props.updateAlert(true);
       props.setAlertVisible(true);
-
       setTimeout(() => props.navigate("/equipment"), 1000);
     } catch (error) {
       console.log(error);
-      props.setAlertType("error");
-      props.setAlertText(
-        `Não foi possível registrar o equipamento! Tente novamente.`
-      );
+      props.updateAlert(false);
       props.setAlertVisible(true);
     }
   }
@@ -133,7 +128,7 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.name || !props.inputValues.id) {
+    if (!props.inputValues.name) {
       return;
     }
 
@@ -142,19 +137,15 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
         `http://localhost:3333/equipment/${props.equipmentId}`,
         {
           name: props.inputValues.name,
-          id: props.inputValues.id,
+          // id: props.inputValues.id,
         }
       );
-
+      props.updateAlert(true);
       props.setAlertVisible(true);
-
       setTimeout(() => props.navigate("./.."), 1000);
     } catch (error) {
       console.log(error);
-      props.setAlertType("error");
-      props.setAlertText(
-        "Não foi possível editar o equipamento! Tente novamente."
-      );
+      props.updateAlert(false);
       props.setAlertVisible(true);
     }
   }
@@ -167,23 +158,23 @@ export function FormBody({
   inputValues,
   setInputValues,
 }: FormBodyProps) {
-  interface Option {
-    value: string;
-    label: string;
-  }
-  const [parameters, setParameters] = useState<Option[]>([]);
+  // interface Option {
+  //   value: string;
+  //   label: string;
+  // }
+  // const [parameters, setParameters] = useState<Option[]>([]);
 
-  useEffect(() => {
-    axios
-      .get<Parameter[]>("http://localhost:3333/parameters")
-      .then((response) => {
-        setParameters(
-          response.data.map((item) => ({ value: item.name, label: item.name }))
-        );
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get<Parameter[]>("http://localhost:3333/parameters")
+  //     .then((response) => {
+  //       setParameters(
+  //         response.data.map((item) => ({ value: item.name, label: item.name }))
+  //       );
+  //     });
+  // }, []);
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  // const [selectedOptions, setSelectedOptions] = useState([]);
 
   return (
     <form onSubmit={(event) => handleSubmit(event)}>
@@ -216,7 +207,7 @@ export function FormBody({
               }
             />
           </FormField>
-          <FormField label="Parâmetro(s) medido(s)">
+          {/* <FormField label="Parâmetro(s) medido(s)">
             <Multiselect
               selectedOptions={selectedOptions}
               onChange={({ detail }) =>
@@ -235,7 +226,7 @@ export function FormBody({
                   : "error"
               }
             />
-          </FormField>
+          </FormField> */}
         </SpaceBetween>
       </Form>
     </form>
