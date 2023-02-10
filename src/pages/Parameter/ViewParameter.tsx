@@ -11,11 +11,24 @@ import {
   Header,
   SpaceBetween,
   Button,
+  Table,
+  Box,
+  TextFilter,
+  Pagination,
+  CollectionPreferences,
 } from "@cloudscape-design/components";
+import { useCollection } from "@cloudscape-design/collection-hooks";
+import {
+  columnDefinitions,
+  getMatchesCountText,
+  paginationLabels,
+  collectionPreferencesProps,
+} from "./table-config";
 
 import { DeleteParameterModal } from "../../components/Parameter/DeleteParameterModal";
 import { Navbar } from "../../components/Navbar";
 import { formatDataType } from "../../components/Parameter/FormParameter";
+import EmptyState from "../../components/EmptyState";
 
 export function ViewParameter() {
   let { id } = useParams();
@@ -39,6 +52,57 @@ export function ViewParameter() {
     });
   }
 
+  const allItems: {}[] = [
+    { id: "abcd", availabilityZone: "Manaus", state: "Amazonas" },
+  ];
+
+  const [preferences, setPreferences] = useState({
+    pageSize: 10,
+    visibleContent: ["id", "availabilityZone", "state"],
+  });
+  const {
+    items,
+    actions,
+    filteredItemsCount,
+    collectionProps,
+    filterProps,
+    paginationProps,
+  } = useCollection(allItems, {
+    filtering: {
+      empty: (
+        <EmptyState
+          title="Nenhum equipamento"
+          subtitle="Não há equipamentos para mostrar."
+          action={
+            <Button
+              iconName="add-plus"
+              variant="normal"
+              href={`/parameters/${parameter.id}/collections`}
+            >
+              Adicionar equipamento
+            </Button>
+          }
+        />
+      ),
+      noMatch: (
+        <EmptyState
+          title="No matches"
+          subtitle="We can't find a match."
+          action={
+            <Button onClick={() => actions.setFiltering("")}>
+              Clear filter
+            </Button>
+          }
+        />
+      ),
+    },
+    pagination: { pageSize: preferences.pageSize },
+    sorting: {},
+    selection: {},
+  });
+  const { selectedItems } = collectionProps;
+  // const [selectedItems, setSelectedItems] = useState<{}[]>([allItems[0]]);
+
   return (
     <AppLayout
       navigation={<Navbar />}
@@ -51,13 +115,6 @@ export function ViewParameter() {
               variant="h2"
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                  <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    href={`/parameters/${parameter.id}/collections`}
-                  >
-                    Adicionar equipamento
-                  </Button>
                   <Button
                     iconName="edit"
                     href={`/parameters/${parameter.id}/edit`}
@@ -77,6 +134,45 @@ export function ViewParameter() {
             </Header>
           }
         >
+          <Table
+            // {...collectionProps}
+            selectionType="multi"
+            // onSelectionChange={({ detail }) =>
+            //   setSelectedItems(detail.selectedItems)
+            // }
+            // selectedItems={selectedItems}
+            header={
+              <Header
+                counter={
+                  selectedItems.length
+                    ? `(${selectedItems.length}/${allItems.length})`
+                    : `(${allItems.length})`
+                }
+              >
+                Equipamentos
+              </Header>
+            }
+            columnDefinitions={columnDefinitions}
+            visibleColumns={preferences.visibleContent}
+            items={items}
+            pagination={
+              <Pagination {...paginationProps} ariaLabels={paginationLabels} />
+            }
+            filter={
+              <TextFilter
+                {...filterProps}
+                countText={getMatchesCountText(filteredItemsCount)}
+                filteringAriaLabel="Filter instances"
+              />
+            }
+            preferences={
+              <CollectionPreferences
+                {...collectionPreferencesProps}
+                preferences={preferences}
+                onConfirm={({ detail }) => setPreferences(detail)}
+              />
+            }
+          />
           <DeleteParameterModal
             parameterId={parameter.id}
             visible={visible}
