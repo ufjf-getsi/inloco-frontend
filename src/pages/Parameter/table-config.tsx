@@ -1,10 +1,10 @@
 import { Link } from "@cloudscape-design/components";
 
-export function getMatchesCountText(count) {
+export function getMatchesCountText(count:number) {
   return count === 1 ? `1 match` : `${count} matches`;
 }
 
-function formatDate(date) {
+function formatDate(date: Date) {
   const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
   const timeFormatter = new Intl.DateTimeFormat("en-US", {
     timeStyle: "short",
@@ -13,8 +13,8 @@ function formatDate(date) {
   return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
 }
 
-function createLabelFunction(columnName) {
-  return ({ sorted, descending }) => {
+function createLabelFunction(columnName: string) {
+  return ({ sorted, descending }:{sorted:boolean, descending:boolean}) => {
     const sortState = sorted
       ? `sorted ${descending ? "descending" : "ascending"}`
       : "not sorted";
@@ -22,25 +22,32 @@ function createLabelFunction(columnName) {
   };
 }
 
+
+interface Item {
+  id: string;
+  availabilityZone: string;
+  state: string;
+}
+
 export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
-    cell: (item) => <Link href={`#${item.id}`}>{item.id}</Link>,
+    cell: (item:Item) => <Link href={`#${item.id}`}>{item.id}</Link>,
     ariaLabel: createLabelFunction("id"),
     sortingField: "id",
   },
   {
     id: "availabilityZone",
     header: "Availability zone",
-    cell: (item) => item.availabilityZone,
+    cell: (item:Item) => item.availabilityZone,
     ariaLabel: createLabelFunction("Availability zone"),
     sortingField: "availabilityZone",
   },
   {
     id: "state",
     header: "State",
-    cell: (item) => item.state,
+    cell: (item:Item) => item.state,
     ariaLabel: createLabelFunction("State"),
     sortingField: "state",
   }
@@ -48,7 +55,7 @@ export const columnDefinitions = [
 
 export const paginationLabels = {
   nextPageLabel: "Next page",
-  pageLabel: (pageNumber) => `Go to page ${pageNumber}`,
+  pageLabel: (pageNumber:number) => `Go to page ${pageNumber}`,
   previousPageLabel: "Previous page",
 };
 
