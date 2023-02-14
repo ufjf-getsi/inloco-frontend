@@ -37,7 +37,6 @@ interface FormBodyProps extends FormConnectionSpecificProps {
 
 interface Fields {
   title: string;
-  status: string;
 }
 
 FormHeader.defaultProps = {
@@ -64,14 +63,12 @@ export function FormConnection({ task, ...props }: FormConnectionProps) {
 
   const [inputValues, setInputValues] = useState({
     title: "",
-    status: "",
   });
 
   useEffect(() => {
     if (task)
       setInputValues({
         title: task.title,
-        status: task.status,
       });
   }, [task]);
 
@@ -101,14 +98,13 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.title || !props.inputValues.status) {
+    if (!props.inputValues.title) {
       return;
     }
 
     try {
       await axios.post("http://localhost:3333/tasks", {
         title: props.inputValues.title,
-        status: props.inputValues.status,
       });
 
       props.setAlertVisible(true);
@@ -129,14 +125,13 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!props.inputValues.title || !props.inputValues.status) {
+    if (!props.inputValues.title) {
       return;
     }
 
     try {
       await axios.patch(`http://localhost:3333/tasks/${props.taskId}`, {
         title: props.inputValues.title,
-        status: props.inputValues.status,
       });
 
       props.setAlertVisible(true);
@@ -185,17 +180,6 @@ export function FormBody({
                 setInputValues((prevState: Fields) => ({
                   ...prevState,
                   title: event.detail.value,
-                }))
-              }
-            />
-          </FormField>
-          <FormField label="Descrição">
-            <Input
-              value={inputValues.status}
-              onChange={(event) =>
-                setInputValues((prevState: Fields) => ({
-                  ...prevState,
-                  status: event.detail.value,
                 }))
               }
             />
