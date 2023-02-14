@@ -34,7 +34,7 @@ export function DeleteTaskModal(props: DeleteTaskModalProps) {
             <Button
               variant="primary"
               onClick={() => deleteTask(props.taskId)}
-              href="/"
+              href="/tasks"
             >
               Excluir
             </Button>
