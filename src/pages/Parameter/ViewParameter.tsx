@@ -16,8 +16,12 @@ import {
   TextFilter,
   Pagination,
   CollectionPreferences,
+  CollectionPreferencesProps,
 } from "@cloudscape-design/components";
-import { useCollection } from "@cloudscape-design/collection-hooks";
+import {
+  useCollection,
+  UseCollectionOptions,
+} from "@cloudscape-design/collection-hooks";
 import {
   columnDefinitions,
   getMatchesCountText,
@@ -29,6 +33,7 @@ import { DeleteParameterModal } from "../../components/Parameter/DeleteParameter
 import { Navbar } from "../../components/Navbar";
 import { formatDataType } from "../../components/Parameter/FormParameter";
 import EmptyState from "../../components/EmptyState";
+import { TrackBy } from "@cloudscape-design/collection-hooks/dist/cjs/interfaces";
 
 export function ViewParameter() {
   let { id } = useParams();
@@ -53,7 +58,16 @@ export function ViewParameter() {
   }
 
   const allItems: {}[] = [
-    { id: "abcd", availabilityZone: "Manaus", state: "Amazonas" },
+    { id: "item1", availabilityZone: "Manaus", state: "Amazonas" },
+    { id: "item2", availabilityZone: "Belo Horizonte", state: "Minas Gerais" },
+    { id: "item3", availabilityZone: "São Paulo", state: "São Paulo" },
+    {
+      id: "item4",
+      availabilityZone: "Rio de Janeiro",
+      state: "Rio de Janeiro",
+    },
+    { id: "item5", availabilityZone: "Salvador", state: "Bahia" },
+    { id: "item6", availabilityZone: "Fortaleza", state: "Ceará" },
   ];
 
   const [preferences, setPreferences] = useState({
@@ -65,8 +79,8 @@ export function ViewParameter() {
     actions,
     filteredItemsCount,
     collectionProps,
-    filterProps,
     paginationProps,
+    filterProps,
   } = useCollection(allItems, {
     filtering: {
       empty: (
@@ -97,8 +111,8 @@ export function ViewParameter() {
       ),
     },
     pagination: { pageSize: preferences.pageSize },
-    sorting: {},
-    selection: {},
+    sorting: { defaultState: { sortingColumn: columnDefinitions[0] } },
+    selection: { trackBy: "id", keepSelection: true },
   });
   const { selectedItems } = collectionProps;
   // const [selectedItems, setSelectedItems] = useState<{}[]>([allItems[0]]);
@@ -135,16 +149,21 @@ export function ViewParameter() {
           }
         >
           <Table
-            // {...collectionProps}
+            {...collectionProps}
+            items={items}
             selectionType="multi"
-            // onSelectionChange={({ detail }) =>
-            //   setSelectedItems(detail.selectedItems)
-            // }
-            // selectedItems={selectedItems}
+            columnDefinitions={columnDefinitions}
+            visibleColumns={preferences.visibleContent}
+            pagination={
+              <Pagination {...paginationProps} ariaLabels={paginationLabels} />
+            }
+            onSelectionChange={({ detail }) => {
+              actions.setSelectedItems(detail.selectedItems);
+            }}
             header={
               <Header
                 counter={
-                  selectedItems.length
+                  selectedItems?.length
                     ? `(${selectedItems.length}/${allItems.length})`
                     : `(${allItems.length})`
                 }
@@ -152,16 +171,10 @@ export function ViewParameter() {
                 Equipamentos
               </Header>
             }
-            columnDefinitions={columnDefinitions}
-            visibleColumns={preferences.visibleContent}
-            items={items}
-            pagination={
-              <Pagination {...paginationProps} ariaLabels={paginationLabels} />
-            }
             filter={
               <TextFilter
                 {...filterProps}
-                countText={getMatchesCountText(filteredItemsCount)}
+                countText={getMatchesCountText(filteredItemsCount || 0)}
                 filteringAriaLabel="Filter instances"
               />
             }
@@ -169,7 +182,11 @@ export function ViewParameter() {
               <CollectionPreferences
                 {...collectionPreferencesProps}
                 preferences={preferences}
-                onConfirm={({ detail }) => setPreferences(detail)}
+                onConfirm={({ detail }) => {
+                  return setPreferences(
+                    detail as { pageSize: number; visibleContent: string[] }
+                  );
+                }}
               />
             }
           />
