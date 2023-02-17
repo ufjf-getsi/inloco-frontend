@@ -23,12 +23,11 @@ import {
   UseCollectionOptions,
 } from "@cloudscape-design/collection-hooks";
 import {
-  columnDefinitions,
   getMatchesCountText,
   paginationLabels,
   collectionPreferencesProps,
-} from "./table-config";
-
+} from "../../CommonTableFunctions";
+import { columnDefinitions } from "../../components/Parameter/TableConfig";
 import { DeleteParameterModal } from "../../components/Parameter/DeleteParameterModal";
 import { Navbar } from "../../components/Navbar";
 import { formatDataType } from "../../components/Parameter/FormParameter";
@@ -100,11 +99,11 @@ export function ViewParameter() {
       ),
       noMatch: (
         <EmptyState
-          title="No matches"
-          subtitle="We can't find a match."
+          title="Sem correspondências"
+          subtitle="Não pudemos encontrar um registro correspondente."
           action={
             <Button onClick={() => actions.setFiltering("")}>
-              Clear filter
+              Limpar Filtro
             </Button>
           }
         />
@@ -115,7 +114,6 @@ export function ViewParameter() {
     selection: { trackBy: "id", keepSelection: true },
   });
   const { selectedItems } = collectionProps;
-  // const [selectedItems, setSelectedItems] = useState<{}[]>([allItems[0]]);
 
   return (
     <AppLayout
@@ -181,6 +179,9 @@ export function ViewParameter() {
             preferences={
               <CollectionPreferences
                 {...collectionPreferencesProps}
+                visibleContentPreference={collectionPreferencesProps.visibleContentPreference(
+                  columnDefinitions
+                )}
                 preferences={preferences}
                 onConfirm={({ detail }) => {
                   return setPreferences(
