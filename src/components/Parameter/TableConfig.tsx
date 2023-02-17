@@ -1,5 +1,5 @@
 import { Link } from "@cloudscape-design/components";
-import { createLabelFunction } from "../../CommonTableFunctions";
+import { createLabelFunction } from "./../GenericTable/CommonTableFunctions";
 
 interface Item {
   id: string;

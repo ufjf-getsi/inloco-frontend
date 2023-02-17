@@ -11,28 +11,15 @@ import {
   Header,
   SpaceBetween,
   Button,
-  Table,
-  Box,
-  TextFilter,
-  Pagination,
-  CollectionPreferences,
-  CollectionPreferencesProps,
 } from "@cloudscape-design/components";
 import {
-  useCollection,
-  UseCollectionOptions,
-} from "@cloudscape-design/collection-hooks";
-import {
-  getMatchesCountText,
-  paginationLabels,
-  collectionPreferencesProps,
-} from "../../CommonTableFunctions";
-import { columnDefinitions } from "../../components/Parameter/TableConfig";
+  columnDefinitions,
+  visibleContent,
+} from "../../components/Parameter/TableConfig";
 import { DeleteParameterModal } from "../../components/Parameter/DeleteParameterModal";
 import { Navbar } from "../../components/Navbar";
 import { formatDataType } from "../../components/Parameter/FormParameter";
-import EmptyState from "../../components/EmptyState";
-import { TrackBy } from "@cloudscape-design/collection-hooks/dist/cjs/interfaces";
+import GenericTable from "../../components/GenericTable/GenericTable";
 
 export function ViewParameter() {
   let { id } = useParams();
@@ -69,51 +56,7 @@ export function ViewParameter() {
     { id: "item6", availabilityZone: "Fortaleza", state: "Ceará" },
   ];
 
-  const [preferences, setPreferences] = useState({
-    pageSize: 10,
-    visibleContent: ["id", "availabilityZone", "state"],
-  });
-  const {
-    items,
-    actions,
-    filteredItemsCount,
-    collectionProps,
-    paginationProps,
-    filterProps,
-  } = useCollection(allItems, {
-    filtering: {
-      empty: (
-        <EmptyState
-          title="Nenhum equipamento"
-          subtitle="Não há equipamentos para mostrar."
-          action={
-            <Button
-              iconName="add-plus"
-              variant="normal"
-              href={`/parameters/${parameter.id}/collections`}
-            >
-              Adicionar equipamento
-            </Button>
-          }
-        />
-      ),
-      noMatch: (
-        <EmptyState
-          title="Sem correspondências"
-          subtitle="Não pudemos encontrar um registro correspondente."
-          action={
-            <Button onClick={() => actions.setFiltering("")}>
-              Limpar Filtro
-            </Button>
-          }
-        />
-      ),
-    },
-    pagination: { pageSize: preferences.pageSize },
-    sorting: { defaultState: { sortingColumn: columnDefinitions[0] } },
-    selection: { trackBy: "id", keepSelection: true },
-  });
-  const { selectedItems } = collectionProps;
+  const [selectedItems, setSelectedItems] = useState([]);
 
   return (
     <AppLayout
@@ -146,50 +89,14 @@ export function ViewParameter() {
             </Header>
           }
         >
-          <Table
-            {...collectionProps}
-            items={items}
-            selectionType="multi"
+          <GenericTable
+            allItems={allItems}
             columnDefinitions={columnDefinitions}
-            visibleColumns={preferences.visibleContent}
-            pagination={
-              <Pagination {...paginationProps} ariaLabels={paginationLabels} />
-            }
-            onSelectionChange={({ detail }) => {
-              actions.setSelectedItems(detail.selectedItems);
-            }}
-            header={
-              <Header
-                counter={
-                  selectedItems?.length
-                    ? `(${selectedItems.length}/${allItems.length})`
-                    : `(${allItems.length})`
-                }
-              >
-                Equipamentos
-              </Header>
-            }
-            filter={
-              <TextFilter
-                {...filterProps}
-                countText={getMatchesCountText(filteredItemsCount || 0)}
-                filteringAriaLabel="Filter instances"
-              />
-            }
-            preferences={
-              <CollectionPreferences
-                {...collectionPreferencesProps}
-                visibleContentPreference={collectionPreferencesProps.visibleContentPreference(
-                  columnDefinitions
-                )}
-                preferences={preferences}
-                onConfirm={({ detail }) => {
-                  return setPreferences(
-                    detail as { pageSize: number; visibleContent: string[] }
-                  );
-                }}
-              />
-            }
+            registryNameSingular={`equipamento`}
+            registryNamePlural={`equipamentos`}
+            addRegistryLink={`/parameters/${parameter.id}/equipment`}
+            visibleContent={visibleContent}
+            setSelectedRegistries={setSelectedItems}
           />
           <DeleteParameterModal
             parameterId={parameter.id}
