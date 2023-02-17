@@ -1,5 +1,13 @@
+export interface ColumnDefinitionInterface {
+  id: string;
+  header: string;
+  cell: Function;
+  ariaLabel: Function;
+  sortingField: string;
+}
+
 export function getMatchesCountText(count: number) {
-  return count === 1 ? `1 match` : `${count} matches`;
+  return count === 1 ? `1 corresponde` : `${count} correspondem`;
 }
 
 export function formatDate(date: Date) {
@@ -21,35 +29,27 @@ export function createLabelFunction(columnName: string) {
 }
 
 export const paginationLabels = {
-  nextPageLabel: "Next page",
-  pageLabel: (pageNumber: number) => `Go to page ${pageNumber}`,
-  previousPageLabel: "Previous page",
+  nextPageLabel: "Próxima página",
+  pageLabel: (pageNumber: number) => `Ir para a página ${pageNumber}`,
+  previousPageLabel: "Página anterior",
 };
 
 const pageSizePreference = {
-  title: "Select page size",
+  title: "Selecione o tamanho da página",
   options: [
-    { value: 10, label: "10 resources" },
-    { value: 20, label: "20 resources" },
+    { value: 10, label: "10 registros" },
+    { value: 20, label: "20 registros" },
   ],
 };
 
-interface ColumnDefinitionsInterface {
-  id: string;
-  header: string;
-  cell: Function;
-  ariaLabel: Function;
-  sortingField: string;
-}
-
 const visibleContentPreference = function (
-  columnDefinitions: ColumnDefinitionsInterface[]
+  columnDefinitions: ReadonlyArray<ColumnDefinitionInterface>
 ) {
   return {
-    title: "Select visible content",
+    title: "Selecione o conteúdo visível",
     options: [
       {
-        label: "Main properties",
+        label: "Propriedades principais",
         options: columnDefinitions.map(({ id, header }) => ({
           id,
           label: header,
@@ -63,7 +63,7 @@ const visibleContentPreference = function (
 export const collectionPreferencesProps = {
   pageSizePreference,
   visibleContentPreference,
-  cancelLabel: "Cancel",
-  confirmLabel: "Confirm",
-  title: "Preferences",
+  cancelLabel: "Cancelar",
+  confirmLabel: "Confirmar",
+  title: "Preferências",
 };
