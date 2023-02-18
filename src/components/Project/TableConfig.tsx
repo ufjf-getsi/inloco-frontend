@@ -26,7 +26,6 @@ export const columnDefinitions = [
     header: "Título",
     cell: (item: Item) => (
       <Link href={`projects/${item.id}`}>
-        {" "}
         <span className="font-bold">{item.title}</span>
       </Link>
     ),
