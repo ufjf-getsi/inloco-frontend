@@ -7,31 +7,24 @@ import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Parameter/TableConfig";
-import GenericListPage from "../../components/GenericPages/GenericListPage";
+import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
 
 export function ParametersList() {
   const [parameters, setParameters] = useState<Parameter[]>([]);
   const [selectedParameters, setSelectedParameters] = useState([]);
-
-  function fetchTableData() {
-    axios("http://localhost:3333/parameters").then((response) => {
-      setParameters(response.data);
-    });
-  }
-  useEffect(() => {
-    fetchTableData();
-  }, []);
 
   return (
     <GenericListPage
       title={`InLoco`}
       description={`InLoco é seu sistema de gerenciamento de informações sobre Limnologia.`}
       navbarActiveLink={`/parameters`}
-      allItems={parameters}
+      allRecords={parameters}
+      setRecords={setParameters}
+      fetchRecordsLink={`http://localhost:3333/parameters`}
       columnDefinitions={columnDefinitions}
-      registryNameSingular={`parâmetro`}
-      registryNamePlural={`parâmetros`}
-      addRegistryLink={`parameters/create`}
+      recordNameSingular={`parâmetro`}
+      recordNamePlural={`parâmetros`}
+      addRecordLink={`parameters/create`}
       visibleContent={visibleContent}
       setSelectedRegistries={setSelectedParameters}
       breadcrumbs={

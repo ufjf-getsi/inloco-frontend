@@ -7,31 +7,24 @@ import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Equipment/TableConfig";
-import GenericListPage from "../../components/GenericPages/GenericListPage";
+import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
 
 export function EquipmentList() {
   const [equipmentArray, setEquipmentArray] = useState<Equipment[]>([]);
   const [selectedEquipmentList, setSelectedEquipmentList] = useState([]);
-
-  function fetchTableData() {
-    axios("http://localhost:3333/equipment").then((response) => {
-      setEquipmentArray(response.data);
-    });
-  }
-  useEffect(() => {
-    fetchTableData();
-  }, []);
 
   return (
     <GenericListPage
       title={`InLoco`}
       description={`InLoco é seu sistema de gerenciamento de informações sobre Limnologia.`}
       navbarActiveLink={`/equipment`}
-      allItems={equipmentArray}
+      allRecords={equipmentArray}
+      setRecords={setEquipmentArray}
+      fetchRecordsLink={`http://localhost:3333/equipment`}
       columnDefinitions={columnDefinitions}
-      registryNameSingular={`equipamento`}
-      registryNamePlural={`equipamentos`}
-      addRegistryLink={`equipment/create`}
+      recordNameSingular={`equipamento`}
+      recordNamePlural={`equipamentos`}
+      addRecordLink={`equipment/create`}
       visibleContent={visibleContent}
       setSelectedRegistries={setSelectedEquipmentList}
       breadcrumbs={

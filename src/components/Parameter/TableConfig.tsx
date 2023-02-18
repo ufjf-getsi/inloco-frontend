@@ -1,5 +1,5 @@
 import { Link } from "@cloudscape-design/components";
-import { createLabelFunction } from "./../GenericTable/CommonTableFunctions";
+import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunctions";
 import { formatDataType } from "./FormParameter";
 
 interface Item {
