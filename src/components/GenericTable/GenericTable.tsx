@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  useCollection,
-  UseCollectionOptions,
-} from "@cloudscape-design/collection-hooks";
+import { useCollection } from "@cloudscape-design/collection-hooks";
 import {
   Box,
   Button,
@@ -20,7 +17,7 @@ import {
   ColumnDefinitionInterface,
 } from "./CommonTableFunctions";
 
-interface GenericTableProps {
+export interface GenericTableProps {
   allItems: {}[];
   columnDefinitions: Array<ColumnDefinitionInterface>;
   registryNameSingular: string;

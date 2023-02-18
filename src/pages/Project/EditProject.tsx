@@ -28,7 +28,7 @@ export function EditProject() {
   );
   const [project, setProject] = useState<Project>({
     id: "",
-    title: "404",
+    title: "Carregando...",
     description: "Este projeto não está cadastrado no sistema.",
     collections: [],
     notes: [],
