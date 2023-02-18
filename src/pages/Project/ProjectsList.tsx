@@ -20,7 +20,7 @@ import {
 
 export function ProjectsList() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedProjects, setSelectedProjects] = useState([]);
 
   function fetchTableData() {
     axios("http://localhost:3333/projects").then((response) => {
@@ -67,7 +67,7 @@ export function ProjectsList() {
               registryNamePlural={`projetos`}
               addRegistryLink={`/create`}
               visibleContent={visibleContent}
-              setSelectedRegistries={setSelectedItems}
+              setSelectedRegistries={setSelectedProjects}
             />
           </Container>
         </ContentLayout>
