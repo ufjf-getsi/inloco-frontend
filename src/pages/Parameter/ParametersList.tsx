@@ -2,21 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Parameter } from "../../types";
 
-import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Header,
-  SpaceBetween,
-  Button,
-} from "@cloudscape-design/components";
-import { Navbar } from "../../components/Navbar";
-import GenericTable from "../../components/GenericTable/GenericTable";
+import { BreadcrumbGroup } from "@cloudscape-design/components";
 import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Parameter/TableConfig";
+import GenericListPage from "../../components/GenericPages/GenericListPage";
 
 export function ParametersList() {
   const [parameters, setParameters] = useState<Parameter[]>([]);
@@ -32,46 +23,17 @@ export function ParametersList() {
   }, []);
 
   return (
-    <AppLayout
-      navigation={<Navbar activeLink="/parameters" />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h1"
-              description="InLoco é seu sistema de gerenciamento de informações sobre Limnologia."
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    href="parameters/create"
-                  >
-                    Novo parâmetro
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              InLoco
-            </Header>
-          }
-        >
-          <Container>
-            <GenericTable
-              allItems={parameters}
-              columnDefinitions={columnDefinitions}
-              registryNameSingular={`parâmetro`}
-              registryNamePlural={`parâmetros`}
-              addRegistryLink={`/create`}
-              visibleContent={visibleContent}
-              setSelectedRegistries={setSelectedParameters}
-            />
-          </Container>
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericListPage
+      title={`InLoco`}
+      description={`InLoco é seu sistema de gerenciamento de informações sobre Limnologia.`}
+      navbarActiveLink={`/parameters`}
+      allItems={parameters}
+      columnDefinitions={columnDefinitions}
+      registryNameSingular={`parâmetro`}
+      registryNamePlural={`parâmetros`}
+      addRegistryLink={`parameters/create`}
+      visibleContent={visibleContent}
+      setSelectedRegistries={setSelectedParameters}
       breadcrumbs={
         <BreadcrumbGroup
           items={[{ text: "Parâmetros", href: "#" }]}

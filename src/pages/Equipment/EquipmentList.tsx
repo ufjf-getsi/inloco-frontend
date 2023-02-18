@@ -2,21 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Equipment } from "../../types";
 
-import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Header,
-  SpaceBetween,
-  Button,
-} from "@cloudscape-design/components";
-import { Navbar } from "../../components/Navbar";
-import GenericTable from "../../components/GenericTable/GenericTable";
+import { BreadcrumbGroup } from "@cloudscape-design/components";
 import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Equipment/TableConfig";
+import GenericListPage from "../../components/GenericPages/GenericListPage";
 
 export function EquipmentList() {
   const [equipmentArray, setEquipmentArray] = useState<Equipment[]>([]);
@@ -32,46 +23,17 @@ export function EquipmentList() {
   }, []);
 
   return (
-    <AppLayout
-      navigation={<Navbar activeLink="/equipment" />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h1"
-              description="InLoco é seu sistema de gerenciamento de informações sobre Limnologia."
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    href="equipment/create"
-                  >
-                    Novo equipamento
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              InLoco
-            </Header>
-          }
-        >
-          <Container>
-            <GenericTable
-              allItems={equipmentArray}
-              columnDefinitions={columnDefinitions}
-              registryNameSingular={`equipamento`}
-              registryNamePlural={`equipamentos`}
-              addRegistryLink={`/create`}
-              visibleContent={visibleContent}
-              setSelectedRegistries={setSelectedEquipmentList}
-            />
-          </Container>
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericListPage
+      title={`InLoco`}
+      description={`InLoco é seu sistema de gerenciamento de informações sobre Limnologia.`}
+      navbarActiveLink={`/equipment`}
+      allItems={equipmentArray}
+      columnDefinitions={columnDefinitions}
+      registryNameSingular={`equipamento`}
+      registryNamePlural={`equipamentos`}
+      addRegistryLink={`equipment/create`}
+      visibleContent={visibleContent}
+      setSelectedRegistries={setSelectedEquipmentList}
       breadcrumbs={
         <BreadcrumbGroup
           items={[{ text: "Equipamentos", href: "#" }]}
