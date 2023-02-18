@@ -24,7 +24,7 @@ export const columnDefinitions = [
     id: "name",
     header: "Nome",
     cell: (item: Item) => (
-      <Link href={`projects/${item.id}`}>
+      <Link href={`equipment/${item.id}`}>
         <span className="font-bold">{item.name}</span>
       </Link>
     ),
