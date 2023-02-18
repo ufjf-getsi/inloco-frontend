@@ -14,7 +14,6 @@ export const columnDefinitions = [
     header: "ID",
     cell: (item: Item) => (
       <Link href={`/collections/${item.id}`}>
-        {" "}
         <span className="font-bold">{item.id}</span>
       </Link>
     ),
