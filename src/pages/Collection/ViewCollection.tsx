@@ -15,7 +15,6 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-import { PointsTable } from "../../components/Point/PointsTable";
 import { FormConnection as FormPoint } from "../../components/Point/FormPoint";
 import { DeleteCollectionModal } from "../../components/Collection/DeleteCollectionModal";
 import { Navbar } from "../../components/Navbar";

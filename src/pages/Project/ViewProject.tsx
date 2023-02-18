@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Project } from "../../types";
 
 import {
@@ -22,6 +22,7 @@ import {
 
 export function ViewProject() {
   let { id } = useParams();
+  const navigate = useNavigate();
 
   const [project, setProject] = useState<Project>({
     id: "",
@@ -30,12 +31,13 @@ export function ViewProject() {
     collections: [],
     notes: [],
   });
-  const [visible, setVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedCollections, setSelectedCollections] = useState([]);
 
   function fetchProjectData() {
     axios(`http://localhost:3333/projects/${id}`).then((response) => {
-      setProject(response.data);
+      if (response.data) setProject(response.data);
+      else navigate("/projects");
     });
   }
   useEffect(() => {
@@ -65,7 +67,10 @@ export function ViewProject() {
                   <Button iconName="edit" href={`/projects/${project.id}/edit`}>
                     Editar
                   </Button>
-                  <Button iconName="close" onClick={() => setVisible(true)}>
+                  <Button
+                    iconName="close"
+                    onClick={() => setDeleteModalVisible(true)}
+                  >
                     Excluir
                   </Button>
                 </SpaceBetween>
@@ -88,8 +93,8 @@ export function ViewProject() {
           </Container>
           <DeleteProjectModal
             projectId={project.id}
-            visible={visible}
-            setVisible={setVisible}
+            visible={deleteModalVisible}
+            setVisible={setDeleteModalVisible}
             projectTitle={project.title}
           />
         </ContentLayout>
