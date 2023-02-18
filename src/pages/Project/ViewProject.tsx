@@ -1,8 +1,7 @@
 import axios from "axios";
-import { Project } from "../../types";
-
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Project } from "../../types";
 
 import {
   AppLayout,
@@ -12,34 +11,36 @@ import {
   Header,
   SpaceBetween,
   Button,
-  TextContent,
 } from "@cloudscape-design/components";
-
 import { DeleteProjectModal } from "../../components/Project/DeleteProjectModal";
-import { CollectionsTable } from "../../components/Collection/CollectionsTable";
 import { Navbar } from "../../components/Navbar";
+import GenericTable from "../../components/GenericTable/GenericTable";
+import {
+  columnDefinitions,
+  visibleContent,
+} from "../../components/Collection/TableConfig";
 
 export function ViewProject() {
   let { id } = useParams();
 
   const [project, setProject] = useState<Project>({
     id: "",
-    title: "404",
+    title: "Carregando...",
     description: "Este projeto não está cadastrado no sistema.",
     collections: [],
     notes: [],
   });
   const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    fetchProjectData();
-  }, []);
+  const [selectedCollections, setSelectedCollections] = useState([]);
 
   function fetchProjectData() {
     axios(`http://localhost:3333/projects/${id}`).then((response) => {
       setProject(response.data);
     });
   }
+  useEffect(() => {
+    fetchProjectData();
+  }, []);
 
   return (
     <AppLayout
@@ -75,10 +76,15 @@ export function ViewProject() {
           }
         >
           <Container>
-            <TextContent>
-              <h1>Coletas</h1>
-              <CollectionsTable collections={project.collections} />
-            </TextContent>
+            <GenericTable
+              allItems={project.collections}
+              columnDefinitions={columnDefinitions}
+              registryNameSingular={`coleta`}
+              registryNamePlural={`coletas`}
+              addRegistryLink={`/projects/${project.id}/collections`}
+              visibleContent={visibleContent}
+              setSelectedRegistries={setSelectedCollections}
+            />
           </Container>
           <DeleteProjectModal
             projectId={project.id}

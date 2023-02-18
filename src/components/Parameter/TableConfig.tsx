@@ -13,7 +13,12 @@ export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
-    cell: (item: Item) => <Link href={`#${item.id}`}>{item.id}</Link>,
+    cell: (item: Item) => (
+      <Link href={`#${item.id}`}>
+        {" "}
+        <span className="font-bold">{item.id}</span>
+      </Link>
+    ),
     ariaLabel: createLabelFunction("id"),
     sortingField: "id",
   },
