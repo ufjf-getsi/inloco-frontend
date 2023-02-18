@@ -1,8 +1,7 @@
 import axios from "axios";
-import { Collection } from "../../types";
-
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Collection } from "../../types";
 
 import {
   AppLayout,
@@ -16,12 +15,16 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-
 import { PointsTable } from "../../components/Point/PointsTable";
 import { FormConnection as FormPoint } from "../../components/Point/FormPoint";
 import { DeleteCollectionModal } from "../../components/Collection/DeleteCollectionModal";
 import { Navbar } from "../../components/Navbar";
 import { DeletePointModal } from "../../components/Point/DeletePointModal";
+import GenericTable from "../../components/GenericTable/GenericTable";
+import {
+  columnDefinitions,
+  visibleContent,
+} from "../../components/Point/TableConfig";
 
 export function ViewCollection() {
   let { id } = useParams();
@@ -34,6 +37,7 @@ export function ViewCollection() {
   });
   const [pointModalVisible, setPointModalVisible] = useState(false);
   const [selectedPoint, setSelectedPoint] = useState(undefined);
+  const [selectedPoints, setSelectedPoints] = useState([]);
 
   const [deleteCollectionModalVisible, setDeleteCollectionModalVisible] =
     useState(false);
@@ -61,6 +65,12 @@ export function ViewCollection() {
     }
   }
 
+  function fetchCollectionData() {
+    axios(`http://localhost:3333/collections/${id}`).then((response) => {
+      setCollection(response.data);
+    });
+  }
+
   useEffect(() => {
     fetchCollectionData();
   }, []);
@@ -73,12 +83,6 @@ export function ViewCollection() {
       }, 3000);
     }
   }, [alertVisible]);
-
-  function fetchCollectionData() {
-    axios(`http://localhost:3333/collections/${id}`).then((response) => {
-      setCollection(response.data);
-    });
-  }
 
   return (
     <AppLayout
@@ -122,14 +126,18 @@ export function ViewCollection() {
           }
         >
           <Container>
-            <TextContent>
-              <h1 className="my-2">Pontos</h1>
-              <PointsTable
-                points={collection.points}
-                setModalVisible={setPointModalVisible}
-                setSelectedPoint={setSelectedPoint}
-              />
-            </TextContent>
+            <GenericTable
+              allItems={collection.points}
+              columnDefinitions={columnDefinitions(
+                setSelectedPoint,
+                setPointModalVisible
+              )}
+              registryNameSingular={`ponto`}
+              registryNamePlural={`pontos`}
+              addRegistryLink={`#createPoint`}
+              visibleContent={visibleContent}
+              setSelectedRegistries={setSelectedPoints}
+            />
           </Container>
           <FormPoint
             collectionId={collection.id}
