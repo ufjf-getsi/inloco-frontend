@@ -19,7 +19,7 @@ import {
 import { DeleteParameterModal } from "../../components/Parameter/DeleteParameterModal";
 import { Navbar } from "../../components/Navbar";
 import { formatDataType } from "../../components/Parameter/FormParameter";
-import GenericTable from "../../components/GenericTable/GenericTable";
+import GenericTable from "../../components/Generic/GenericTable/GenericTable";
 
 export function ViewParameter() {
   let { id } = useParams();
@@ -90,11 +90,11 @@ export function ViewParameter() {
           }
         >
           <GenericTable
-            allItems={allItems}
+            allRecords={allItems}
             columnDefinitions={columnDefinitions}
-            registryNameSingular={`equipamento`}
-            registryNamePlural={`equipamentos`}
-            addRegistryLink={`/parameters/${parameter.id}/equipment`}
+            recordNameSingular={`equipamento`}
+            recordNamePlural={`equipamentos`}
+            addRecordLink={`/parameters/${parameter.id}/equipment`}
             visibleContent={visibleContent}
             setSelectedRegistries={setSelectedItems}
           />

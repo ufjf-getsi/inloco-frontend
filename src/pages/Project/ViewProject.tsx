@@ -14,7 +14,7 @@ import {
 } from "@cloudscape-design/components";
 import { DeleteProjectModal } from "../../components/Project/DeleteProjectModal";
 import { Navbar } from "../../components/Navbar";
-import GenericTable from "../../components/GenericTable/GenericTable";
+import GenericTable from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   visibleContent,
@@ -82,11 +82,11 @@ export function ViewProject() {
         >
           <Container>
             <GenericTable
-              allItems={project.collections}
+              allRecords={project.collections}
               columnDefinitions={columnDefinitions}
-              registryNameSingular={`coleta`}
-              registryNamePlural={`coletas`}
-              addRegistryLink={`/projects/${project.id}/collections`}
+              recordNameSingular={`coleta`}
+              recordNamePlural={`coletas`}
+              addRecordLink={`/projects/${project.id}/collections`}
               visibleContent={visibleContent}
               setSelectedRegistries={setSelectedCollections}
             />

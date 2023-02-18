@@ -1,4 +1,6 @@
-import { PropsWithChildren, ReactNode } from "react";
+import axios from "axios";
+import { PropsWithChildren, ReactNode, useEffect } from "react";
+
 import {
   AppLayout,
   ContentLayout,
@@ -7,19 +9,30 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import { Navbar } from "../Navbar";
 import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
+import { Navbar } from "../../Navbar";
 
 interface GenericListPageProps extends GenericTableProps {
   title: string;
   description: string;
   navbarActiveLink: string;
   breadcrumbs: ReactNode;
+  setRecords: Function;
+  fetchRecordsLink: string;
 }
 
 export default function GenericListPage(
   props: PropsWithChildren<GenericListPageProps>
 ) {
+  function fetchTableData() {
+    axios(props.fetchRecordsLink).then((response) => {
+      props.setRecords(response.data);
+    });
+  }
+  useEffect(() => {
+    fetchTableData();
+  }, []);
+
   return (
     <AppLayout
       navigation={<Navbar activeLink={props.navbarActiveLink} />}
@@ -36,9 +49,9 @@ export default function GenericListPage(
                   <Button
                     iconName="add-plus"
                     variant="primary"
-                    href={props.addRegistryLink}
+                    href={props.addRecordLink}
                   >
-                    Registrar {props.registryNameSingular}
+                    Registrar {props.recordNameSingular}
                   </Button>
                 </SpaceBetween>
               }
@@ -49,11 +62,11 @@ export default function GenericListPage(
         >
           <Container>
             <GenericTable
-              allItems={props.allItems}
+              allRecords={props.allRecords}
               columnDefinitions={props.columnDefinitions}
-              registryNameSingular={props.registryNameSingular}
-              registryNamePlural={props.registryNamePlural}
-              addRegistryLink={props.addRegistryLink}
+              recordNameSingular={props.recordNameSingular}
+              recordNamePlural={props.recordNamePlural}
+              addRecordLink={props.addRecordLink}
               visibleContent={props.visibleContent}
               setSelectedRegistries={props.setSelectedRegistries}
             />

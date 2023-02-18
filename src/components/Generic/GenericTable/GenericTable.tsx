@@ -18,11 +18,11 @@ import {
 } from "./CommonTableFunctions";
 
 export interface GenericTableProps {
-  allItems: {}[];
+  allRecords: {}[];
   columnDefinitions: Array<ColumnDefinitionInterface>;
-  registryNameSingular: string;
-  registryNamePlural: string;
-  addRegistryLink: string;
+  recordNameSingular: string;
+  recordNamePlural: string;
+  addRecordLink: string;
   visibleContent: Array<string>;
   setSelectedRegistries: Function;
   selectionType?: TableProps.SelectionType;
@@ -51,11 +51,11 @@ function EmptyState({
 }
 
 export default function GenericTable({
-  allItems,
+  allRecords,
   columnDefinitions,
-  registryNameSingular,
-  registryNamePlural,
-  addRegistryLink,
+  recordNameSingular,
+  recordNamePlural,
+  addRecordLink,
   visibleContent,
   setSelectedRegistries,
   selectionType,
@@ -71,15 +71,15 @@ export default function GenericTable({
     collectionProps,
     paginationProps,
     filterProps,
-  } = useCollection(allItems, {
+  } = useCollection(allRecords, {
     filtering: {
       empty: (
         <EmptyState
-          title={`Nenhum ${registryNameSingular}`}
-          subtitle={`Não há ${registryNamePlural} para mostrar.`}
+          title={`Nenhum ${recordNameSingular}`}
+          subtitle={`Não há ${recordNamePlural} para mostrar.`}
           action={
-            <Button iconName="add-plus" variant="normal" href={addRegistryLink}>
-              Adicionar {registryNameSingular}
+            <Button iconName="add-plus" variant="normal" href={addRecordLink}>
+              Adicionar {recordNameSingular}
             </Button>
           }
         />
@@ -124,12 +124,12 @@ export default function GenericTable({
         <Header
           counter={
             selectedItems?.length
-              ? `(${selectedItems.length}/${allItems.length})`
-              : `(${allItems.length})`
+              ? `(${selectedItems.length}/${allRecords.length})`
+              : `(${allRecords.length})`
           }
         >
-          {registryNamePlural.charAt(0).toLocaleUpperCase() +
-            registryNamePlural.slice(1)}
+          {recordNamePlural.charAt(0).toLocaleUpperCase() +
+            recordNamePlural.slice(1)}
         </Header>
       }
       filter={

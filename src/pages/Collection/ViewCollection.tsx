@@ -19,7 +19,7 @@ import { FormConnection as FormPoint } from "../../components/Point/FormPoint";
 import { DeleteCollectionModal } from "../../components/Collection/DeleteCollectionModal";
 import { Navbar } from "../../components/Navbar";
 import { DeletePointModal } from "../../components/Point/DeletePointModal";
-import GenericTable from "../../components/GenericTable/GenericTable";
+import GenericTable from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   visibleContent,
@@ -126,14 +126,14 @@ export function ViewCollection() {
         >
           <Container>
             <GenericTable
-              allItems={collection.points}
+              allRecords={collection.points}
               columnDefinitions={columnDefinitions(
                 setSelectedPoint,
                 setPointModalVisible
               )}
-              registryNameSingular={`ponto`}
-              registryNamePlural={`pontos`}
-              addRegistryLink={`#createPoint`}
+              recordNameSingular={`ponto`}
+              recordNamePlural={`pontos`}
+              addRecordLink={`#createPoint`}
               visibleContent={visibleContent}
               setSelectedRegistries={setSelectedPoints}
             />
