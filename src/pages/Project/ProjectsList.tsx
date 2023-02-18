@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Project } from "../../types";
-
 import { useEffect, useState } from "react";
+import { Project } from "../../types";
 
 import {
   AppLayout,
@@ -12,21 +11,26 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import { ProjectsTable } from "../../components/Project/ProjectsTable";
 import { Navbar } from "../../components/Navbar";
+import GenericTable from "../../components/GenericTable/GenericTable";
+import {
+  columnDefinitions,
+  visibleContent,
+} from "../../components/Project/TableConfig";
 
 export function ProjectsList() {
   const [projects, setProjects] = useState<Project[]>([]);
-
-  useEffect(() => {
-    fetchTableData();
-  }, []);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   function fetchTableData() {
     axios("http://localhost:3333/projects").then((response) => {
       setProjects(response.data);
     });
   }
+
+  useEffect(() => {
+    fetchTableData();
+  }, []);
 
   return (
     <AppLayout
@@ -56,7 +60,15 @@ export function ProjectsList() {
           }
         >
           <Container>
-            <ProjectsTable projects={projects} />
+            <GenericTable
+              allItems={projects}
+              columnDefinitions={columnDefinitions}
+              registryNameSingular={`projeto`}
+              registryNamePlural={`projetos`}
+              addRegistryLink={`/create`}
+              visibleContent={visibleContent}
+              setSelectedRegistries={setSelectedItems}
+            />
           </Container>
         </ContentLayout>
       }

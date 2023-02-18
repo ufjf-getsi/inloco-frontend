@@ -10,6 +10,7 @@ import {
   Header,
   Pagination,
   Table,
+  TableProps,
   TextFilter,
 } from "@cloudscape-design/components";
 import {
@@ -27,6 +28,7 @@ interface GenericTableProps {
   addRegistryLink: string;
   visibleContent: Array<string>;
   setSelectedRegistries: Function;
+  selectionType?: TableProps.SelectionType;
 }
 
 function EmptyState({
@@ -59,6 +61,7 @@ export default function GenericTable({
   addRegistryLink,
   visibleContent,
   setSelectedRegistries,
+  selectionType,
 }: GenericTableProps) {
   const [preferences, setPreferences] = useState({
     pageSize: 10,
@@ -106,9 +109,13 @@ export default function GenericTable({
     <Table
       {...collectionProps}
       items={items}
-      selectionType="multi"
+      selectionType={selectionType}
       columnDefinitions={columnDefinitions}
       visibleColumns={preferences.visibleContent}
+      stripedRows
+      trackBy="id"
+      wrapLines
+      variant="embedded"
       pagination={
         <Pagination {...paginationProps} ariaLabels={paginationLabels} />
       }
