@@ -15,12 +15,11 @@ import { CreateEquipment } from "./pages/Equipment/CreateEquipment";
 import { EditEquipment } from "./pages/Equipment/EditEquipment";
 import { ViewEquipment } from "./pages/Equipment/ViewEquipment";
 import { TasksList } from "./pages/Task/TasksList";
-
-import "@cloudscape-design/global-styles/index.css";
-import "./styles/main.css";
 import { CreateTask } from "./pages/Task/CreateTask";
 import { EditTask } from "./pages/Task/EditTask";
 import { ViewTask } from "./pages/Task/ViewTask";
+import "@cloudscape-design/global-styles/index.css";
+import "./styles/main.css";
 
 function App() {
   return (

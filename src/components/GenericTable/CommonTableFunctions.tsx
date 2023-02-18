@@ -38,7 +38,8 @@ const pageSizePreference = {
   title: "Selecione o tamanho da página",
   options: [
     { value: 10, label: "10 registros" },
-    { value: 20, label: "20 registros" },
+    { value: 25, label: "25 registros" },
+    { value: 50, label: "50 registros" },
   ],
 };
 
@@ -50,10 +51,10 @@ const visibleContentPreference = function (
     options: [
       {
         label: "Propriedades principais",
-        options: columnDefinitions.map(({ id, header }) => ({
+        options: columnDefinitions.map(({ id, header }, index) => ({
           id,
           label: header,
-          editable: id !== "id",
+          editable: !(id === "id" || index === 0 || index === 1),
         })),
       },
     ],
