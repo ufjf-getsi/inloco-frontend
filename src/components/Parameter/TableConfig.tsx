@@ -1,20 +1,22 @@
 import { Link } from "@cloudscape-design/components";
 import { createLabelFunction } from "./../GenericTable/CommonTableFunctions";
+import { formatDataType } from "./FormParameter";
 
 interface Item {
   id: string;
-  availabilityZone: string;
-  state: string;
+  name: string;
+  unit: string;
+  dataType: string;
 }
 
-export const visibleContent = ["id", "availabilityZone", "state"];
+export const visibleContent = ["name", "unit", "dataType"];
 
 export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
     cell: (item: Item) => (
-      <Link href={`#${item.id}`}>
+      <Link href={`parameters/${item.id}`}>
         <span className="font-bold">{item.id}</span>
       </Link>
     ),
@@ -22,17 +24,28 @@ export const columnDefinitions = [
     sortingField: "id",
   },
   {
-    id: "availabilityZone",
-    header: "Availability zone",
-    cell: (item: Item) => item.availabilityZone,
-    ariaLabel: createLabelFunction("Availability zone"),
-    sortingField: "availabilityZone",
+    id: "name",
+    header: "Nome",
+    cell: (item: Item) => (
+      <Link href={`parameters/${item.id}`}>
+        <span className="font-bold">{item.name}</span>
+      </Link>
+    ),
+    ariaLabel: createLabelFunction("Nome"),
+    sortingField: "name",
   },
   {
-    id: "state",
-    header: "State",
-    cell: (item: Item) => item.state,
-    ariaLabel: createLabelFunction("State"),
-    sortingField: "state",
+    id: "unit",
+    header: "Unidade",
+    cell: (item: Item) => item.unit,
+    ariaLabel: createLabelFunction("Unidade"),
+    sortingField: "unit",
+  },
+  {
+    id: "dataType",
+    header: "Tipo",
+    cell: (item: Item) => formatDataType(item.dataType),
+    ariaLabel: createLabelFunction("Tipo"),
+    sortingField: "dataType",
   },
 ];

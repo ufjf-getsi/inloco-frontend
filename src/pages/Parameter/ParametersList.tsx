@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Parameter } from "../../types";
-
 import { useEffect, useState } from "react";
+import { Parameter } from "../../types";
 
 import {
   AppLayout,
@@ -12,21 +11,25 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import { ParametersTable } from "../../components/Parameter/ParametersTable";
 import { Navbar } from "../../components/Navbar";
+import GenericTable from "../../components/GenericTable/GenericTable";
+import {
+  columnDefinitions,
+  visibleContent,
+} from "../../components/Parameter/TableConfig";
 
 export function ParametersList() {
   const [parameters, setParameters] = useState<Parameter[]>([]);
-
-  useEffect(() => {
-    fetchTableData();
-  }, []);
+  const [selectedParameters, setSelectedParameters] = useState([]);
 
   function fetchTableData() {
     axios("http://localhost:3333/parameters").then((response) => {
       setParameters(response.data);
     });
   }
+  useEffect(() => {
+    fetchTableData();
+  }, []);
 
   return (
     <AppLayout
@@ -56,7 +59,15 @@ export function ParametersList() {
           }
         >
           <Container>
-            <ParametersTable parameters={parameters} />
+            <GenericTable
+              allItems={parameters}
+              columnDefinitions={columnDefinitions}
+              registryNameSingular={`parâmetro`}
+              registryNamePlural={`parâmetros`}
+              addRegistryLink={`/create`}
+              visibleContent={visibleContent}
+              setSelectedRegistries={setSelectedParameters}
+            />
           </Container>
         </ContentLayout>
       }
