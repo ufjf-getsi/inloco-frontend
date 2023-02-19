@@ -13,6 +13,7 @@ export function ViewEquipment() {
     id: "",
     name: "Carregando...",
   });
+
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const modalConfig: GenericDeleteModalProps = {
@@ -24,6 +25,7 @@ export function ViewEquipment() {
     serverDeleteLink: `http://localhost:3333/equipment/${id}`,
     afterDeleteRedirectLink: "/equipment",
   };
+
   return (
     <GenericViewPage
       title={equipment.name}

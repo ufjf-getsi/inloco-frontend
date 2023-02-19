@@ -1,25 +1,11 @@
-import axios from "axios";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Parameter } from "../../types";
 
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import {
-  AppLayout,
-  ContentLayout,
-  BreadcrumbGroup,
-  Header,
-  SpaceBetween,
-  Button,
-} from "@cloudscape-design/components";
-import {
-  columnDefinitions,
-  visibleContent,
-} from "../../components/Parameter/TableConfig";
-import { DeleteParameterModal } from "../../components/Parameter/DeleteParameterModal";
-import { Navbar } from "../../components/Navbar";
+import { BreadcrumbGroup } from "@cloudscape-design/components";
+import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 import { formatDataType } from "../../components/Parameter/FormParameter";
-import GenericTable from "../../components/Generic/GenericTable/GenericTable";
 
 export function ViewParameter() {
   let { id } = useParams();
@@ -31,82 +17,26 @@ export function ViewParameter() {
     dataType: "",
     equipmentList: [],
   });
-  const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    fetchParameterData();
-  }, []);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  function fetchParameterData() {
-    axios(`http://localhost:3333/parameters/${id}`).then((response) => {
-      setParameter(response.data);
-    });
-  }
-
-  const allItems: {}[] = [
-    { id: "item1", availabilityZone: "Manaus", state: "Amazonas" },
-    { id: "item2", availabilityZone: "Belo Horizonte", state: "Minas Gerais" },
-    { id: "item3", availabilityZone: "São Paulo", state: "São Paulo" },
-    {
-      id: "item4",
-      availabilityZone: "Rio de Janeiro",
-      state: "Rio de Janeiro",
-    },
-    { id: "item5", availabilityZone: "Salvador", state: "Bahia" },
-    { id: "item6", availabilityZone: "Fortaleza", state: "Ceará" },
-  ];
-
-  const [selectedItems, setSelectedItems] = useState([]);
+  const modalConfig: GenericDeleteModalProps = {
+    visible: deleteModalVisible,
+    setVisible: setDeleteModalVisible,
+    recordCategory: "parâmetro",
+    recordName: parameter.name,
+    recordGenderFeminine: false,
+    serverDeleteLink: `http://localhost:3333/parameters/${id}`,
+    afterDeleteRedirectLink: "/parameters",
+  };
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h2"
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button
-                    iconName="edit"
-                    href={`/parameters/${parameter.id}/edit`}
-                  >
-                    Editar
-                  </Button>
-                  <Button iconName="close" onClick={() => setVisible(true)}>
-                    Excluir
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              {parameter.name + ` (${parameter.unit})`}
-              <span className="ml-4 font-light">
-                {`_ ` + formatDataType(parameter.dataType)}
-              </span>
-            </Header>
-          }
-        >
-          <GenericTable
-            allRecords={allItems}
-            columnDefinitions={columnDefinitions}
-            recordNameSingular={`equipamento`}
-            recordNamePlural={`equipamentos`}
-            addRecordLink={`/parameters/${parameter.id}/equipment`}
-            visibleContent={visibleContent}
-            setSelectedRecords={setSelectedItems}
-          />
-          <DeleteParameterModal
-            parameterId={parameter.id}
-            visible={visible}
-            setVisible={setVisible}
-            parameterName={parameter.name}
-          />
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericViewPage
+      title={parameter.name + ` (${parameter.unit})`}
+      description={`Tipo de dado: ${formatDataType(parameter.dataType)}`}
+      navbarActiveLink={`/parameters`}
+      setRecord={setParameter}
+      fetchRecordLink={`http://localhost:3333/parameters/${id}`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -117,6 +47,10 @@ export function ViewParameter() {
           ariaLabel="Breadcrumbs"
         />
       }
+      editRecordLink={`/parameters/${parameter.id}/edit`}
+      deleteModalVisible={deleteModalVisible}
+      setDeleteModalVisible={setDeleteModalVisible}
+      modal={modalConfig}
     />
   );
 }
