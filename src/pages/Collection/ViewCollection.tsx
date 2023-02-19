@@ -135,7 +135,7 @@ export function ViewCollection() {
               recordNamePlural={`pontos`}
               addRecordLink={`#createPoint`}
               visibleContent={visibleContent}
-              setSelectedRegistries={setSelectedPoints}
+              setSelectedRecords={setSelectedPoints}
             />
           </Container>
           <FormPoint

@@ -25,7 +25,7 @@ interface GenericViewPageProps {
   editRecordLink: string;
   deleteModalVisible: boolean;
   setDeleteModalVisible: Function;
-  table: GenericTableProps;
+  table?: GenericTableProps;
   modal: GenericDeleteModalProps;
 }
 
@@ -54,13 +54,6 @@ export default function GenericViewPage(
               description={props.description}
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
-                  {/* <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    href={`/projects/${project.id}/collections`}
-                  >
-                    Nova Coleta
-                  </Button> */}
                   <Button iconName="edit" href={props.editRecordLink}>
                     Editar
                   </Button>
@@ -78,22 +71,20 @@ export default function GenericViewPage(
           }
         >
           <Container>
-            <GenericTable
-              allRecords={props.table.allRecords}
-              columnDefinitions={props.table.columnDefinitions}
-              recordNameSingular={props.table.recordNameSingular}
-              recordNamePlural={props.table.recordNamePlural}
-              addRecordLink={props.table.addRecordLink}
-              visibleContent={props.table.visibleContent}
-              setSelectedRecords={props.table.setSelectedRecords}
-            />
+            {props.table && (
+              <GenericTable
+                allRecords={props.table.allRecords}
+                columnDefinitions={props.table.columnDefinitions}
+                recordNameSingular={props.table.recordNameSingular}
+                recordNamePlural={props.table.recordNamePlural}
+                addRecordLink={props.table.addRecordLink}
+                visibleContent={props.table.visibleContent}
+                setSelectedRecords={props.table.setSelectedRecords}
+              />
+            )}
             {props.children}
           </Container>
-          <GenericDeleteModal
-            {...props.modal}
-            alertText={`Proceder com esta ação deletará o projeto com todo o seu conteúdo,
-        incluindo todas as coletas e registros associados a si.`}
-          />
+          <GenericDeleteModal {...props.modal} />
         </ContentLayout>
       }
       headerSelector="#header"
