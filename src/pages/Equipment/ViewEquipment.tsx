@@ -1,20 +1,10 @@
-import axios from "axios";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Equipment } from "../../types";
 
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import {
-  AppLayout,
-  ContentLayout,
-  BreadcrumbGroup,
-  Header,
-  SpaceBetween,
-  Button,
-} from "@cloudscape-design/components";
-
-import { DeleteEquipmentModal } from "../../components/Equipment/DeleteEquipmentModal";
-import { Navbar } from "../../components/Navbar";
+import { BreadcrumbGroup } from "@cloudscape-design/components";
+import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 
 export function ViewEquipment() {
   let { id } = useParams();
@@ -23,62 +13,24 @@ export function ViewEquipment() {
     id: "",
     name: "Carregando...",
   });
-  const [visible, setVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  useEffect(() => {
-    fetchEquipmentData();
-  }, []);
-
-  function fetchEquipmentData() {
-    axios(`http://localhost:3333/equipment/${id}`).then((response) => {
-      setEquipment(response.data);
-    });
-  }
-
+  const modalConfig: GenericDeleteModalProps = {
+    visible: deleteModalVisible,
+    setVisible: setDeleteModalVisible,
+    recordCategory: "equipamento",
+    recordName: equipment.name,
+    recordGenderFeminine: false,
+    serverDeleteLink: `http://localhost:3333/equipment/${id}`,
+    afterDeleteRedirectLink: "/equipment",
+  };
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h2"
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  {/* <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    href={`/equipment/${equipment.id}/collections`}
-                  >
-                    Adicionar equipamento
-                  </Button> */}
-                  <Button
-                    iconName="edit"
-                    href={`/equipment/${equipment.id}/edit`}
-                  >
-                    Editar
-                  </Button>
-                  <Button iconName="close" onClick={() => setVisible(true)}>
-                    Excluir
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              {equipment.name}
-            </Header>
-          }
-        >
-          <DeleteEquipmentModal
-            equipmentId={equipment.id}
-            visible={visible}
-            setVisible={setVisible}
-            equipmentName={equipment.name}
-          />
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericViewPage
+      title={equipment.name}
+      description={""}
+      navbarActiveLink={`/equipment`}
+      setRecord={setEquipment}
+      fetchRecordLink={`http://localhost:3333/equipment/${id}`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -89,6 +41,10 @@ export function ViewEquipment() {
           ariaLabel="Breadcrumbs"
         />
       }
+      editRecordLink={`/equipment/${equipment.id}/edit`}
+      deleteModalVisible={deleteModalVisible}
+      setDeleteModalVisible={setDeleteModalVisible}
+      modal={modalConfig}
     />
   );
 }

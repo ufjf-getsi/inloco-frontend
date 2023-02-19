@@ -34,14 +34,14 @@ export function ViewProject() {
     setSelectedRecords: setSelectedCollections,
   };
 
-  const modal: GenericDeleteModalProps = {
+  const modalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
     recordCategory: "projeto",
     recordName: project.title,
     recordGenderFeminine: false,
     serverDeleteLink: `http://localhost:3333/projects/${id}`,
-    afterDeleteRedirectLink: "/",
+    afterDeleteRedirectLink: "/projects",
   };
 
   return (
@@ -65,7 +65,7 @@ export function ViewProject() {
       deleteModalVisible={deleteModalVisible}
       setDeleteModalVisible={setDeleteModalVisible}
       table={tableConfig}
-      modal={modal}
+      modal={modalConfig}
     />
   );
 }
