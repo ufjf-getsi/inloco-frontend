@@ -26,7 +26,7 @@ export function EquipmentList() {
       recordNamePlural={`equipamentos`}
       addRecordLink={`equipment/create`}
       visibleContent={visibleContent}
-      setSelectedRegistries={setSelectedEquipmentList}
+      setSelectedRecords={setSelectedEquipmentList}
       breadcrumbs={
         <BreadcrumbGroup
           items={[{ text: "Equipamentos", href: "#" }]}

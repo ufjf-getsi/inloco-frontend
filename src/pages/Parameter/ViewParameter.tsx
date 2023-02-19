@@ -96,7 +96,7 @@ export function ViewParameter() {
             recordNamePlural={`equipamentos`}
             addRecordLink={`/parameters/${parameter.id}/equipment`}
             visibleContent={visibleContent}
-            setSelectedRegistries={setSelectedItems}
+            setSelectedRecords={setSelectedItems}
           />
           <DeleteParameterModal
             parameterId={parameter.id}
