@@ -41,21 +41,7 @@ export default function GenericListPage(
       content={
         <ContentLayout
           header={
-            <Header
-              variant="h1"
-              description={props.description}
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    href={props.addRecordLink}
-                  >
-                    Registrar {props.recordNameSingular}
-                  </Button>
-                </SpaceBetween>
-              }
-            >
+            <Header variant="h1" description={props.description}>
               {props.title}
             </Header>
           }
@@ -68,7 +54,7 @@ export default function GenericListPage(
               recordNamePlural={props.recordNamePlural}
               addRecordLink={props.addRecordLink}
               visibleContent={props.visibleContent}
-              setSelectedRegistries={props.setSelectedRegistries}
+              setSelectedRecords={props.setSelectedRecords}
             />
             {props.children}
           </Container>

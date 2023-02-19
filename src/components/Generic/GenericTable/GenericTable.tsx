@@ -3,9 +3,11 @@ import { useCollection } from "@cloudscape-design/collection-hooks";
 import {
   Box,
   Button,
+  ButtonDropdown,
   CollectionPreferences,
   Header,
   Pagination,
+  SpaceBetween,
   Table,
   TableProps,
   TextFilter,
@@ -24,7 +26,7 @@ export interface GenericTableProps {
   recordNamePlural: string;
   addRecordLink: string;
   visibleContent: Array<string>;
-  setSelectedRegistries: Function;
+  setSelectedRecords: Function;
   selectionType?: TableProps.SelectionType;
 }
 
@@ -57,7 +59,7 @@ export default function GenericTable({
   recordNamePlural,
   addRecordLink,
   visibleContent,
-  setSelectedRegistries,
+  setSelectedRecords,
   selectionType,
 }: GenericTableProps) {
   const [preferences, setPreferences] = useState({
@@ -118,7 +120,7 @@ export default function GenericTable({
       }
       onSelectionChange={({ detail }) => {
         actions.setSelectedItems(detail.selectedItems);
-        setSelectedRegistries(detail.selectedItems);
+        setSelectedRecords(detail.selectedItems);
       }}
       header={
         <Header
@@ -126,6 +128,17 @@ export default function GenericTable({
             selectedItems?.length
               ? `(${selectedItems.length}/${allRecords.length})`
               : `(${allRecords.length})`
+          }
+          actions={
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button
+                iconName="add-plus"
+                variant="primary"
+                href={addRecordLink}
+              >
+                Novo
+              </Button>
+            </SpaceBetween>
           }
         >
           {recordNamePlural.charAt(0).toLocaleUpperCase() +

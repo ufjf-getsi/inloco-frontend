@@ -1,28 +1,18 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Project } from "../../types";
 
-import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Header,
-  SpaceBetween,
-  Button,
-} from "@cloudscape-design/components";
-import { DeleteProjectModal } from "../../components/Project/DeleteProjectModal";
-import { Navbar } from "../../components/Navbar";
-import GenericTable from "../../components/Generic/GenericTable/GenericTable";
+import { BreadcrumbGroup } from "@cloudscape-design/components";
+import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Collection/TableConfig";
+import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 
 export function ViewProject() {
   let { id } = useParams();
-  const navigate = useNavigate();
 
   const [project, setProject] = useState<Project>({
     id: "",
@@ -34,72 +24,33 @@ export function ViewProject() {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedCollections, setSelectedCollections] = useState([]);
 
-  function fetchProjectData() {
-    axios(`http://localhost:3333/projects/${id}`).then((response) => {
-      if (response.data) setProject(response.data);
-      else navigate("/projects");
-    });
-  }
-  useEffect(() => {
-    fetchProjectData();
-  }, []);
+  const tableConfig: GenericTableProps = {
+    allRecords: project.collections,
+    columnDefinitions: columnDefinitions,
+    recordNameSingular: `coleta`,
+    recordNamePlural: `coletas`,
+    addRecordLink: `/projects/${project.id}/collections`,
+    visibleContent: visibleContent,
+    setSelectedRecords: setSelectedCollections,
+  };
+
+  const modal: GenericDeleteModalProps = {
+    visible: deleteModalVisible,
+    setVisible: setDeleteModalVisible,
+    recordCategory: "projeto",
+    recordName: project.title,
+    recordGenderFeminine: false,
+    serverDeleteLink: `http://localhost:3333/projects/${id}`,
+    afterDeleteRedirectLink: "/",
+  };
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h2"
-              description={project.description}
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    href={`/projects/${project.id}/collections`}
-                  >
-                    Nova Coleta
-                  </Button>
-                  <Button iconName="edit" href={`/projects/${project.id}/edit`}>
-                    Editar
-                  </Button>
-                  <Button
-                    iconName="close"
-                    onClick={() => setDeleteModalVisible(true)}
-                  >
-                    Excluir
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              {project.title}
-            </Header>
-          }
-        >
-          <Container>
-            <GenericTable
-              allRecords={project.collections}
-              columnDefinitions={columnDefinitions}
-              recordNameSingular={`coleta`}
-              recordNamePlural={`coletas`}
-              addRecordLink={`/projects/${project.id}/collections`}
-              visibleContent={visibleContent}
-              setSelectedRegistries={setSelectedCollections}
-            />
-          </Container>
-          <DeleteProjectModal
-            projectId={project.id}
-            visible={deleteModalVisible}
-            setVisible={setDeleteModalVisible}
-            projectTitle={project.title}
-          />
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericViewPage
+      title={project.title}
+      description={project.description}
+      navbarActiveLink={`/projects`}
+      setRecord={setProject}
+      fetchRecordLink={`http://localhost:3333/projects/${id}`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -110,6 +61,11 @@ export function ViewProject() {
           ariaLabel="Breadcrumbs"
         />
       }
+      editRecordLink={`/projects/${project.id}/edit`}
+      deleteModalVisible={deleteModalVisible}
+      setDeleteModalVisible={setDeleteModalVisible}
+      table={tableConfig}
+      modal={modal}
     />
   );
 }

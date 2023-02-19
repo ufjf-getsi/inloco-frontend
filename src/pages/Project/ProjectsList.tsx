@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Project } from "../../types";
 
 import { BreadcrumbGroup } from "@cloudscape-design/components";
@@ -26,7 +25,7 @@ export function ProjectsList() {
       recordNamePlural={`projetos`}
       addRecordLink={`projects/create`}
       visibleContent={visibleContent}
-      setSelectedRegistries={setSelectedProjects}
+      setSelectedRecords={setSelectedProjects}
       breadcrumbs={
         <BreadcrumbGroup
           items={[{ text: "Projetos", href: "#" }]}

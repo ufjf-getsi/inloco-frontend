@@ -26,7 +26,7 @@ export function ParametersList() {
       recordNamePlural={`parâmetros`}
       addRecordLink={`parameters/create`}
       visibleContent={visibleContent}
-      setSelectedRegistries={setSelectedParameters}
+      setSelectedRecords={setSelectedParameters}
       breadcrumbs={
         <BreadcrumbGroup
           items={[{ text: "Parâmetros", href: "#" }]}
