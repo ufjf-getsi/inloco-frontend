@@ -65,18 +65,18 @@ export function TasksList() {
               <Tabs
                 tabs={[
                   {
-                    label: "Criadas",
-                    id: "created",
+                    label: "Pendentes",
+                    id: "pending",
                     content: <TasksTable tasks={tasks} />,
                   },
                   {
-                    label: "Atribuídas",
-                    id: "assigned",
+                    label: "Resolvidas",
+                    id: "resolved",
                     content: <TasksTable tasks={tasks} />,
                   },
                   {
-                    label: "Menções",
-                    id: "mentioned",
+                    label: "Fechadas",
+                    id: "closed",
                     content: <TasksTable tasks={tasks} />,
                   },
                 ]}

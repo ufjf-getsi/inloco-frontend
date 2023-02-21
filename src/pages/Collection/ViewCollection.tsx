@@ -8,7 +8,6 @@ import {
   ContentLayout,
   Header,
   Container,
-  TextContent,
   BreadcrumbGroup,
   SpaceBetween,
   Button,
@@ -24,6 +23,7 @@ import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Point/TableConfig";
+import { PlanningModal } from "../../components/PlanningModal";
 
 export function ViewCollection() {
   let { id } = useParams();
@@ -35,6 +35,7 @@ export function ViewCollection() {
     points: [],
   });
   const [pointModalVisible, setPointModalVisible] = useState(false);
+  const [planningModalVisible, setPlanningModalVisible] = useState(false);
   const [selectedPoint, setSelectedPoint] = useState(undefined);
   const [selectedPoints, setSelectedPoints] = useState([]);
 
@@ -106,6 +107,15 @@ export function ViewCollection() {
                     Novo Ponto
                   </Button>
                   <Button
+                    onClick={() => {
+                      setPlanningModalVisible(true);
+                    }}
+                    iconName="file"
+                    variant="primary"
+                  >
+                    Gerar planejamento
+                  </Button>
+                  <Button
                     iconName="edit"
                     href={`/collections/${collection.id}/edit`}
                   >
@@ -147,6 +157,10 @@ export function ViewCollection() {
             updateAlert={updateAlert}
             fetchCollectionData={fetchCollectionData}
             setDeleteModalVisible={setDeletePointModalVisible}
+          />
+          <PlanningModal
+            modalVisible={planningModalVisible}
+            setModalVisible={setPlanningModalVisible}
           />
           {selectedPoint && (
             <DeletePointModal
