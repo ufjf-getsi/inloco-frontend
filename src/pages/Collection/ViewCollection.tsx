@@ -159,6 +159,7 @@ export function ViewCollection() {
             setDeleteModalVisible={setDeletePointModalVisible}
           />
           <PlanningModal
+            points={collection.points}
             modalVisible={planningModalVisible}
             setModalVisible={setPlanningModalVisible}
           />
