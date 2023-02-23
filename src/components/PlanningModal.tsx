@@ -5,11 +5,25 @@ import SpaceBetween from "@cloudscape-design/components/space-between";
 import Button from "@cloudscape-design/components/button";
 import { Point } from "../types";
 import { TextContent } from "@cloudscape-design/components";
+import axios from "axios";
 
 interface PlanningModalProps {
+  collectionId: string;
   points: Point[];
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
+}
+
+async function handleClick(props: PlanningModalProps) {
+  for (const point of props.points) {
+    for (const measurement of point.measurements) {
+      await axios.post("http://localhost:3333/tasks", {
+        title: `Pegar equipamento para análise de ${measurement.parameter.name}`,
+        url: "url",
+        collectionId: props.collectionId,
+      });
+    }
+  }
 }
 
 export function PlanningModal(props: PlanningModalProps) {
@@ -21,8 +35,23 @@ export function PlanningModal(props: PlanningModalProps) {
       footer={
         <Box float="right">
           <SpaceBetween direction="horizontal" size="xs">
-            <Button variant="link">Cancelar</Button>
-            <Button variant="primary">Confirmar</Button>
+            <Button
+              onClick={() => {
+                props.setModalVisible(false);
+              }}
+              variant="link"
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => {
+                handleClick(props);
+                props.setModalVisible(false);
+              }}
+              variant="primary"
+            >
+              Confirmar
+            </Button>
           </SpaceBetween>
         </Box>
       }
