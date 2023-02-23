@@ -33,6 +33,7 @@ export function ViewCollection() {
     projectId: "",
     title: "Carregando...",
     points: [],
+    tasks: [],
   });
   const [pointModalVisible, setPointModalVisible] = useState(false);
   const [planningModalVisible, setPlanningModalVisible] = useState(false);
@@ -159,6 +160,7 @@ export function ViewCollection() {
             setDeleteModalVisible={setDeletePointModalVisible}
           />
           <PlanningModal
+            collectionId={collection.id}
             points={collection.points}
             modalVisible={planningModalVisible}
             setModalVisible={setPlanningModalVisible}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Task } from "../../types";
+import { Collection, Task } from "../../types";
 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -26,6 +26,7 @@ export function ViewTask() {
     title: "404",
     status: "null",
     url: "null",
+    collectionId: "",
   });
   const [visible, setVisible] = useState(false);
 
@@ -67,7 +68,7 @@ export function ViewTask() {
         >
           <Container>
             <TextContent>
-              <h2>(Link para tarefa)</h2>
+              <h2>Tarefa referente a coleta {task.collectionId}</h2>
             </TextContent>
           </Container>
           <DeleteTaskModal

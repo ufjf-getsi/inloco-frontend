@@ -13,6 +13,7 @@ export interface Collection {
   projectId: string;
   title: string;
   points: Point[];
+  tasks: Task[];
 }
 
 // Ponto
@@ -60,4 +61,5 @@ export interface Task {
   title: string;
   url: string;
   status: string;
+  collectionId: string;
 }

@@ -18,8 +18,11 @@ function TaskRow(props: TaskRowProps) {
   );
 
   return (
-    <tr onClick={() => handleClick(props.task.id)}>
-      <td className="font-bold">{props.task.title}</td>
+    <tr
+      onClick={() => handleClick(props.task.id)}
+      className="hover:cursor-pointer"
+    >
+      <td className="font-bold w-1/2">{props.task.title}</td>
     </tr>
   );
 }
@@ -29,5 +32,12 @@ export function TasksTable(props: TasksTableProps) {
     return <TaskRow key={task.id} task={task} />;
   });
 
-  return <table className="w-11/12 my-0 m-auto">{tableRowsList}</table>;
+  return (
+    <table className="w-11/12 my-0 m-auto table-fixed">
+      <colgroup>
+        <col className="w-1/2" />
+      </colgroup>
+      {tableRowsList}
+    </table>
+  );
 }
