@@ -18,12 +18,12 @@ import {
   collectionPreferencesProps,
   ColumnDefinitionInterface,
 } from "./CommonTableFunctions";
+import { ToUpperCase } from "../GenericFunctions";
+import { GenericRecordProps } from "../GenericInterfaces";
 
-export interface GenericTableProps {
+export interface GenericTableProps extends GenericRecordProps {
   allRecords: {}[];
   columnDefinitions: Array<ColumnDefinitionInterface>;
-  recordNameSingular: string;
-  recordNamePlural: string;
   addRecordLink: string;
   visibleContent: Array<string>;
   setSelectedRecords: Function;
@@ -55,8 +55,8 @@ function EmptyState({
 export default function GenericTable({
   allRecords,
   columnDefinitions,
-  recordNameSingular,
-  recordNamePlural,
+  recordCategorySingular,
+  recordCategoryPlural,
   addRecordLink,
   visibleContent,
   setSelectedRecords,
@@ -77,11 +77,11 @@ export default function GenericTable({
     filtering: {
       empty: (
         <EmptyState
-          title={`Nenhum ${recordNameSingular}`}
-          subtitle={`Não há ${recordNamePlural} para mostrar.`}
+          title={`Nenhum ${recordCategorySingular}`}
+          subtitle={`Não há ${recordCategoryPlural} para mostrar.`}
           action={
             <Button iconName="add-plus" variant="normal" href={addRecordLink}>
-              Adicionar {recordNameSingular}
+              Adicionar {recordCategorySingular}
             </Button>
           }
         />
@@ -141,8 +141,7 @@ export default function GenericTable({
             </SpaceBetween>
           }
         >
-          {recordNamePlural.charAt(0).toLocaleUpperCase() +
-            recordNamePlural.slice(1)}
+          {ToUpperCase(recordCategoryPlural)}
         </Header>
       }
       filter={
