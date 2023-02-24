@@ -7,13 +7,11 @@ import {
   Box,
   Alert,
 } from "@cloudscape-design/components";
+import { GenericRecordProps } from "./GenericInterfaces";
 
-export interface GenericDeleteModalProps {
+export interface GenericDeleteModalProps extends GenericRecordProps {
   visible: boolean;
   setVisible: Function;
-  recordCategory: string;
-  recordName: string;
-  recordGenderFeminine: boolean;
   questionText?: string;
   alertText?: string;
   serverDeleteLink: string;
@@ -29,7 +27,7 @@ export default function GenericDeleteModal(props: GenericDeleteModalProps) {
 
   const genericQuestionText = (
     <span>
-      Deseja excluir {recordGenderArticle} {props.recordCategory}
+      Deseja excluir {recordGenderArticle} {props.recordCategorySingular}
       <b> {props.recordName}</b> permanentemente? Esta operação não pode ser
       revertida.
     </span>
@@ -56,7 +54,7 @@ export default function GenericDeleteModal(props: GenericDeleteModalProps) {
           </SpaceBetween>
         </Box>
       }
-      header={`Exclusão de ${props.recordCategory}`}
+      header={`Exclusão de ${props.recordCategorySingular}`}
     >
       <p className="mb-2">
         {props.questionText ? props.questionText : genericQuestionText}
@@ -64,7 +62,7 @@ export default function GenericDeleteModal(props: GenericDeleteModalProps) {
       <Alert>
         {props.alertText
           ? props.alertText
-          : `Proceder com esta ação deletará ${recordGenderArticle} ${props.recordCategory} com todo o seu conteúdo,
+          : `Proceder com esta ação deletará ${recordGenderArticle} ${props.recordCategorySingular} com todo o seu conteúdo,
         incluindo todos os registros associados a si.`}
       </Alert>
     </Modal>

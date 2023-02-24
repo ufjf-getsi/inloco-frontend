@@ -32,13 +32,13 @@ interface GenericViewPageProps {
 export default function GenericViewPage(
   props: PropsWithChildren<GenericViewPageProps>
 ) {
-  function fetchTableData() {
+  function fetchRecordData() {
     axios(props.fetchRecordLink).then((response) => {
       props.setRecord(response.data);
     });
   }
   useEffect(() => {
-    fetchTableData();
+    fetchRecordData();
   }, []);
 
   return (
@@ -75,8 +75,9 @@ export default function GenericViewPage(
               <GenericTable
                 allRecords={props.table.allRecords}
                 columnDefinitions={props.table.columnDefinitions}
-                recordNameSingular={props.table.recordNameSingular}
-                recordNamePlural={props.table.recordNamePlural}
+                recordCategorySingular={props.table.recordCategorySingular}
+                recordCategoryPlural={props.table.recordCategoryPlural}
+                recordGenderFeminine={props.table.recordGenderFeminine}
                 addRecordLink={props.table.addRecordLink}
                 visibleContent={props.table.visibleContent}
                 setSelectedRecords={props.table.setSelectedRecords}
