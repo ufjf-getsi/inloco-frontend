@@ -1,4 +1,4 @@
-import { Project } from "../../types";
+import { Equipment } from "../../types";
 
 import {
   SpaceBetween,
@@ -11,8 +11,8 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 
 export interface Fields {
-  title: string;
-  description: string;
+  name: string;
+  // selectedOptions: SelectProps.Options;
 }
 
 interface FormFieldsProps {
@@ -27,20 +27,16 @@ interface ImplementedRecordFormProps
 }
 
 export const emptyFields: Fields = {
-  title: "",
-  description: "",
+  name: "",
 };
 
-export const notLoadedRecord: Project = {
+export const notLoadedRecord: Equipment = {
   id: "",
-  title: "Carregando...",
-  description: "Este projeto não está cadastrado no sistema.",
-  collections: [],
-  notes: [],
+  name: "Carregando...",
 };
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.title && inputValues.description) {
+  if (inputValues.name) {
     return true;
   } else return false;
 }
@@ -49,16 +45,19 @@ export function RecordForm(props: ImplementedRecordFormProps) {
   return (
     <GenericCreateAndEditPage
       edit={props.edit}
-      recordCategorySingular={`projeto`}
-      recordCategoryPlural={`projetos`}
+      recordCategorySingular={`equipamento`}
+      recordCategoryPlural={`equipamentos`}
       recordGenderFeminine={false}
-      description={`Um projeto é uma coleção que guarda registros de todas as coletas realizadas com um propósito em comum.`}
-      navbarActiveLink={`/projects`}
+      description={`Equipamentos disponíveis para as aferições no campo.`}
+      navbarActiveLink={`/equipment`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
-            { text: "Projetos", href: "/projects" },
-            { text: (props.edit ? `Editar` : `Criar`) + " projeto", href: "#" },
+            { text: "Equipamentos", href: "/equipment" },
+            {
+              text: (props.edit ? `Editar` : `Criar`) + " equipamento",
+              href: "#",
+            },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
@@ -81,28 +80,37 @@ export function RecordForm(props: ImplementedRecordFormProps) {
 function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
   return (
     <SpaceBetween size="l">
-      <FormField label="Nome">
+      <FormField label="Equipamento">
         <Input
-          value={inputValues.title}
+          value={inputValues.name}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
-              title: event.detail.value,
+              name: event.detail.value,
             }))
           }
         />
       </FormField>
-      <FormField label="Descrição">
-        <Input
-          value={inputValues.description}
-          onChange={(event) =>
-            setInputValues((prevState: Fields) => ({
-              ...prevState,
-              description: event.detail.value,
-            }))
-          }
-        />
-      </FormField>
+      {/* <FormField label="Parâmetro(s) medido(s)">
+            <Multiselect
+              selectedOptions={selectedOptions}
+              onChange={({ detail }) =>
+                setSelectedOptions(detail.selectedOptions)
+              }
+              deselectAriaLabel={(e) => `Remove ${e.label}`}
+              options={parameters}
+              loadingText="Carregando parâmetros"
+              placeholder="Selecione os parâmetros"
+              selectedAriaLabel="Selecionado"
+              statusType={
+                parameters
+                  ? parameters.length > 0
+                    ? "finished"
+                    : "loading"
+                  : "error"
+              }
+            />
+          </FormField> */}
     </SpaceBetween>
   );
 }
