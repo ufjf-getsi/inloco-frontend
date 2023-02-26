@@ -5,18 +5,15 @@ import { Parameter } from "../../types";
 import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
-import { formatDataType } from "../../components/Parameter/FormParameter";
+import {
+  formatDataType,
+  notLoadedRecord,
+} from "../../components/Parameter/GenericParameter";
 
 export function ViewParameter() {
   let { id } = useParams();
 
-  const [parameter, setParameter] = useState<Parameter>({
-    id: "",
-    name: "Carregando...",
-    unit: "",
-    dataType: "",
-    equipmentList: [],
-  });
+  const [parameter, setParameter] = useState<Parameter>(notLoadedRecord);
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
