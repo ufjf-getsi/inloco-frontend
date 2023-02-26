@@ -1,89 +1,74 @@
 import axios from "axios";
-import { Project } from "../../types";
+import { useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-
+import { AlertProps } from "@cloudscape-design/components";
 import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Alert,
-  AlertProps,
-} from "@cloudscape-design/components";
-import {
-  FormHeader,
-  FormConnection,
-} from "../../components/Project/FormProject";
-import { Navbar } from "../../components/Navbar";
+  validateFields,
+  emptyFields,
+  Fields,
+  RecordForm,
+} from "../../components/Project/GenericProject";
 
 export function EditProject() {
+  const navigate = useNavigate();
+  function cancelLoadAndRedirectBackwards(error: any) {
+    console.log(error);
+    navigate(`/projects/${id}`);
+  }
   let { id } = useParams();
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  const [alertText, setAlertText] = useState(
-    "O projeto foi editado com sucesso!"
-  );
-  const [project, setProject] = useState<Project>({
-    id: "",
-    title: "Carregando...",
-    description: "Este projeto não está cadastrado no sistema.",
-    collections: [],
-    notes: [],
-  });
 
+  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
+
+  function fetchRecordData() {
+    axios(`http://localhost:3333/projects/${id}`)
+      .then((response) => {
+        setInputValues({
+          title: response.data.title,
+          description: response.data.description,
+        });
+      })
+      .catch((error) => cancelLoadAndRedirectBackwards(error));
+  }
   useEffect(() => {
-    fetchProjectData();
+    fetchRecordData();
   }, []);
 
-  function fetchProjectData() {
-    axios(`http://localhost:3333/projects/${id}`).then((response) => {
-      setProject(response.data);
-    });
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (validateFields(inputValues)) {
+      // Send to the server
+      try {
+        await axios.patch(`http://localhost:3333/projects/${id}`, {
+          title: inputValues.title,
+          description: inputValues.description,
+        });
+        setAlertType("success");
+        setAlertVisible(true);
+        setTimeout(() => navigate(`/projects/${id}`), 1000);
+      } catch (error) {
+        console.log(error);
+        setAlertType("error");
+        setAlertVisible(true);
+      }
+    } else {
+      // Fazer alert para dados inválidos
+    }
   }
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout header={<FormHeader edit={true} />}>
-          <Container>
-            <FormConnection
-              edit={true}
-              project={project}
-              setAlertVisible={setAlertVisible}
-              setAlertType={setAlertType}
-              setAlertText={setAlertText}
-            />
-          </Container>
-          <Alert
-            onDismiss={() => setAlertVisible(false)}
-            visible={alertVisible}
-            dismissAriaLabel="Fechar alerta"
-            dismissible
-            type={alertType}
-            className="absolute right-0 w-fit mt-8 mr-8"
-          >
-            {alertText}
-          </Alert>
-        </ContentLayout>
-      }
-      headerSelector="#header"
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Projetos", href: "/projects" },
-            { text: "Projeto", href: "./" },
-            { text: "Editar projeto", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
+    <RecordForm
+      edit={true}
+      handleSubmit={handleSubmit}
+      alertType={alertType}
+      alertVisible={alertVisible}
+      setAlertVisible={setAlertVisible}
+      inputValues={inputValues}
+      setInputValues={setInputValues}
+      cancelRedirectLink={`/projects/${id}`}
     />
   );
 }

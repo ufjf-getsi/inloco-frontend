@@ -64,6 +64,7 @@ export function ViewProject() {
       }
       editRecordLink={`/projects/${project.id}/edit`}
       deleteModalVisible={deleteModalVisible}
+      previousPageLink={`/projects`}
       setDeleteModalVisible={setDeleteModalVisible}
       table={tableConfig}
       modal={modalConfig}

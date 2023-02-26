@@ -18,7 +18,7 @@ import {
   collectionPreferencesProps,
   ColumnDefinitionInterface,
 } from "./CommonTableFunctions";
-import { ToUpperCase } from "../GenericFunctions";
+import { toUpperCase } from "../GenericFunctions";
 import { GenericRecordProps } from "../GenericInterfaces";
 
 export interface GenericTableProps extends GenericRecordProps {
@@ -141,7 +141,7 @@ export default function GenericTable({
             </SpaceBetween>
           }
         >
-          {ToUpperCase(recordCategoryPlural)}
+          {toUpperCase(recordCategoryPlural)}
         </Header>
       }
       filter={
