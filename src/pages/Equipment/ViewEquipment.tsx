@@ -5,14 +5,12 @@ import { Equipment } from "../../types";
 import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import { notLoadedRecord } from "../../components/Equipment/GenericEquipment";
 
 export function ViewEquipment() {
   let { id } = useParams();
 
-  const [equipment, setEquipment] = useState<Equipment>({
-    id: "",
-    name: "Carregando...",
-  });
+  const [equipment, setEquipment] = useState<Equipment>(notLoadedRecord);
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 

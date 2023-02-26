@@ -89,7 +89,10 @@ export function RecordForm(props: ImplementedRecordFormProps) {
         <BreadcrumbGroup
           items={[
             { text: "Parâmetros", href: "/parameters" },
-            { text: props.edit ? `Editar` : `Criar` + " parâmetro", href: "#" },
+            {
+              text: (props.edit ? `Editar` : `Criar`) + " parâmetro",
+              href: "#",
+            },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
