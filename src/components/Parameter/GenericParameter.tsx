@@ -1,18 +1,25 @@
-import { Project } from "../../types";
+import { Parameter } from "../../types";
 
 import {
   SpaceBetween,
   FormField,
   Input,
   BreadcrumbGroup,
+  Select,
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 export interface Fields {
-  title: string;
-  description: string;
+  name: string;
+  unit: string;
+  dataType: Option;
 }
 
 interface FormFieldsProps {
@@ -26,21 +33,45 @@ interface ImplementedRecordFormProps
   cancelRedirectLink: string;
 }
 
+const options: Array<Option> = [
+  {
+    label: "Real",
+    value: "real",
+  },
+  {
+    label: "Inteiro",
+    value: "integer",
+  },
+  {
+    label: "Texto",
+    value: "text",
+  },
+];
+
 export const emptyFields: Fields = {
-  title: "",
-  description: "",
+  name: "",
+  unit: "",
+  dataType: options[0],
 };
 
-export const notLoadedRecord: Project = {
+export const notLoadedRecord: Parameter = {
   id: "",
-  title: "Carregando...",
-  description: "Este projeto não está cadastrado no sistema.",
-  collections: [],
-  notes: [],
+  name: "Carregando...",
+  unit: "",
+  dataType: "",
+  equipmentList: [],
 };
+
+export function formatDataType(dataType: string): string {
+  return (
+    options.find((option) => {
+      return option.value === dataType;
+    })?.label ?? dataType
+  );
+}
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.title && inputValues.description) {
+  if (inputValues.name && inputValues.dataType.value) {
     return true;
   } else return false;
 }
@@ -49,16 +80,16 @@ export function RecordForm(props: ImplementedRecordFormProps) {
   return (
     <GenericCreateAndEditPage
       edit={props.edit}
-      recordCategorySingular={`projeto`}
-      recordCategoryPlural={`projetos`}
+      recordCategorySingular={`parâmetro`}
+      recordCategoryPlural={`parâmetros`}
       recordGenderFeminine={false}
-      description={`Um projeto é uma coleção que guarda registros de todas as coletas realizadas com um propósito em comum.`}
-      navbarActiveLink={`/projects`}
+      description={`Um parâmetro é a característica que se pretende aferir de determinado ponto.`}
+      navbarActiveLink={`/parameters`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
-            { text: "Projetos", href: "/projects" },
-            { text: props.edit ? `Editar` : `Criar` + " projeto", href: "#" },
+            { text: "Parâmetros", href: "/parameters" },
+            { text: props.edit ? `Editar` : `Criar` + " parâmetro", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
@@ -81,26 +112,41 @@ export function RecordForm(props: ImplementedRecordFormProps) {
 function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
   return (
     <SpaceBetween size="l">
-      <FormField label="Nome">
+      <FormField label="Parâmetro">
         <Input
-          value={inputValues.title}
+          value={inputValues.name}
+          placeholder={`Nome do parâmetro`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
-              title: event.detail.value,
+              name: event.detail.value,
             }))
           }
         />
       </FormField>
-      <FormField label="Descrição">
+      <FormField label="Unidade">
         <Input
-          value={inputValues.description}
+          value={inputValues.unit}
+          placeholder={`N/A`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
-              description: event.detail.value,
+              unit: event.detail.value,
             }))
           }
+        />
+      </FormField>
+      <FormField label="Medida">
+        <Select
+          selectedOption={inputValues.dataType}
+          onChange={({ detail }) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              dataType: detail.selectedOption,
+            }))
+          }
+          options={options}
+          selectedAriaLabel="Selected"
         />
       </FormField>
     </SpaceBetween>

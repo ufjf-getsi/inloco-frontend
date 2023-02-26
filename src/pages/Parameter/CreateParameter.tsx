@@ -1,63 +1,56 @@
-import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { FormEvent, useState } from "react";
 
+import { AlertProps } from "@cloudscape-design/components";
 import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Alert,
-  AlertProps,
-} from "@cloudscape-design/components";
-import {
-  FormHeader,
-  FormConnection,
-} from "../../components/Parameter/FormParameter";
-import { Navbar } from "../../components/Navbar";
+  emptyFields,
+  RecordForm,
+  validateFields,
+} from "../../components/Parameter/GenericParameter";
+import { Fields } from "../../components/Parameter/GenericParameter";
 
 export function CreateParameter() {
+  const navigate = useNavigate();
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  const [alertText, setAlertText] = useState(
-    "O parâmetro foi criado com sucesso!"
-  );
+
+  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (validateFields(inputValues)) {
+      // Send to the server
+      try {
+        await axios.post("http://localhost:3333/parameters", {
+          name: inputValues.name,
+          unit: inputValues.unit === "" ? "N/A" : inputValues.unit,
+          dataType: inputValues.dataType.value,
+        });
+        setAlertType("success");
+        setAlertVisible(true);
+        setTimeout(() => navigate("/parameters"), 1000);
+      } catch (error) {
+        console.log(error);
+        setAlertType("error");
+        setAlertVisible(true);
+      }
+    } else {
+      // Fazer alert para dados inválidos
+    }
+  }
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout header={<FormHeader />}>
-          <Container>
-            <FormConnection
-              setAlertVisible={setAlertVisible}
-              setAlertType={setAlertType}
-              setAlertText={setAlertText}
-            />
-          </Container>
-          <Alert
-            onDismiss={() => setAlertVisible(false)}
-            visible={alertVisible}
-            dismissAriaLabel="Fechar alerta"
-            dismissible
-            type={alertType}
-            className="absolute right-0 w-fit mt-8 mr-8"
-          >
-            {alertText}
-          </Alert>
-        </ContentLayout>
-      }
-      headerSelector="#header"
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Parâmetros", href: "/parameters" },
-            { text: "Criar parâmetros", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
+    <RecordForm
+      edit={false}
+      handleSubmit={handleSubmit}
+      alertType={alertType}
+      alertVisible={alertVisible}
+      setAlertVisible={setAlertVisible}
+      inputValues={inputValues}
+      setInputValues={setInputValues}
+      cancelRedirectLink={`/projects`}
     />
   );
 }

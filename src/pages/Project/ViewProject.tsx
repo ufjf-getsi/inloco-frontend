@@ -10,17 +10,12 @@ import {
 } from "../../components/Collection/TableConfig";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import { notLoadedRecord } from "../../components/Project/GenericProject";
 
 export function ViewProject() {
   let { id } = useParams();
 
-  const [project, setProject] = useState<Project>({
-    id: "",
-    title: "Carregando...",
-    description: "Este projeto não está cadastrado no sistema.",
-    collections: [],
-    notes: [],
-  });
+  const [project, setProject] = useState<Project>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedCollections, setSelectedCollections] = useState([]);
 
