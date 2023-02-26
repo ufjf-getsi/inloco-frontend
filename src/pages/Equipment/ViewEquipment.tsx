@@ -19,7 +19,8 @@ export function ViewEquipment() {
   const modalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
-    recordCategory: "equipamento",
+    recordCategorySingular: "equipamento",
+    recordCategoryPlural: "equipamentos",
     recordName: equipment.name,
     recordGenderFeminine: false,
     serverDeleteLink: `http://localhost:3333/equipment/${id}`,

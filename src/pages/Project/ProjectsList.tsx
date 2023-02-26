@@ -21,8 +21,9 @@ export function ProjectsList() {
       setRecords={setProjects}
       fetchRecordsLink={`http://localhost:3333/projects`}
       columnDefinitions={columnDefinitions}
-      recordNameSingular={`projeto`}
-      recordNamePlural={`projetos`}
+      recordCategorySingular={`projeto`}
+      recordCategoryPlural={`projetos`}
+      recordGenderFeminine={false}
       addRecordLink={`projects/create`}
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedProjects}

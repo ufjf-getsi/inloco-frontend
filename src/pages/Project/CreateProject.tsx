@@ -1,53 +1,55 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
+import { BreadcrumbGroup, AlertProps } from "@cloudscape-design/components";
 import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Alert,
-  AlertProps,
-} from "@cloudscape-design/components";
-import {
-  FormHeader,
-  FormConnection,
+  Fields,
+  emptyFields,
+  FormFields,
 } from "../../components/Project/FormProject";
-import { Navbar } from "../../components/Navbar";
+import GenericCreateAndEditPage from "../../components/Generic/GenericPages/GenericCreateAndEditPage";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function CreateProject() {
+  const navigate = useNavigate();
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  const [alertText, setAlertText] = useState(
-    "O projeto foi criado com sucesso!"
-  );
+
+  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+
+    // Validation
+    if (!inputValues.title || !inputValues.description) {
+      return;
+    }
+
+    // Send to the server
+    try {
+      await axios.post("http://localhost:3333/projects", {
+        title: inputValues.title,
+        description: inputValues.description,
+      });
+      setAlertType("success");
+      setAlertVisible(true);
+      setTimeout(() => navigate("/"), 1000);
+    } catch (error) {
+      console.log(error);
+      setAlertType("error");
+      setAlertVisible(true);
+    }
+  }
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout header={<FormHeader />}>
-          <Container>
-            <FormConnection
-              setAlertVisible={setAlertVisible}
-              setAlertType={setAlertType}
-              setAlertText={setAlertText}
-            />
-          </Container>
-          <Alert
-            onDismiss={() => setAlertVisible(false)}
-            visible={alertVisible}
-            dismissAriaLabel="Fechar alerta"
-            dismissible
-            type={alertType}
-            className="absolute right-0 w-fit mt-8 mr-8"
-          >
-            {alertText}
-          </Alert>
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericCreateAndEditPage
+      edit={false}
+      recordCategorySingular={`projeto`}
+      recordCategoryPlural={`projetos`}
+      recordGenderFeminine={false}
+      description={`Um projeto é uma coleção que guarda registros de todas as coletas realizadas com um propósito em comum.`}
+      navbarActiveLink={`/projects`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -58,6 +60,13 @@ export function CreateProject() {
           ariaLabel="Breadcrumbs"
         />
       }
-    />
+      cancelRedirectLink={`/projects`}
+      handleSubmit={handleSubmit}
+      alertVisible={alertVisible}
+      setAlertVisible={setAlertVisible}
+      alertType={alertType}
+    >
+      <FormFields inputValues={inputValues} setInputValues={setInputValues} />
+    </GenericCreateAndEditPage>
   );
 }

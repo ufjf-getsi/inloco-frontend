@@ -6,8 +6,6 @@ import {
   ContentLayout,
   Container,
   Header,
-  SpaceBetween,
-  Button,
 } from "@cloudscape-design/components";
 import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
 import { Navbar } from "../../Navbar";
@@ -50,8 +48,9 @@ export default function GenericListPage(
             <GenericTable
               allRecords={props.allRecords}
               columnDefinitions={props.columnDefinitions}
-              recordNameSingular={props.recordNameSingular}
-              recordNamePlural={props.recordNamePlural}
+              recordCategorySingular={props.recordCategorySingular}
+              recordCategoryPlural={props.recordCategoryPlural}
+              recordGenderFeminine={props.recordGenderFeminine}
               addRecordLink={props.addRecordLink}
               visibleContent={props.visibleContent}
               setSelectedRecords={props.setSelectedRecords}

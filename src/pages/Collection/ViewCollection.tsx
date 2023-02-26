@@ -142,8 +142,9 @@ export function ViewCollection() {
                 setSelectedPoint,
                 setPointModalVisible
               )}
-              recordNameSingular={`ponto`}
-              recordNamePlural={`pontos`}
+              recordCategorySingular={`ponto`}
+              recordCategoryPlural={`pontos`}
+              recordGenderFeminine={false}
               addRecordLink={`#createPoint`}
               visibleContent={visibleContent}
               setSelectedRecords={setSelectedPoints}
