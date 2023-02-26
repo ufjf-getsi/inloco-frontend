@@ -1,5 +1,4 @@
-import axios from "axios";
-import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
 import {
   AppLayout,
@@ -13,60 +12,34 @@ import {
   AlertProps,
 } from "@cloudscape-design/components";
 import { Navbar } from "../../Navbar";
-import { ToUpperCase } from "../GenericFunctions";
+import { toUpperCase } from "../GenericFunctions";
 import { GenericRecordProps } from "../GenericInterfaces";
 
-interface GenericCreatePageProps extends GenericRecordProps {
-  edit: false;
-  description: string;
-  navbarActiveLink: string;
-  breadcrumbs: ReactNode;
-  cancelRedirectLink: string;
+export interface GenericRecordFormProps {
+  edit: boolean;
   handleSubmit: Function;
   alertVisible: boolean;
   setAlertVisible: Function;
   alertType: AlertProps.Type;
 }
 
-interface GenericEditPageProps extends GenericRecordProps {
-  edit: true;
+interface GenericCreateAndEditPageProps
+  extends GenericRecordProps,
+    GenericRecordFormProps {
   description: string;
   navbarActiveLink: string;
   breadcrumbs: ReactNode;
   cancelRedirectLink: string;
-  handleSubmit: Function;
-  alertVisible: boolean;
-  setAlertVisible: Function;
-  alertType: AlertProps.Type;
-  setRecord: Function;
-  fetchRecordLink: string;
 }
-
-type GenericCreateAndEditPageProps =
-  | GenericCreatePageProps
-  | GenericEditPageProps;
 
 export default function GenericCreateAndEditPage(
   props: PropsWithChildren<GenericCreateAndEditPageProps>
 ) {
-  if (props.edit) {
-    const fetchRecordLink = props.fetchRecordLink;
-    const setRecord = props.setRecord;
-    function fetchRecordData() {
-      axios(fetchRecordLink).then((response) => {
-        setRecord(response.data);
-      });
-    }
-    useEffect(() => {
-      fetchRecordData();
-    }, []);
-  }
-
   const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";
 
   const alertText =
     props.alertType === "success"
-      ? `${ToUpperCase(recordGenderArticle)} ${
+      ? `${toUpperCase(recordGenderArticle)} ${
           props.recordCategorySingular
         } foi ${props.edit ? "editado" : "criado"} com sucesso!`
       : `Não foi possível ${

@@ -49,6 +49,7 @@ export function ViewParameter() {
         />
       }
       editRecordLink={`/parameters/${parameter.id}/edit`}
+      previousPageLink={`/parameters`}
       deleteModalVisible={deleteModalVisible}
       setDeleteModalVisible={setDeleteModalVisible}
       modal={modalConfig}

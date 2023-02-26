@@ -45,6 +45,7 @@ export function ViewEquipment() {
         />
       }
       editRecordLink={`/equipment/${equipment.id}/edit`}
+      previousPageLink={`/equipment`}
       deleteModalVisible={deleteModalVisible}
       setDeleteModalVisible={setDeleteModalVisible}
       modal={modalConfig}

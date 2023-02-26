@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { PropsWithChildren, ReactNode, useEffect } from "react";
 
 import {
@@ -23,6 +24,7 @@ interface GenericViewPageProps {
   setRecord: Function;
   fetchRecordLink: string;
   editRecordLink: string;
+  previousPageLink?: string;
   deleteModalVisible: boolean;
   setDeleteModalVisible: Function;
   table?: GenericTableProps;
@@ -32,10 +34,22 @@ interface GenericViewPageProps {
 export default function GenericViewPage(
   props: PropsWithChildren<GenericViewPageProps>
 ) {
+  const navigate = useNavigate();
+  function cancelLoadAndRedirectBackwards(error: any) {
+    console.log(error);
+    navigate(props.previousPageLink ?? `/`);
+  }
+
   function fetchRecordData() {
-    axios(props.fetchRecordLink).then((response) => {
-      props.setRecord(response.data);
-    });
+    axios(props.fetchRecordLink)
+      .then((response) => {
+        if (response.data) {
+          props.setRecord(response.data);
+        } else {
+          cancelLoadAndRedirectBackwards("404: Not Found");
+        }
+      })
+      .catch((error) => cancelLoadAndRedirectBackwards(error));
   }
   useEffect(() => {
     fetchRecordData();
