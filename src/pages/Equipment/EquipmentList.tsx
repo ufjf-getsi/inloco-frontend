@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Equipment } from "../../types";
 
 import { BreadcrumbGroup } from "@cloudscape-design/components";
@@ -22,8 +21,9 @@ export function EquipmentList() {
       setRecords={setEquipmentArray}
       fetchRecordsLink={`http://localhost:3333/equipment`}
       columnDefinitions={columnDefinitions}
-      recordNameSingular={`equipamento`}
-      recordNamePlural={`equipamentos`}
+      recordCategorySingular={`equipamento`}
+      recordCategoryPlural={`equipamentos`}
+      recordGenderFeminine={false}
       addRecordLink={`equipment/create`}
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedEquipmentList}

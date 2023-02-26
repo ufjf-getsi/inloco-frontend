@@ -18,7 +18,6 @@ import { GenericRecordProps } from "../GenericInterfaces";
 
 interface GenericCreatePageProps extends GenericRecordProps {
   edit: false;
-  title: string;
   description: string;
   navbarActiveLink: string;
   breadcrumbs: ReactNode;
@@ -31,7 +30,6 @@ interface GenericCreatePageProps extends GenericRecordProps {
 
 interface GenericEditPageProps extends GenericRecordProps {
   edit: true;
-  title: string;
   description: string;
   navbarActiveLink: string;
   breadcrumbs: ReactNode;
@@ -86,7 +84,7 @@ export default function GenericCreateAndEditPage(
         <ContentLayout
           header={
             <Header variant="h2" description={props.description}>
-              {props.title}
+              {props.edit ? `Editar` : `Criar`} {props.recordCategorySingular}
             </Header>
           }
         >
@@ -104,7 +102,7 @@ export default function GenericCreateAndEditPage(
                     </Button>
                     <Button variant="primary">
                       {props.edit ? `Editar` : `Criar`}{" "}
-                      {ToUpperCase(props.recordCategorySingular)}
+                      {props.recordCategorySingular}
                     </Button>
                   </SpaceBetween>
                 }

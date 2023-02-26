@@ -27,8 +27,9 @@ export function ViewProject() {
   const tableConfig: GenericTableProps = {
     allRecords: project.collections,
     columnDefinitions: columnDefinitions,
-    recordNameSingular: `coleta`,
-    recordNamePlural: `coletas`,
+    recordCategorySingular: `coleta`,
+    recordCategoryPlural: `coletas`,
+    recordGenderFeminine: true,
     addRecordLink: `/projects/${project.id}/collections`,
     visibleContent: visibleContent,
     setSelectedRecords: setSelectedCollections,
@@ -37,8 +38,8 @@ export function ViewProject() {
   const modalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
-    recordCategory: "projeto",
-    recordName: project.title,
+    recordCategorySingular: "projeto",
+    recordCategoryPlural: "projetos",
     recordGenderFeminine: false,
     serverDeleteLink: `http://localhost:3333/projects/${id}`,
     afterDeleteRedirectLink: "/projects",

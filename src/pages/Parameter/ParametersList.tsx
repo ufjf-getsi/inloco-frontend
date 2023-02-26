@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Parameter } from "../../types";
 
 import { BreadcrumbGroup } from "@cloudscape-design/components";
@@ -22,8 +21,9 @@ export function ParametersList() {
       setRecords={setParameters}
       fetchRecordsLink={`http://localhost:3333/parameters`}
       columnDefinitions={columnDefinitions}
-      recordNameSingular={`parâmetro`}
-      recordNamePlural={`parâmetros`}
+      recordCategorySingular={`parâmetro`}
+      recordCategoryPlural={`parâmetros`}
+      recordGenderFeminine={false}
       addRecordLink={`parameters/create`}
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedParameters}

@@ -23,7 +23,8 @@ export function ViewParameter() {
   const modalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
-    recordCategory: "parâmetro",
+    recordCategorySingular: "parâmetro",
+    recordCategoryPlural: "parâmetros",
     recordName: parameter.name,
     recordGenderFeminine: false,
     serverDeleteLink: `http://localhost:3333/parameters/${id}`,

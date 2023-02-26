@@ -35,17 +35,19 @@ interface FormBodyProps extends FormConnectionSpecificProps {
   handleSubmit: Function;
 }
 
-interface Fields {
+interface FormFieldsProps {
+  inputValues: Fields;
+  setInputValues: Function;
+}
+
+export interface Fields {
   title: string;
   description: string;
 }
 
-FormHeader.defaultProps = {
-  edit: false,
-};
-
-FormConnection.defaultProps = {
-  edit: false,
+export const emptyFields: Fields = {
+  title: "",
+  description: "",
 };
 
 // Excluir
@@ -204,5 +206,34 @@ export function FormBody({
         </SpaceBetween>
       </Form>
     </form>
+  );
+}
+
+export function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
+  return (
+    <SpaceBetween size="l">
+      <FormField label="Nome">
+        <Input
+          value={inputValues.title}
+          onChange={(event) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              title: event.detail.value,
+            }))
+          }
+        />
+      </FormField>
+      <FormField label="Descrição">
+        <Input
+          value={inputValues.description}
+          onChange={(event) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              description: event.detail.value,
+            }))
+          }
+        />
+      </FormField>
+    </SpaceBetween>
   );
 }
