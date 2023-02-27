@@ -9,6 +9,7 @@ import { notLoadedRecord } from "../../components/Point/GenericPoint";
 import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
+  Item,
   visibleContent,
 } from "../../components/Measurement/TableConfig";
 
@@ -27,7 +28,14 @@ export default function ViewPoint() {
   const [selectedMeasurements, setSelectedMeasurements] = useState([]);
 
   const tableConfig: GenericTableProps = {
-    allRecords: point.measurements,
+    allRecords: point.measurements.map((measurement): Item => {
+      return {
+        id: measurement.id,
+        parameterName: measurement.parameter.name,
+        isPending: measurement.isPending,
+        result: measurement.result,
+      };
+    }),
     columnDefinitions: columnDefinitions,
     recordCategorySingular: `medição`,
     recordCategoryPlural: `medições`,

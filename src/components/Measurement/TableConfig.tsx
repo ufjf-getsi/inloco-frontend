@@ -1,14 +1,20 @@
-import { Measurement } from "../../types";
 import { Link } from "@cloudscape-design/components";
 import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunctions";
 
-export const visibleContent = ["parameterName", "pendency", "result"];
+export interface Item {
+  id: string;
+  parameterName: string;
+  isPending: boolean;
+  result: string;
+}
+
+export const visibleContent = ["parameterName", "isPending", "result"];
 
 export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
-    cell: (item: Measurement) => (
+    cell: (item: Item) => (
       <Link href={`#`}>
         <span className="font-bold">{item.id}</span>
       </Link>
@@ -19,25 +25,25 @@ export const columnDefinitions = [
   {
     id: "parameterName",
     header: "Nome",
-    cell: (item: Measurement) => (
+    cell: (item: Item) => (
       <Link href={`#`}>
-        <span className="font-bold">{item.parameter.name}</span>
+        <span className="font-bold">{item.parameterName}</span>
       </Link>
     ),
     ariaLabel: createLabelFunction("Nome"),
     sortingField: "parameterName",
   },
   {
-    id: "pendency",
+    id: "isPending",
     header: "Feito",
-    cell: (item: Measurement) => (item.isPending ? "Não" : "Sim"),
+    cell: (item: Item) => (item.isPending ? "Não" : "Sim"),
     ariaLabel: createLabelFunction("Feito"),
-    sortingField: "pendency",
+    sortingField: "isPending",
   },
   {
     id: "result",
     header: "Resultado",
-    cell: (item: Measurement) => (item.result !== "" ? item.result : "---"),
+    cell: (item: Item) => (item.result !== "" ? item.result : "---"),
     ariaLabel: createLabelFunction("Resultado"),
     sortingField: "result",
   },
