@@ -19,6 +19,7 @@ export interface Collection {
 // Ponto
 export interface Point {
   id: string;
+  collectionId: string;
   name: string;
   coordinates?: string;
   measurements: Measurement[];
@@ -27,7 +28,7 @@ export interface Point {
 // Medição (leitura)
 export interface Measurement {
   id: string;
-  pendency: boolean;
+  isPending: boolean;
   result: string;
   parameter: Parameter;
 }

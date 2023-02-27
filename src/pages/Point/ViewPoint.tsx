@@ -1,98 +1,91 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { Collection } from "../../types";
+import { Point } from "../../types";
 
-import { BreadcrumbGroup, Button } from "@cloudscape-design/components";
+import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import { notLoadedRecord } from "../../components/Collection/GenericCollection";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import { notLoadedRecord } from "../../components/Point/GenericPoint";
 import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   visibleContent,
-} from "../../components/Point/TableConfig";
-import PlanningModal from "../../components/PlanningModal";
+} from "../../components/Measurement/TableConfig";
 
-export default function ViewCollection() {
+interface PointWithProjectId extends Point {
+  projectId: string;
+}
+
+export default function ViewPoint() {
   const { id } = useParams();
 
-  const [collection, setCollection] = useState<Collection>(notLoadedRecord);
+  const [point, setPoint] = useState<PointWithProjectId>({
+    projectId: "",
+    ...notLoadedRecord,
+  });
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [planningModalVisible, setPlanningModalVisible] = useState(false);
-  const [selectedPoints, setSelectedPoints] = useState([]);
+  const [selectedMeasurements, setSelectedMeasurements] = useState([]);
 
   const tableConfig: GenericTableProps = {
-    allRecords: collection.points,
+    allRecords: point.measurements,
     columnDefinitions: columnDefinitions,
-    recordCategorySingular: `ponto`,
-    recordCategoryPlural: `pontos`,
-    recordGenderFeminine: false,
-    addRecordLink: `/collections/${collection.id}/createPoint`,
+    recordCategorySingular: `medição`,
+    recordCategoryPlural: `medições`,
+    recordGenderFeminine: true,
     visibleContent: visibleContent,
-    setSelectedRecords: setSelectedPoints,
+    setSelectedRecords: setSelectedMeasurements,
   };
 
   const deleteModalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
-    recordCategorySingular: "coleta",
-    recordCategoryPlural: "coletas",
-    recordGenderFeminine: true,
-    serverDeleteLink: `http://localhost:3333/collections/${id}`,
-    afterDeleteRedirectLink: `/projects/${collection.projectId}`,
-    alertText: `Proceder com esta ação deletará a coleta com todo o seu conteúdo,
-    incluindo todos os pontos e registros associados a si.`,
+    recordCategorySingular: "ponto",
+    recordCategoryPlural: "pontos",
+    recordGenderFeminine: false,
+    serverDeleteLink: `http://localhost:3333/points/${id}`,
+    afterDeleteRedirectLink: `/collections/${point.collectionId}`,
   };
+
+  const projectBreadcrumbLink = `/projects${
+    point.projectId && point.projectId !== "" ? "/" + point.projectId : ""
+  }`;
+  const collectionBreadcrumbLink =
+    point.projectId &&
+    point.projectId !== "" &&
+    point.collectionId &&
+    point.collectionId !== ""
+      ? `/collections/${point.collectionId}`
+      : "/projects";
 
   return (
     <GenericViewPage
-      title={collection.title}
-      description={""}
+      title={point.name}
+      description={point.coordinates ?? ""}
       navbarActiveLink={`/projects`}
-      setRecord={setCollection}
-      fetchRecordLink={`http://localhost:3333/collections/${id}`}
+      setRecord={setPoint}
+      fetchRecordLink={`http://localhost:3333/points/${id}`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
             { text: "Projetos", href: "/projects" },
             {
               text: "Projeto",
-              href: `/${
-                collection.projectId !== ""
-                  ? "projects/" + collection.projectId
-                  : ""
-              }`,
+              href: projectBreadcrumbLink,
             },
-            { text: "Coleta", href: "#" },
+            {
+              text: "Coleta",
+              href: collectionBreadcrumbLink,
+            },
+            { text: "Ponto", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
         />
       }
-      editRecordLink={`/collections/${collection.id}/edit`}
-      previousPageLink={`/collections`}
+      editRecordLink={`/points/${point.id}/edit`}
+      previousPageLink={`/collections/${point.collectionId}`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
-      otherHeaderActions={[
-        <Button
-          key={`generatePlanningButton`}
-          onClick={() => {
-            setPlanningModalVisible(true);
-          }}
-          iconName="file"
-          variant="primary"
-        >
-          Gerar planejamento
-        </Button>,
-      ]}
-    >
-      <PlanningModal
-        key={`planningModal`}
-        collectionId={collection.id}
-        points={collection.points}
-        modalVisible={planningModalVisible}
-        setModalVisible={setPlanningModalVisible}
-      />
-    </GenericViewPage>
+    />
   );
 }
