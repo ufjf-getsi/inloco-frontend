@@ -41,7 +41,9 @@ export default function GenericCreateAndEditPage(
     props.alertType === "success"
       ? `${toUpperCase(recordGenderArticle)} ${
           props.recordCategorySingular
-        } foi ${props.edit ? "editado" : "criado"} com sucesso!`
+        } foi ${
+          props.edit ? "editad" : "criad"
+        }${recordGenderArticle} com sucesso!`
       : `Não foi possível ${
           props.edit ? "editar" : "criar"
         } ${recordGenderArticle} ${
