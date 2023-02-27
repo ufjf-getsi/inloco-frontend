@@ -30,7 +30,7 @@ export const columnDefinitions = [
   {
     id: "pendency",
     header: "Feito",
-    cell: (item: Measurement) => (item.isPending ? "Sim" : "Não"),
+    cell: (item: Measurement) => (item.isPending ? "Não" : "Sim"),
     ariaLabel: createLabelFunction("Feito"),
     sortingField: "pendency",
   },

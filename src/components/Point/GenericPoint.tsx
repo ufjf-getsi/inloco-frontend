@@ -22,7 +22,7 @@ export interface Fields {
 interface FormFieldsProps {
   inputValues: Fields;
   setInputValues: Function;
-  allParametersList: SelectProps.Options;
+  allParameterOptionsList: SelectProps.Options;
 }
 
 interface ImplementedRecordFormProps
@@ -58,17 +58,11 @@ export function validateFields(inputValues: Fields): boolean {
 }
 
 export function RecordForm(props: ImplementedRecordFormProps) {
-  const [allParametersList, setAllParametersList] =
-    useState<SelectProps.Options>([]);
-
   const projectBreadcrumbLink = `/projects${
     props.projectId && props.projectId !== "" ? "/" + props.projectId : ""
   }`;
   const collectionBreadcrumbLink =
-    props.projectId &&
-    props.projectId !== "" &&
-    props.collectionId &&
-    props.collectionId !== ""
+    props.collectionId && props.collectionId !== ""
       ? `/collections/${props.collectionId}`
       : "/projects";
 
@@ -107,7 +101,7 @@ export function RecordForm(props: ImplementedRecordFormProps) {
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
-        allParametersList={allParametersList}
+        allParameterOptionsList={props.allParameterOptionsList}
       />
     </GenericCreateAndEditPage>
   );
@@ -116,7 +110,7 @@ export function RecordForm(props: ImplementedRecordFormProps) {
 function FormFields({
   inputValues,
   setInputValues,
-  allParametersList,
+  allParameterOptionsList,
 }: FormFieldsProps) {
   return (
     <SpaceBetween size="l">
@@ -145,20 +139,20 @@ function FormFields({
       <FormField label="Parâmetros">
         <Multiselect
           selectedOptions={inputValues.parameters}
-          onChange={({ detail }) =>
+          onChange={({ detail }) => {
             setInputValues((prevState: Fields) => ({
               ...prevState,
-              selectedOptions: detail.selectedOptions,
-            }))
-          }
+              parameters: detail.selectedOptions,
+            }));
+          }}
           deselectAriaLabel={(e) => `Remove ${e.label}`}
-          options={allParametersList}
+          options={allParameterOptionsList}
           loadingText="Carregando parâmetros"
           placeholder="Selecione os parâmetros"
           selectedAriaLabel="Selecionado"
           statusType={
-            allParametersList
-              ? allParametersList.length > 0
+            allParameterOptionsList
+              ? allParameterOptionsList.length > 0
                 ? "finished"
                 : "loading"
               : "error"
