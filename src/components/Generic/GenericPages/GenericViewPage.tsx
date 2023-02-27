@@ -25,10 +25,9 @@ interface GenericViewPageProps {
   fetchRecordLink: string;
   editRecordLink: string;
   previousPageLink?: string;
-  deleteModalVisible: boolean;
-  setDeleteModalVisible: Function;
   table?: GenericTableProps;
-  modal: GenericDeleteModalProps;
+  deleteModal: GenericDeleteModalProps;
+  otherHeaderActions?: Array<ReactNode>;
 }
 
 export default function GenericViewPage(
@@ -68,12 +67,13 @@ export default function GenericViewPage(
               description={props.description}
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
+                  {props.otherHeaderActions}
                   <Button iconName="edit" href={props.editRecordLink}>
                     Editar
                   </Button>
                   <Button
                     iconName="close"
-                    onClick={() => props.setDeleteModalVisible(true)}
+                    onClick={() => props.deleteModal.setVisible(true)}
                   >
                     Excluir
                   </Button>
@@ -99,7 +99,7 @@ export default function GenericViewPage(
             )}
             {props.children}
           </Container>
-          <GenericDeleteModal {...props.modal} />
+          <GenericDeleteModal {...props.deleteModal} />
         </ContentLayout>
       }
       headerSelector="#header"

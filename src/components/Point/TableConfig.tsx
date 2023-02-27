@@ -9,15 +9,14 @@ interface Item {
 
 export const visibleContent = ["name", "coordinates"];
 
-export const columnDefinitions = (
-  setSelectedPoint: Function,
-  setPointModalVisible: Function
-) => [
+const recordViewPageLink = (item: Item) => `/points/${item.id}`;
+
+export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
     cell: (item: Item) => (
-      <Link href={`#point`}>
+      <Link href={recordViewPageLink(item)}>
         <span className="font-bold">{item.id}</span>
       </Link>
     ),
@@ -28,16 +27,8 @@ export const columnDefinitions = (
     id: "name",
     header: "Nome",
     cell: (item: Item) => (
-      <Link>
-        <span
-          onClick={() => {
-            setSelectedPoint(item);
-            setPointModalVisible(true);
-          }}
-          className="font-bold"
-        >
-          {item.name}
-        </span>
+      <Link href={recordViewPageLink(item)}>
+        <span className="font-bold">{item.name}</span>
       </Link>
     ),
     ariaLabel: createLabelFunction("Nome"),

@@ -1,24 +1,12 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { Collection } from "../../types";
 
-import {
-  AppLayout,
-  ContentLayout,
-  Header,
-  Container,
-  BreadcrumbGroup,
-  SpaceBetween,
-  Button,
-  Alert,
-  AlertProps,
-} from "@cloudscape-design/components";
-import { FormConnection as FormPoint } from "../../components/Point/FormPoint";
-import { DeleteCollectionModal } from "../../components/Collection/DeleteCollectionModal";
-import { Navbar } from "../../components/Navbar";
-import { DeletePointModal } from "../../components/Point/DeletePointModal";
-import GenericTable from "../../components/Generic/GenericTable/GenericTable";
+import { BreadcrumbGroup, Button } from "@cloudscape-design/components";
+import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
+import { notLoadedRecord } from "../../components/Collection/GenericCollection";
+import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   visibleContent,
@@ -28,176 +16,45 @@ import { PlanningModal } from "../../components/PlanningModal";
 export function ViewCollection() {
   let { id } = useParams();
 
-  const [collection, setCollection] = useState<Collection>({
-    id: "",
-    projectId: "",
-    title: "Carregando...",
-    points: [],
-    tasks: [],
-  });
-  const [pointModalVisible, setPointModalVisible] = useState(false);
+  const [collection, setCollection] = useState<Collection>(notLoadedRecord);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [planningModalVisible, setPlanningModalVisible] = useState(false);
-  const [selectedPoint, setSelectedPoint] = useState(undefined);
   const [selectedPoints, setSelectedPoints] = useState([]);
 
-  const [deleteCollectionModalVisible, setDeleteCollectionModalVisible] =
-    useState(false);
-  const [deletePointModalVisible, setDeletePointModalVisible] = useState(false);
+  const tableConfig: GenericTableProps = {
+    allRecords: collection.points,
+    columnDefinitions: columnDefinitions,
+    recordCategorySingular: `ponto`,
+    recordCategoryPlural: `pontos`,
+    recordGenderFeminine: false,
+    addRecordLink: `/collections/${collection.id}/createPoint`,
+    visibleContent: visibleContent,
+    setSelectedRecords: setSelectedPoints,
+  };
 
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  const [alertText, setAlertText] = useState(
-    "O ponto foi adicionado com sucesso!"
-  );
-
-  function updateAlert(success: boolean, edit: boolean) {
-    if (success) {
-      setAlertType("success");
-      setAlertText(
-        `O ponto foi ${edit ? "editado" : "adicionado"} com sucesso!`
-      );
-    } else {
-      setAlertType("error");
-      setAlertText(
-        `Não foi possível ${
-          edit ? "editar" : "adicionar"
-        } o ponto! Tente novamente.`
-      );
-    }
-  }
-
-  function fetchCollectionData() {
-    axios(`http://localhost:3333/collections/${id}`).then((response) => {
-      setCollection(response.data);
-    });
-  }
-
-  useEffect(() => {
-    fetchCollectionData();
-  }, []);
-
-  // Hide alert after 3 seconds if success
-  useEffect(() => {
-    if (alertType === "success") {
-      setTimeout(() => {
-        setAlertVisible(false);
-      }, 3000);
-    }
-  }, [alertVisible]);
+  const deleteModalConfig: GenericDeleteModalProps = {
+    visible: deleteModalVisible,
+    setVisible: setDeleteModalVisible,
+    recordCategorySingular: "coleta",
+    recordCategoryPlural: "coletas",
+    recordGenderFeminine: true,
+    serverDeleteLink: `http://localhost:3333/collections/${id}`,
+    afterDeleteRedirectLink: `/projects/${collection.projectId}`,
+    alertText: `Proceder com esta ação deletará a coleta com todo o seu conteúdo,
+    incluindo todos os pontos e registros associados a ela.`,
+  };
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h2"
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button
-                    iconName="add-plus"
-                    variant="primary"
-                    onClick={() => {
-                      setSelectedPoint(undefined);
-                      setPointModalVisible(true);
-                    }}
-                  >
-                    Novo Ponto
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setPlanningModalVisible(true);
-                    }}
-                    iconName="file"
-                    variant="primary"
-                  >
-                    Gerar planejamento
-                  </Button>
-                  <Button
-                    iconName="edit"
-                    href={`/collections/${collection.id}/edit`}
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    iconName="close"
-                    onClick={() => setDeleteCollectionModalVisible(true)}
-                  >
-                    Excluir
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              {collection.title}
-            </Header>
-          }
-        >
-          <Container>
-            <GenericTable
-              allRecords={collection.points}
-              columnDefinitions={columnDefinitions(
-                setSelectedPoint,
-                setPointModalVisible
-              )}
-              recordCategorySingular={`ponto`}
-              recordCategoryPlural={`pontos`}
-              recordGenderFeminine={false}
-              addRecordLink={`#createPoint`}
-              visibleContent={visibleContent}
-              setSelectedRecords={setSelectedPoints}
-            />
-          </Container>
-          <FormPoint
-            collectionId={collection.id}
-            point={selectedPoint}
-            modalVisible={pointModalVisible}
-            setModalVisible={setPointModalVisible}
-            setAlertVisible={setAlertVisible}
-            updateAlert={updateAlert}
-            fetchCollectionData={fetchCollectionData}
-            setDeleteModalVisible={setDeletePointModalVisible}
-          />
-          <PlanningModal
-            collectionId={collection.id}
-            points={collection.points}
-            modalVisible={planningModalVisible}
-            setModalVisible={setPlanningModalVisible}
-          />
-          {selectedPoint && (
-            <DeletePointModal
-              point={selectedPoint}
-              visible={deletePointModalVisible}
-              setVisible={setDeletePointModalVisible}
-              fetchCollectionData={fetchCollectionData}
-            />
-          )}
-          <DeleteCollectionModal
-            collectionId={collection.id}
-            collectionTitle={collection.title}
-            projectId={collection.projectId}
-            visible={deleteCollectionModalVisible}
-            setVisible={setDeleteCollectionModalVisible}
-          />
-          <Alert
-            onDismiss={() => setAlertVisible(false)}
-            visible={alertVisible}
-            dismissAriaLabel="Fechar alerta"
-            dismissible
-            type={alertType}
-            className="absolute right-0 w-fit mt-8 mr-8"
-          >
-            {alertText}
-          </Alert>
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericViewPage
+      title={collection.title}
+      description={""}
+      navbarActiveLink={`/projects`}
+      setRecord={setCollection}
+      fetchRecordLink={`http://localhost:3333/collections/${id}`}
       breadcrumbs={
         <BreadcrumbGroup
           items={[
-            { text: "Projetos", href: "/" },
+            { text: "Projetos", href: "/projects" },
             {
               text: "Projeto",
               href: `/${
@@ -212,6 +69,28 @@ export function ViewCollection() {
           ariaLabel="Breadcrumbs"
         />
       }
-    />
+      editRecordLink={`/collections/${collection.id}/edit`}
+      previousPageLink={`/collections`}
+      table={tableConfig}
+      deleteModal={deleteModalConfig}
+      otherHeaderActions={[
+        <Button
+          onClick={() => {
+            setPlanningModalVisible(true);
+          }}
+          iconName="file"
+          variant="primary"
+        >
+          Gerar planejamento
+        </Button>,
+      ]}
+    >
+      <PlanningModal
+        collectionId={collection.id}
+        points={collection.points}
+        modalVisible={planningModalVisible}
+        setModalVisible={setPlanningModalVisible}
+      />
+    </GenericViewPage>
   );
 }

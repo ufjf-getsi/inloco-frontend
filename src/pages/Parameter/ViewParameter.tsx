@@ -14,10 +14,9 @@ export function ViewParameter() {
   let { id } = useParams();
 
   const [parameter, setParameter] = useState<Parameter>(notLoadedRecord);
-
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  const modalConfig: GenericDeleteModalProps = {
+  const deleteModalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
     recordCategorySingular: "parâmetro",
@@ -39,7 +38,7 @@ export function ViewParameter() {
         <BreadcrumbGroup
           items={[
             { text: "Parâmetros", href: "/parameters" },
-            { text: "Visualizar parâmetro", href: "#" },
+            { text: "Parâmetro", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
@@ -47,9 +46,7 @@ export function ViewParameter() {
       }
       editRecordLink={`/parameters/${parameter.id}/edit`}
       previousPageLink={`/parameters`}
-      deleteModalVisible={deleteModalVisible}
-      setDeleteModalVisible={setDeleteModalVisible}
-      modal={modalConfig}
+      deleteModal={deleteModalConfig}
     />
   );
 }
