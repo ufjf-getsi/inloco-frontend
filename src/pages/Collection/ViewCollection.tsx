@@ -41,7 +41,7 @@ export function ViewCollection() {
     serverDeleteLink: `http://localhost:3333/collections/${id}`,
     afterDeleteRedirectLink: `/projects/${collection.projectId}`,
     alertText: `Proceder com esta ação deletará a coleta com todo o seu conteúdo,
-    incluindo todos os pontos e registros associados a ela.`,
+    incluindo todos os pontos e registros associados a si.`,
   };
 
   return (
@@ -75,6 +75,7 @@ export function ViewCollection() {
       deleteModal={deleteModalConfig}
       otherHeaderActions={[
         <Button
+          key={`generatePlanningButton`}
           onClick={() => {
             setPlanningModalVisible(true);
           }}
@@ -86,6 +87,7 @@ export function ViewCollection() {
       ]}
     >
       <PlanningModal
+        key={`planningModal`}
         collectionId={collection.id}
         points={collection.points}
         modalVisible={planningModalVisible}

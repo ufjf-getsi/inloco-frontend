@@ -1,88 +1,77 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Alert,
-  AlertProps,
-} from "@cloudscape-design/components";
-import {
-  FormHeader,
-  FormConnection,
-} from "../../components/Collection/FormCollection";
-import { Collection } from "../../types";
 import axios from "axios";
-import { Navbar } from "../../components/Navbar";
+import { useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+
+import { AlertProps } from "@cloudscape-design/components";
+import {
+  emptyFields,
+  Fields,
+  RecordForm,
+  validateFields,
+} from "../../components/Collection/GenericCollection";
+import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
 
 export function EditCollection() {
-  let { id } = useParams();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
+  const [projectId, setProjectId] = useState("");
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  const [alertText, setAlertText] = useState(
-    "A coleta foi editada com sucesso!"
-  );
 
-  const [collection, setCollection] = useState<Collection>({
-    id: "",
-    projectId: "",
-    title: "404",
-    points: [],
-  });
+  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
+  function fetchRecordData() {
+    axios(`http://localhost:3333/collections/${id}`)
+      .then((response) => {
+        setProjectId(response.data.projectId);
+        setInputValues({
+          title: response.data.title,
+        });
+      })
+      .catch((error) =>
+        cancelLoadAndRedirectBackwards({
+          navigate: navigate,
+          error: error,
+          previousPageLink: `/projects${projectId ? `/${projectId}` : ""}`,
+        })
+      );
+  }
   useEffect(() => {
-    fetchCollectionData();
+    fetchRecordData();
   }, []);
 
-  function fetchCollectionData() {
-    axios(`http://localhost:3333/collections/${id}`).then((response) => {
-      setCollection(response.data);
-    });
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (validateFields(inputValues)) {
+      // Send to the server
+      try {
+        await axios.patch(`http://localhost:3333/collections/${id}`, {
+          title: inputValues.title,
+        });
+        setAlertType("success");
+        setAlertVisible(true);
+        setTimeout(() => navigate(`/collections/${id}`), 1000);
+      } catch (error) {
+        console.log(error);
+        setAlertType("error");
+        setAlertVisible(true);
+      }
+    } else {
+      // Fazer alert para dados inválidos
+    }
   }
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout header={<FormHeader edit />}>
-          <Container>
-            <FormConnection
-              edit
-              collection={collection}
-              setAlertVisible={setAlertVisible}
-              setAlertType={setAlertType}
-              setAlertText={setAlertText}
-            />
-          </Container>
-          <Alert
-            onDismiss={() => setAlertVisible(false)}
-            visible={alertVisible}
-            dismissAriaLabel="Fechar alerta"
-            dismissible
-            type={alertType}
-            className="absolute right-0 w-fit mt-8 mr-8"
-          >
-            {alertText}
-          </Alert>
-        </ContentLayout>
-      }
-      headerSelector="#header"
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Projetos", href: "/" },
-            { text: "Projeto", href: "./" },
-            { text: "Editar coleta", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
+    <RecordForm
+      edit={true}
+      handleSubmit={handleSubmit}
+      alertType={alertType}
+      alertVisible={alertVisible}
+      setAlertVisible={setAlertVisible}
+      inputValues={inputValues}
+      setInputValues={setInputValues}
+      cancelRedirectLink={`/collections/${id}`}
     />
   );
 }

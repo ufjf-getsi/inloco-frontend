@@ -12,8 +12,7 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-
-import { Navbar } from "../../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { FormConnection, FormHeader } from "../../components/Task/FormTask";
 
 export function EditTask() {

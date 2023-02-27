@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import SideNavigation from "@cloudscape-design/components/side-navigation";
 
 interface NavbarProps {
@@ -9,8 +9,8 @@ Navbar.defaultProps = {
   activeLink: "",
 };
 
-export function Navbar(props: NavbarProps) {
-  const [activeHref, setActiveHref] = React.useState(props.activeLink);
+export default function Navbar(props: NavbarProps) {
+  const [activeHref, setActiveHref] = useState(props.activeLink);
   return (
     <SideNavigation
       activeHref={activeHref}

@@ -14,8 +14,7 @@ import {
   Button,
   TextContent,
 } from "@cloudscape-design/components";
-
-import { Navbar } from "../../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { DeleteTaskModal } from "../../components/Task/DeleteTaskModal";
 
 export function ViewTask() {

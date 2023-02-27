@@ -12,7 +12,7 @@ import {
 } from "@cloudscape-design/components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Navbar } from "../../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { TasksTable } from "../../components/Task/TasksTable";
 import { Task } from "../../types";
 
