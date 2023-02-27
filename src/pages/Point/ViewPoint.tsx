@@ -34,6 +34,7 @@ export default function ViewPoint() {
         parameterName: measurement.parameter.name,
         isPending: measurement.isPending,
         result: measurement.result,
+        unit: measurement.parameter.unit,
       };
     }),
     columnDefinitions: columnDefinitions,
