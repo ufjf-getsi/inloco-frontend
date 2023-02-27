@@ -6,6 +6,7 @@ export interface Item {
   parameterName: string;
   isPending: boolean;
   result: string;
+  unit: string;
 }
 
 export const visibleContent = ["parameterName", "isPending", "result"];
@@ -27,7 +28,9 @@ export const columnDefinitions = [
     header: "Nome",
     cell: (item: Item) => (
       <Link href={`#`}>
-        <span className="font-bold">{item.parameterName}</span>
+        <span className="font-bold">
+          {item.parameterName + ` (${item.unit})`}
+        </span>
       </Link>
     ),
     ariaLabel: createLabelFunction("Nome"),
