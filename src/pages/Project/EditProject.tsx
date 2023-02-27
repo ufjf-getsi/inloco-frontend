@@ -10,7 +10,7 @@ import {
   RecordForm,
 } from "../../components/Project/GenericProject";
 
-export function EditProject() {
+export default function EditProject() {
   const navigate = useNavigate();
   function cancelLoadAndRedirectBackwards(error: any) {
     console.log(error);

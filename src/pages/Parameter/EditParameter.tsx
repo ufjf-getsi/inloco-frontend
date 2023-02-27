@@ -11,7 +11,7 @@ import {
   formatDataType,
 } from "../../components/Parameter/GenericParameter";
 
-export function EditParameter() {
+export default function EditParameter() {
   const navigate = useNavigate();
   function cancelLoadAndRedirectBackwards(error: any) {
     console.log(error);

@@ -11,7 +11,7 @@ import {
 import Navbar from "../../components/Navbar";
 import { FormConnection, FormHeader } from "../../components/Task/FormTask";
 
-export function CreateTask() {
+export default function CreateTask() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [alertText, setAlertText] = useState(

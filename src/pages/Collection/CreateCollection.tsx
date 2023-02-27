@@ -11,7 +11,7 @@ import {
 } from "../../components/Collection/GenericCollection";
 import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
 
-export function CreateCollection() {
+export default function CreateCollection() {
   const navigate = useNavigate();
   const { projectId } = useParams();
 

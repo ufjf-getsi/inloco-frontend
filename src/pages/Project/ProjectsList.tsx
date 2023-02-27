@@ -8,7 +8,7 @@ import {
 } from "../../components/Project/TableConfig";
 import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
 
-export function ProjectsList() {
+export default function ProjectsList() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
 

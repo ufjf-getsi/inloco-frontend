@@ -10,7 +10,7 @@ import {
   validateFields,
 } from "../../components/Equipment/GenericEquipment";
 
-export function EditEquipment() {
+export default function EditEquipment() {
   const navigate = useNavigate();
   function cancelLoadAndRedirectBackwards(error: any) {
     console.log(error);

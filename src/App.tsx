@@ -1,23 +1,24 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ProjectsList } from "./pages/Project/ProjectsList";
-import { ViewProject } from "./pages/Project/ViewProject";
-import { CreateProject } from "./pages/Project/CreateProject";
-import { CreateCollection } from "./pages/Collection/CreateCollection";
-import { EditProject } from "./pages/Project/EditProject";
-import { ViewCollection } from "./pages/Collection/ViewCollection";
-import { EditCollection } from "./pages/Collection/EditCollection";
-import { ParametersList } from "./pages/Parameter/ParametersList";
-import { CreateParameter } from "./pages/Parameter/CreateParameter";
-import { EditParameter } from "./pages/Parameter/EditParameter";
-import { ViewParameter } from "./pages/Parameter/ViewParameter";
-import { EquipmentList } from "./pages/Equipment/EquipmentList";
-import { CreateEquipment } from "./pages/Equipment/CreateEquipment";
-import { EditEquipment } from "./pages/Equipment/EditEquipment";
-import { ViewEquipment } from "./pages/Equipment/ViewEquipment";
-import { TasksList } from "./pages/Task/TasksList";
-import { CreateTask } from "./pages/Task/CreateTask";
-import { EditTask } from "./pages/Task/EditTask";
-import { ViewTask } from "./pages/Task/ViewTask";
+import ProjectsList from "./pages/Project/ProjectsList";
+import ViewProject from "./pages/Project/ViewProject";
+import CreateProject from "./pages/Project/CreateProject";
+import CreateCollection from "./pages/Collection/CreateCollection";
+import EditProject from "./pages/Project/EditProject";
+import ViewCollection from "./pages/Collection/ViewCollection";
+import EditCollection from "./pages/Collection/EditCollection";
+import ParametersList from "./pages/Parameter/ParametersList";
+import CreateParameter from "./pages/Parameter/CreateParameter";
+import EditParameter from "./pages/Parameter/EditParameter";
+import ViewParameter from "./pages/Parameter/ViewParameter";
+import EquipmentList from "./pages/Equipment/EquipmentList";
+import CreateEquipment from "./pages/Equipment/CreateEquipment";
+import EditEquipment from "./pages/Equipment/EditEquipment";
+import ViewEquipment from "./pages/Equipment/ViewEquipment";
+import TasksList from "./pages/Task/TasksList";
+import CreateTask from "./pages/Task/CreateTask";
+import EditTask from "./pages/Task/EditTask";
+import ViewTask from "./pages/Task/ViewTask";
+import ViewPoint from "./pages/Point/ViewPoint";
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
 
@@ -39,10 +40,11 @@ function App() {
         <Route path={"/collections/:id"} element={<ViewCollection />} />
         <Route path={"/collections/:id/edit"} element={<EditCollection />} />
         {/* Project -> Collection -> Point */}
-        <Route
+        {/* <Route
           path={"collections/:collectionId/createPoint"}
-          // element={<CreatePoint />}
-        />
+          element={<CreatePoint />}
+        /> */}
+        <Route path={"/points/:id"} element={<ViewPoint />} />
         {/* Parameter */}
         <Route path={"/parameters"} element={<ParametersList />} />
         <Route path={"parameters/create"} element={<CreateParameter />} />

@@ -10,7 +10,7 @@ import {
 } from "../../components/Parameter/GenericParameter";
 import { Fields } from "../../components/Parameter/GenericParameter";
 
-export function CreateParameter() {
+export default function CreateParameter() {
   const navigate = useNavigate();
 
   const [alertVisible, setAlertVisible] = useState(false);

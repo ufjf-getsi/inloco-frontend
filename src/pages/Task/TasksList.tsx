@@ -16,7 +16,7 @@ import Navbar from "../../components/Navbar";
 import { TasksTable } from "../../components/Task/TasksTable";
 import { Task } from "../../types";
 
-export function TasksList() {
+export default function TasksList() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {

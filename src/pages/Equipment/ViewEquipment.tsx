@@ -7,8 +7,8 @@ import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPa
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 import { notLoadedRecord } from "../../components/Equipment/GenericEquipment";
 
-export function ViewEquipment() {
-  let { id } = useParams();
+export default function ViewEquipment() {
+  const { id } = useParams();
 
   const [equipment, setEquipment] = useState<Equipment>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);

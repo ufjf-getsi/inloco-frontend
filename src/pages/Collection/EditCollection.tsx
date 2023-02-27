@@ -11,7 +11,7 @@ import {
 } from "../../components/Collection/GenericCollection";
 import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
 
-export function EditCollection() {
+export default function EditCollection() {
   const navigate = useNavigate();
   const { id } = useParams();
 
