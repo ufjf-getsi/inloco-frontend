@@ -26,7 +26,7 @@ async function handleClick(props: PlanningModalProps) {
   }
 }
 
-export function PlanningModal(props: PlanningModalProps) {
+export default function PlanningModal(props: PlanningModalProps) {
   return (
     <Modal
       onDismiss={() => props.setModalVisible(false)}

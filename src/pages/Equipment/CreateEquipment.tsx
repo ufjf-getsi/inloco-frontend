@@ -10,7 +10,7 @@ import {
   RecordForm,
 } from "../../components/Equipment/GenericEquipment";
 
-export function CreateEquipment() {
+export default function CreateEquipment() {
   const navigate = useNavigate();
 
   const [alertVisible, setAlertVisible] = useState(false);

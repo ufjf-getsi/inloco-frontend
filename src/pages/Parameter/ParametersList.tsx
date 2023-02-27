@@ -8,7 +8,7 @@ import {
 } from "../../components/Parameter/TableConfig";
 import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
 
-export function ParametersList() {
+export default function ParametersList() {
   const [parameters, setParameters] = useState<Parameter[]>([]);
   const [selectedParameters, setSelectedParameters] = useState([]);
 

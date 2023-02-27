@@ -10,7 +10,7 @@ import {
   RecordForm,
 } from "../../components/Project/GenericProject";
 
-export function CreateProject() {
+export default function CreateProject() {
   const navigate = useNavigate();
 
   const [alertVisible, setAlertVisible] = useState(false);

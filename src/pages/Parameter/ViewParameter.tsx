@@ -10,8 +10,8 @@ import {
   notLoadedRecord,
 } from "../../components/Parameter/GenericParameter";
 
-export function ViewParameter() {
-  let { id } = useParams();
+export default function ViewParameter() {
+  const { id } = useParams();
 
   const [parameter, setParameter] = useState<Parameter>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);

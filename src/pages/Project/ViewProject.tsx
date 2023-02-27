@@ -12,8 +12,8 @@ import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPa
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 import { notLoadedRecord } from "../../components/Project/GenericProject";
 
-export function ViewProject() {
-  let { id } = useParams();
+export default function ViewProject() {
+  const { id } = useParams();
 
   const [project, setProject] = useState<Project>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);

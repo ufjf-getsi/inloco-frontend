@@ -8,7 +8,7 @@ import {
 } from "../../components/Equipment/TableConfig";
 import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
 
-export function EquipmentList() {
+export default function EquipmentList() {
   const [equipmentArray, setEquipmentArray] = useState<Equipment[]>([]);
   const [selectedEquipmentList, setSelectedEquipmentList] = useState([]);
 
