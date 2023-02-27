@@ -8,12 +8,14 @@ interface Item {
 
 export const visibleContent = ["title"];
 
+const recordViewPageLink = (item: Item) => `/collections/${item.id}`;
+
 export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
     cell: (item: Item) => (
-      <Link href={`/collections/${item.id}`}>
+      <Link href={recordViewPageLink(item)}>
         <span className="font-bold">{item.id}</span>
       </Link>
     ),
@@ -24,7 +26,7 @@ export const columnDefinitions = [
     id: "title",
     header: "Título",
     cell: (item: Item) => (
-      <Link href={`/collections/${item.id}`}>
+      <Link href={recordViewPageLink(item)}>
         <span className="font-bold">{item.title}</span>
       </Link>
     ),

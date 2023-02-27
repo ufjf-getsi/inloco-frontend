@@ -11,10 +11,9 @@ export function ViewEquipment() {
   let { id } = useParams();
 
   const [equipment, setEquipment] = useState<Equipment>(notLoadedRecord);
-
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  const modalConfig: GenericDeleteModalProps = {
+  const deleteModalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
     recordCategorySingular: "equipamento",
@@ -36,7 +35,7 @@ export function ViewEquipment() {
         <BreadcrumbGroup
           items={[
             { text: "Equipamentos", href: "/equipment" },
-            { text: "Visualizar equipamento", href: "#" },
+            { text: "Equipamento", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
@@ -44,9 +43,7 @@ export function ViewEquipment() {
       }
       editRecordLink={`/equipment/${equipment.id}/edit`}
       previousPageLink={`/equipment`}
-      deleteModalVisible={deleteModalVisible}
-      setDeleteModalVisible={setDeleteModalVisible}
-      modal={modalConfig}
+      deleteModal={deleteModalConfig}
     />
   );
 }

@@ -25,28 +25,35 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Project */}
         <Route index element={<Navigate to="projects" />} />
         <Route path={"projects"} element={<ProjectsList />} />
         <Route path={"projects/create"} element={<CreateProject />} />
         <Route path={"projects/:id"} element={<ViewProject />} />
         <Route path={"projects/:id/edit"} element={<EditProject />} />
+        {/* Project -> Collection */}
         <Route
-          path={"projects/:projectId/collections"}
+          path={"projects/:projectId/createCollection"}
           element={<CreateCollection />}
         />
         <Route path={"/collections/:id"} element={<ViewCollection />} />
         <Route path={"/collections/:id/edit"} element={<EditCollection />} />
-
+        {/* Project -> Collection -> Point */}
+        <Route
+          path={"collections/:collectionId/createPoint"}
+          // element={<CreatePoint />}
+        />
+        {/* Parameter */}
         <Route path={"/parameters"} element={<ParametersList />} />
         <Route path={"parameters/create"} element={<CreateParameter />} />
         <Route path={"parameters/:id"} element={<ViewParameter />} />
         <Route path={"parameters/:id/edit"} element={<EditParameter />} />
-
+        {/* Equipment */}
         <Route path={"/equipment"} element={<EquipmentList />} />
         <Route path={"equipment/create"} element={<CreateEquipment />} />
         <Route path={"equipment/:id"} element={<ViewEquipment />} />
         <Route path={"equipment/:id/edit"} element={<EditEquipment />} />
-
+        {/* Task */}
         <Route path={"/tasks"} element={<TasksList />} />
         <Route path={"/tasks/create"} element={<CreateTask />} />
         <Route path={"/tasks/:id"} element={<ViewTask />} />

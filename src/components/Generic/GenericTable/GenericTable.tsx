@@ -99,7 +99,7 @@ export default function GenericTable({
       ),
     },
     pagination: { pageSize: preferences.pageSize },
-    sorting: { defaultState: { sortingColumn: columnDefinitions[0] } },
+    sorting: { defaultState: { sortingColumn: columnDefinitions[1] } },
     selection: { trackBy: "id", keepSelection: true },
   });
   const { selectedItems } = collectionProps;

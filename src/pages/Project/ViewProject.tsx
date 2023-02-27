@@ -25,12 +25,12 @@ export function ViewProject() {
     recordCategorySingular: `coleta`,
     recordCategoryPlural: `coletas`,
     recordGenderFeminine: true,
-    addRecordLink: `/projects/${project.id}/collections`,
+    addRecordLink: `/projects/${project.id}/createCollection`,
     visibleContent: visibleContent,
     setSelectedRecords: setSelectedCollections,
   };
 
-  const modalConfig: GenericDeleteModalProps = {
+  const deleteModalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
     setVisible: setDeleteModalVisible,
     recordCategorySingular: "projeto",
@@ -51,18 +51,16 @@ export function ViewProject() {
         <BreadcrumbGroup
           items={[
             { text: "Projetos", href: "/projects" },
-            { text: "Visualizar projeto", href: "#" },
+            { text: "Projeto", href: "#" },
           ]}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
         />
       }
       editRecordLink={`/projects/${project.id}/edit`}
-      deleteModalVisible={deleteModalVisible}
       previousPageLink={`/projects`}
-      setDeleteModalVisible={setDeleteModalVisible}
       table={tableConfig}
-      modal={modalConfig}
+      deleteModal={deleteModalConfig}
     />
   );
 }
