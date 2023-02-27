@@ -22,6 +22,7 @@ import ViewPoint from "./pages/Point/ViewPoint";
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
 import CreatePoint from "./pages/Point/CreatePoint";
+import EditPoint from "./pages/Point/EditPoint";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           element={<CreatePoint />}
         />
         <Route path={"/points/:id"} element={<ViewPoint />} />
+        <Route path={"/points/:id/edit"} element={<EditPoint />} />
         {/* Parameter */}
         <Route path={"/parameters"} element={<ParametersList />} />
         <Route path={"parameters/create"} element={<CreateParameter />} />
