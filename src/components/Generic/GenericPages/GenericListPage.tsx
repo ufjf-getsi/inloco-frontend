@@ -8,7 +8,7 @@ import {
   Header,
 } from "@cloudscape-design/components";
 import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
-import { Navbar } from "../../Navbar";
+import Navbar from "../../Navbar";
 
 interface GenericListPageProps extends GenericTableProps {
   title: string;

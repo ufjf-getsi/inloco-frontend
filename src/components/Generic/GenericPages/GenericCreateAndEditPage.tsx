@@ -11,7 +11,7 @@ import {
   Alert,
   AlertProps,
 } from "@cloudscape-design/components";
-import { Navbar } from "../../Navbar";
+import Navbar from "../../Navbar";
 import { toUpperCase } from "../GenericFunctions";
 import { GenericRecordProps } from "../GenericInterfaces";
 

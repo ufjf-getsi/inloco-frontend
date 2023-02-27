@@ -17,7 +17,7 @@ export function EditParameter() {
     console.log(error);
     navigate(`/parameters/${id}`);
   }
-  let { id } = useParams();
+  const { id } = useParams();
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
