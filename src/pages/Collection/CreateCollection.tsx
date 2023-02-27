@@ -1,64 +1,81 @@
-import { useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
 
+import { AlertProps } from "@cloudscape-design/components";
 import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Alert,
-  AlertProps,
-} from "@cloudscape-design/components";
-import {
-  FormHeader,
-  FormConnection,
-} from "../../components/Collection/FormCollection";
-import { Navbar } from "../../components/Navbar";
+  emptyFields,
+  Fields,
+  RecordForm,
+  validateFields,
+} from "../../components/Collection/GenericCollection";
+import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
 
 export function CreateCollection() {
+  const navigate = useNavigate();
+  const { projectId } = useParams();
+
+  function checkIfParentRecordExists() {
+    axios(`http://localhost:3333/projects/${projectId}`)
+      .then((response) => {
+        if (!response.data) {
+          cancelLoadAndRedirectBackwards({
+            navigate: navigate,
+            error: "404: Not found",
+            previousPageLink: `/projects`,
+          });
+        }
+      })
+      .catch((error) =>
+        cancelLoadAndRedirectBackwards({
+          navigate: navigate,
+          error: error,
+          previousPageLink: `/projects`,
+        })
+      );
+  }
+  useEffect(() => {
+    checkIfParentRecordExists();
+  }, []);
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  const [alertText, setAlertText] = useState(
-    "A coleta foi criada com sucesso!"
-  );
+
+  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (validateFields(inputValues)) {
+      // Send to the server
+      try {
+        await axios.post("http://localhost:3333/collections", {
+          title: inputValues.title,
+          projectId: projectId,
+        });
+        setAlertType("success");
+        setAlertVisible(true);
+        setTimeout(() => navigate(`/projects/${projectId}`), 1000);
+      } catch (error) {
+        console.log(error);
+        setAlertType("error");
+        setAlertVisible(true);
+      }
+    } else {
+      // Fazer alert para dados inválidos
+    }
+  }
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout header={<FormHeader />}>
-          <Container>
-            <FormConnection
-              setAlertVisible={setAlertVisible}
-              setAlertType={setAlertType}
-              setAlertText={setAlertText}
-            />
-          </Container>
-          <Alert
-            onDismiss={() => setAlertVisible(false)}
-            visible={alertVisible}
-            dismissAriaLabel="Fechar alerta"
-            dismissible
-            type={alertType}
-            className="absolute right-0 w-fit mt-8 mr-8"
-          >
-            {alertText}
-          </Alert>
-        </ContentLayout>
-      }
-      headerSelector="#header"
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Projetos", href: "/" },
-            { text: "Projeto", href: "./" },
-            { text: "Criar coleta", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
+    <RecordForm
+      edit={false}
+      handleSubmit={handleSubmit}
+      alertType={alertType}
+      alertVisible={alertVisible}
+      setAlertVisible={setAlertVisible}
+      inputValues={inputValues}
+      setInputValues={setInputValues}
+      cancelRedirectLink={`/projects`}
+      projectId={projectId}
     />
   );
 }

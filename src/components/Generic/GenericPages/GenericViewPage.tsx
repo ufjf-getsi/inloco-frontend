@@ -15,6 +15,7 @@ import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
 import GenericDeleteModal, {
   GenericDeleteModalProps,
 } from "../GenericDeleteModal";
+import { cancelLoadAndRedirectBackwards } from "../GenericFunctions";
 
 interface GenericViewPageProps {
   title: string;
@@ -34,10 +35,6 @@ export default function GenericViewPage(
   props: PropsWithChildren<GenericViewPageProps>
 ) {
   const navigate = useNavigate();
-  function cancelLoadAndRedirectBackwards(error: any) {
-    console.log(error);
-    navigate(props.previousPageLink ?? `/`);
-  }
 
   function fetchRecordData() {
     axios(props.fetchRecordLink)
@@ -45,10 +42,20 @@ export default function GenericViewPage(
         if (response.data) {
           props.setRecord(response.data);
         } else {
-          cancelLoadAndRedirectBackwards("404: Not Found");
+          cancelLoadAndRedirectBackwards({
+            navigate: navigate,
+            error: "404: Not Found",
+            previousPageLink: props.previousPageLink,
+          });
         }
       })
-      .catch((error) => cancelLoadAndRedirectBackwards(error));
+      .catch((error) =>
+        cancelLoadAndRedirectBackwards({
+          navigate: navigate,
+          error: error,
+          previousPageLink: props.previousPageLink,
+        })
+      );
   }
   useEffect(() => {
     fetchRecordData();

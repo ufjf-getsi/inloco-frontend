@@ -23,7 +23,7 @@ interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
     FormFieldsProps {
   cancelRedirectLink: string;
-  projectId: string;
+  projectId?: string;
 }
 
 export const emptyFields: Fields = {
@@ -59,8 +59,10 @@ export function RecordForm(props: ImplementedRecordFormProps) {
             { text: "Projetos", href: "/projects" },
             {
               text: "Projeto",
-              href: `/${
-                props.projectId !== "" ? "projects/" + props.projectId : ""
+              href: `/projects${
+                props.projectId && props.projectId !== ""
+                  ? "/" + props.projectId
+                  : ""
               }`,
             },
             { text: (props.edit ? `Editar` : `Criar`) + " coleta", href: "#" },
@@ -93,17 +95,6 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
             setInputValues((prevState: Fields) => ({
               ...prevState,
               title: event.detail.value,
-            }))
-          }
-        />
-      </FormField>
-      <FormField label="Descrição">
-        <Input
-          value={inputValues.description}
-          onChange={(event) =>
-            setInputValues((prevState: Fields) => ({
-              ...prevState,
-              description: event.detail.value,
             }))
           }
         />
