@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Parameter } from "../../types";
+import { Measurement } from "../../types";
 
 import { AlertProps, SelectProps } from "@cloudscape-design/components";
 import {
@@ -14,26 +14,33 @@ import {
 import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
 import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
-export default function CreatePoint() {
+export default function EditCollection() {
   const navigate = useNavigate();
-  const { collectionId } = useParams();
+  const { id } = useParams();
 
   const [projectId, setProjectId] = useState("");
+  const [collectionId, setCollectionId] = useState("");
+  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
   const [allParameterOptionsList, setAllParameterOptionsList] =
     useState<SelectProps.Options>([]);
 
-  function checkIfParentRecordExists() {
-    axios(`http://localhost:3333/collections/${collectionId}`)
+  function fetchRecordData() {
+    axios(`http://localhost:3333/points/${id}`)
       .then((response) => {
-        if (response.data) {
-          setProjectId(response.data.projectId);
-        } else {
-          cancelLoadAndRedirectBackwards({
-            navigate: navigate,
-            error: "404: Not found",
-            previousPageLink: `/projects`,
-          });
-        }
+        setProjectId(response.data.projectId);
+        setCollectionId(response.data.collectionId);
+        setInputValues({
+          name: response.data.name,
+          coordinates: response.data.coordinates ?? "",
+          parameters: response.data.measurements.map(
+            (measurement: Measurement) => {
+              return {
+                value: measurement.parameter.id,
+                label: measurement.parameter.name,
+              };
+            }
+          ),
+        });
       })
       .catch((error) =>
         cancelLoadAndRedirectBackwards({
@@ -45,9 +52,8 @@ export default function CreatePoint() {
         })
       );
   }
-
   useEffect(() => {
-    checkIfParentRecordExists();
+    fetchRecordData();
     fetchAllParameterOptionsList({
       navigate: navigate,
       collectionId: collectionId ?? "",
@@ -58,21 +64,17 @@ export default function CreatePoint() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
 
-  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
-
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post("http://localhost:3333/points", {
-          collectionId: collectionId,
+        await axios.patch(`http://localhost:3333/points/${id}`, {
           name: inputValues.name,
           coordinates: inputValues.coordinates,
           measurements: inputValues.parameters.map(
             (selectedOption: OptionDefinition) => {
               return {
-                isPending: true,
                 parameterId: selectedOption.value,
               };
             }
@@ -80,7 +82,7 @@ export default function CreatePoint() {
         });
         setAlertType("success");
         setAlertVisible(true);
-        setTimeout(() => navigate(`/collections/${collectionId}`), 1000);
+        setTimeout(() => navigate(`/points/${id}`), 1000);
       } catch (error) {
         console.log(error);
         setAlertType("error");
@@ -93,14 +95,14 @@ export default function CreatePoint() {
 
   return (
     <RecordForm
-      edit={false}
+      edit={true}
       handleSubmit={handleSubmit}
       alertType={alertType}
       alertVisible={alertVisible}
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/projects`}
+      cancelRedirectLink={`/collections/${id}`}
       allParameterOptionsList={allParameterOptionsList}
       collectionId={collectionId}
       projectId={projectId}

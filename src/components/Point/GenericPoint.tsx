@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Point } from "../../types";
+import { Parameter, Point } from "../../types";
 
 import {
   SpaceBetween,
@@ -12,6 +12,9 @@ import {
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
+import axios from "axios";
+import { cancelLoadAndRedirectBackwards } from "../Generic/GenericFunctions";
+import { NavigateFunction } from "react-router-dom";
 
 export interface Fields {
   name: string;
@@ -46,6 +49,33 @@ export const notLoadedRecord: Point = {
   coordinates: "",
   measurements: [],
 };
+
+export function fetchAllParameterOptionsList({
+  navigate,
+  collectionId,
+  setAllParameterOptionsList,
+}: {
+  navigate: NavigateFunction;
+  collectionId: string;
+  setAllParameterOptionsList: Function;
+}) {
+  axios
+    .get<Parameter[]>("http://localhost:3333/parameters")
+    .then((response) => {
+      setAllParameterOptionsList(
+        response.data.map((item) => ({ value: item.id, label: item.name }))
+      );
+    })
+    .catch((error) =>
+      cancelLoadAndRedirectBackwards({
+        navigate: navigate,
+        error: error,
+        previousPageLink: `${
+          collectionId ? `/collections/${collectionId}` : "/projects"
+        }`,
+      })
+    );
+}
 
 export function validateFields(inputValues: Fields): boolean {
   if (
