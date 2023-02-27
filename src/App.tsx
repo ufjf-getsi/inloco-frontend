@@ -21,6 +21,7 @@ import ViewTask from "./pages/Task/ViewTask";
 import ViewPoint from "./pages/Point/ViewPoint";
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
+import CreatePoint from "./pages/Point/CreatePoint";
 
 function App() {
   return (
@@ -40,10 +41,10 @@ function App() {
         <Route path={"/collections/:id"} element={<ViewCollection />} />
         <Route path={"/collections/:id/edit"} element={<EditCollection />} />
         {/* Project -> Collection -> Point */}
-        {/* <Route
+        <Route
           path={"collections/:collectionId/createPoint"}
           element={<CreatePoint />}
-        /> */}
+        />
         <Route path={"/points/:id"} element={<ViewPoint />} />
         {/* Parameter */}
         <Route path={"/parameters"} element={<ParametersList />} />

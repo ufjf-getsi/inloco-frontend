@@ -24,6 +24,7 @@ interface ImplementedRecordFormProps
     FormFieldsProps {
   cancelRedirectLink: string;
   projectId?: string;
+  collectionId?: string;
 }
 
 export const emptyFields: Fields = {

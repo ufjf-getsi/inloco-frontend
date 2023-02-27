@@ -50,10 +50,7 @@ export default function ViewPoint() {
     point.projectId && point.projectId !== "" ? "/" + point.projectId : ""
   }`;
   const collectionBreadcrumbLink =
-    point.projectId &&
-    point.projectId !== "" &&
-    point.collectionId &&
-    point.collectionId !== ""
+    point.collectionId && point.collectionId !== ""
       ? `/collections/${point.collectionId}`
       : "/projects";
 
