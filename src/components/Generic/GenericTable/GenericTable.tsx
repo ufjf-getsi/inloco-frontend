@@ -24,7 +24,7 @@ import { GenericRecordProps } from "../GenericInterfaces";
 export interface GenericTableProps extends GenericRecordProps {
   allRecords: {}[];
   columnDefinitions: Array<ColumnDefinitionInterface>;
-  addRecordLink: string;
+  addRecordLink?: string;
   visibleContent: Array<string>;
   setSelectedRecords: Function;
   selectionType?: TableProps.SelectionType;
@@ -130,15 +130,17 @@ export default function GenericTable({
               : `(${allRecords.length})`
           }
           actions={
-            <SpaceBetween direction="horizontal" size="xs">
-              <Button
-                iconName="add-plus"
-                variant="primary"
-                href={addRecordLink}
-              >
-                Novo
-              </Button>
-            </SpaceBetween>
+            addRecordLink && (
+              <SpaceBetween direction="horizontal" size="xs">
+                <Button
+                  iconName="add-plus"
+                  variant="primary"
+                  href={addRecordLink}
+                >
+                  Novo
+                </Button>
+              </SpaceBetween>
+            )
           }
         >
           {toUpperCase(recordCategoryPlural)}
