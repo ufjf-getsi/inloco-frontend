@@ -1,4 +1,6 @@
-import { Parameter } from "../../types";
+import axios from "axios";
+import { NavigateFunction } from "react-router-dom";
+import { Equipment, Parameter } from "../../types";
 
 import {
   SpaceBetween,
@@ -6,25 +8,26 @@ import {
   Input,
   BreadcrumbGroup,
   Select,
+  Multiselect,
+  SelectProps,
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
-
-interface Option {
-  label: string;
-  value: string;
-}
+import { OptionStringString as Option } from "../Generic/GenericInterfaces";
+import { cancelLoadAndRedirectBackwards } from "../Generic/GenericFunctions";
 
 export interface Fields {
   name: string;
   unit: string;
   dataType: Option;
+  equipmentList: SelectProps.Options;
 }
 
 interface FormFieldsProps {
   inputValues: Fields;
   setInputValues: Function;
+  allEquipmentOptionsList: SelectProps.Options;
 }
 
 interface ImplementedRecordFormProps
@@ -33,7 +36,7 @@ interface ImplementedRecordFormProps
   cancelRedirectLink: string;
 }
 
-const options: Array<Option> = [
+const dataTypeOptions: Array<Option> = [
   {
     label: "Real",
     value: "real",
@@ -51,7 +54,8 @@ const options: Array<Option> = [
 export const emptyFields: Fields = {
   name: "",
   unit: "",
-  dataType: options[0],
+  dataType: dataTypeOptions[0],
+  equipmentList: [],
 };
 
 export const notLoadedRecord: Parameter = {
@@ -62,16 +66,46 @@ export const notLoadedRecord: Parameter = {
   equipmentList: [],
 };
 
+export function fetchAllEquipmentOptionsList({
+  navigate,
+  setAllEquipmentOptionsList,
+}: {
+  navigate: NavigateFunction;
+  setAllEquipmentOptionsList: Function;
+}) {
+  axios
+    .get<Equipment[]>("http://localhost:3333/equipment")
+    .then((response) => {
+      setAllEquipmentOptionsList(
+        response.data.map((item: Equipment) => ({
+          value: item.id,
+          label: item.name,
+        }))
+      );
+    })
+    .catch((error) =>
+      cancelLoadAndRedirectBackwards({
+        navigate: navigate,
+        error: error,
+        previousPageLink: `/parameters`,
+      })
+    );
+}
+
 export function formatDataType(dataType: string): string {
   return (
-    options.find((option) => {
+    dataTypeOptions.find((option) => {
       return option.value === dataType;
     })?.label ?? dataType
   );
 }
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.name && inputValues.dataType.value) {
+  if (
+    inputValues.name &&
+    inputValues.dataType.value &&
+    inputValues.equipmentList.length > 0
+  ) {
     return true;
   } else return false;
 }
@@ -107,12 +141,17 @@ export function RecordForm(props: ImplementedRecordFormProps) {
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
+        allEquipmentOptionsList={props.allEquipmentOptionsList}
       />
     </GenericCreateAndEditPage>
   );
 }
 
-function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
+function FormFields({
+  inputValues,
+  setInputValues,
+  allEquipmentOptionsList,
+}: FormFieldsProps) {
   return (
     <SpaceBetween size="l">
       <FormField label="Parâmetro">
@@ -148,8 +187,31 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
               dataType: detail.selectedOption,
             }))
           }
-          options={options}
+          options={dataTypeOptions}
           selectedAriaLabel="Selected"
+        />
+      </FormField>
+      <FormField label="Equipamentos">
+        <Multiselect
+          selectedOptions={inputValues.equipmentList}
+          onChange={({ detail }) => {
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              equipmentList: detail.selectedOptions,
+            }));
+          }}
+          deselectAriaLabel={(e) => `Remove ${e.label}`}
+          options={allEquipmentOptionsList}
+          loadingText="Carregando equipamentos"
+          placeholder="Selecione os equipamentos requeridos"
+          selectedAriaLabel="Selecionado"
+          statusType={
+            allEquipmentOptionsList
+              ? allEquipmentOptionsList.length > 0
+                ? "finished"
+                : "loading"
+              : "error"
+          }
         />
       </FormField>
     </SpaceBetween>

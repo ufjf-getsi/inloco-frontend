@@ -4,3 +4,8 @@ export interface GenericRecordProps {
   recordCategoryPlural: string;
   recordGenderFeminine: boolean;
 }
+
+export interface OptionStringString {
+  label: string;
+  value: string;
+}
