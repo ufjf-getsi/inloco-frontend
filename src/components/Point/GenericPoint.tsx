@@ -63,7 +63,10 @@ export function fetchAllParameterOptionsList({
     .get<Parameter[]>("http://localhost:3333/parameters")
     .then((response) => {
       setAllParameterOptionsList(
-        response.data.map((item) => ({ value: item.id, label: item.name }))
+        response.data.map((item) => ({
+          value: item.id,
+          label: `${item.name} (${item.unit})`,
+        }))
       );
     })
     .catch((error) =>
