@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Parameter } from "../../types";
+import { Equipment, Parameter } from "../../types";
 
 import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
@@ -9,12 +9,34 @@ import {
   formatDataType,
   notLoadedRecord,
 } from "../../components/Parameter/GenericParameter";
+import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
+import {
+  columnDefinitions,
+  Item,
+  visibleContent,
+} from "../../components/Equipment/TableConfig";
 
 export default function ViewParameter() {
   const { id } = useParams();
 
   const [parameter, setParameter] = useState<Parameter>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [selectedEquipmentList, setSelectedEquipmentList] = useState([]);
+
+  const tableConfig: GenericTableProps = {
+    allRecords: parameter.equipmentList.map((equipment: Equipment): Item => {
+      return {
+        id: equipment.id,
+        name: equipment.name,
+      };
+    }),
+    columnDefinitions: columnDefinitions,
+    recordCategorySingular: `equipamento`,
+    recordCategoryPlural: `equipamentos`,
+    recordGenderFeminine: false,
+    visibleContent: visibleContent,
+    setSelectedRecords: setSelectedEquipmentList,
+  };
 
   const deleteModalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
@@ -46,6 +68,7 @@ export default function ViewParameter() {
       }
       editRecordLink={`/parameters/${parameter.id}/edit`}
       previousPageLink={`/parameters`}
+      table={tableConfig}
       deleteModal={deleteModalConfig}
     />
   );
