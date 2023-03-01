@@ -3,7 +3,6 @@ import { useCollection } from "@cloudscape-design/collection-hooks";
 import {
   Box,
   Button,
-  ButtonDropdown,
   CollectionPreferences,
   Header,
   Pagination,
@@ -37,7 +36,7 @@ function EmptyState({
 }: {
   title: string;
   subtitle: string;
-  action: JSX.Element;
+  action?: JSX.Element;
 }) {
   return (
     <Box textAlign="center" color="inherit">
@@ -80,9 +79,11 @@ export default function GenericTable({
           title={`Nenhum ${recordCategorySingular}`}
           subtitle={`Não há ${recordCategoryPlural} para mostrar.`}
           action={
-            <Button iconName="add-plus" variant="normal" href={addRecordLink}>
-              Adicionar {recordCategorySingular}
-            </Button>
+            addRecordLink ? (
+              <Button iconName="add-plus" variant="normal" href={addRecordLink}>
+                Adicionar {recordCategorySingular}
+              </Button>
+            ) : undefined
           }
         />
       ),
