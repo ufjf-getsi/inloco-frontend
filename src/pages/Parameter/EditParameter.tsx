@@ -1,15 +1,18 @@
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
+import { Equipment } from "../../types";
 
-import { AlertProps } from "@cloudscape-design/components";
+import { AlertProps, SelectProps } from "@cloudscape-design/components";
 import {
   Fields,
   emptyFields,
   validateFields,
   RecordForm,
   formatDataType,
+  fetchAllEquipmentOptionsList,
 } from "../../components/Parameter/GenericParameter";
+import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
 export default function EditParameter() {
   const navigate = useNavigate();
@@ -19,10 +22,9 @@ export default function EditParameter() {
   }
   const { id } = useParams();
 
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
+  const [allEquipmentOptionsList, setAllEquipmentOptionsList] =
+    useState<SelectProps.Options>([]);
 
   function fetchRecordData() {
     axios(`http://localhost:3333/parameters/${id}`)
@@ -34,12 +36,24 @@ export default function EditParameter() {
             label: formatDataType(response.data.dataType),
             value: response.data.dataType,
           },
+          equipmentList: response.data.equipmentList.map(
+            (equipment: Equipment) => {
+              return {
+                value: equipment.id,
+                label: equipment.name,
+              };
+            }
+          ),
         });
       })
       .catch((error) => cancelLoadAndRedirectBackwards(error));
   }
   useEffect(() => {
     fetchRecordData();
+    fetchAllEquipmentOptionsList({
+      navigate: navigate,
+      setAllEquipmentOptionsList: setAllEquipmentOptionsList,
+    });
   }, []);
 
   async function handleSubmit(event: FormEvent) {
@@ -51,6 +65,11 @@ export default function EditParameter() {
           name: inputValues.name,
           unit: inputValues.unit === "" ? "N/A" : inputValues.unit,
           dataType: inputValues.dataType.value,
+          equipmentList: inputValues.equipmentList.map(
+            (equipmentOption: OptionDefinition) => {
+              return { id: equipmentOption.value };
+            }
+          ),
         });
         setAlertType("success");
         setAlertVisible(true);
@@ -65,6 +84,9 @@ export default function EditParameter() {
     }
   }
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertType, setAlertType] = useState<AlertProps.Type>("success");
+
   return (
     <RecordForm
       edit={true}
@@ -75,6 +97,7 @@ export default function EditParameter() {
       inputValues={inputValues}
       setInputValues={setInputValues}
       cancelRedirectLink={`/parameters/${id}`}
+      allEquipmentOptionsList={allEquipmentOptionsList}
     />
   );
 }
