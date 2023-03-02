@@ -68,7 +68,7 @@ export default function CreatePoint() {
         await axios.post("http://localhost:3333/points", {
           collectionId: collectionId,
           name: inputValues.name,
-          coordinates: inputValues.coordinates,
+          plannedCoordinates: inputValues.plannedCoordinates,
           measurements: inputValues.parameters.map(
             (selectedOption: OptionDefinition) => {
               return {

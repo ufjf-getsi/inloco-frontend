@@ -1,94 +1,57 @@
-import axios from "axios";
-import { Collection, Task } from "../../types";
-
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Task } from "../../types";
 
+import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Header,
-  SpaceBetween,
-  Button,
-  TextContent,
-} from "@cloudscape-design/components";
-import Navbar from "../../components/Navbar";
-import { DeleteTaskModal } from "../../components/Task/DeleteTaskModal";
+  breadcrumpGroupItems,
+  notLoadedRecord,
+} from "../../components/Task/GenericTask";
+import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+
+interface TaskWithProjectId extends Task {
+  projectId: string;
+}
 
 export default function ViewTask() {
   const { id } = useParams();
 
-  const [task, setTask] = useState<Task>({
-    id: "",
-    title: "404",
-    status: "null",
-    url: "null",
-    collectionId: "",
+  const [task, setTask] = useState<TaskWithProjectId>({
+    projectId: "",
+    ...notLoadedRecord,
   });
-  const [visible, setVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  useEffect(() => {
-    fetchTaskData();
-  }, []);
-
-  function fetchTaskData() {
-    axios(`http://localhost:3333/tasks/${id}`).then((response) => {
-      setTask(response.data);
-    });
-  }
+  const deleteModalConfig: GenericDeleteModalProps = {
+    visible: deleteModalVisible,
+    setVisible: setDeleteModalVisible,
+    recordCategorySingular: "tarefa",
+    recordCategoryPlural: "tarefas",
+    recordGenderFeminine: true,
+    serverDeleteLink: `http://localhost:3333/tasks/${id}`,
+    afterDeleteRedirectLink: `/collections/${task.collectionId}`,
+  };
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout
-          header={
-            <Header
-              variant="h2"
-              description={task.status}
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button iconName="edit" href={`/tasks/${task.id}/edit`}>
-                    Editar
-                  </Button>
-                  <Button iconName="close" onClick={() => setVisible(true)}>
-                    Excluir
-                  </Button>
-                </SpaceBetween>
-              }
-            >
-              {task.title}
-            </Header>
-          }
-        >
-          <Container>
-            <TextContent>
-              <h2>Tarefa referente a coleta {task.collectionId}</h2>
-            </TextContent>
-          </Container>
-          <DeleteTaskModal
-            taskId={task.id}
-            visible={visible}
-            setVisible={setVisible}
-            taskTitle={task.title}
-          />
-        </ContentLayout>
-      }
-      headerSelector="#header"
+    <GenericViewPage
+      title={task.title}
+      description={task.url}
+      navbarActiveLink={`/projects`}
+      setRecord={setTask}
+      fetchRecordLink={`http://localhost:3333/tasks/${id}`}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Tarefas", href: "/tasks" },
-            { text: "Visualizar tarefa", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({
+            projectId: task.projectId,
+            collectionId: task.collectionId,
+            pageType: "view",
+          })}
         />
       }
+      editRecordLink={`/tasks/${task.id}/edit`}
+      previousPageLink={`/collections/${task.collectionId}`}
+      deleteModal={deleteModalConfig}
     />
   );
 }

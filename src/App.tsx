@@ -14,7 +14,6 @@ import EquipmentList from "./pages/Equipment/EquipmentList";
 import CreateEquipment from "./pages/Equipment/CreateEquipment";
 import EditEquipment from "./pages/Equipment/EditEquipment";
 import ViewEquipment from "./pages/Equipment/ViewEquipment";
-import TasksList from "./pages/Task/TasksList";
 import CreateTask from "./pages/Task/CreateTask";
 import EditTask from "./pages/Task/EditTask";
 import ViewTask from "./pages/Task/ViewTask";
@@ -48,6 +47,13 @@ function App() {
         />
         <Route path={"/points/:id"} element={<ViewPoint />} />
         <Route path={"/points/:id/edit"} element={<EditPoint />} />
+        {/* Project -> Collection -> Task */}
+        <Route
+          path={"/collections/:collectionId/createTask"}
+          element={<CreateTask />}
+        />
+        <Route path={"/tasks/:id"} element={<ViewTask />} />
+        <Route path={"/tasks/:id/edit"} element={<EditTask />} />
         {/* Parameter */}
         <Route path={"/parameters"} element={<ParametersList />} />
         <Route path={"parameters/create"} element={<CreateParameter />} />
@@ -58,11 +64,6 @@ function App() {
         <Route path={"equipment/create"} element={<CreateEquipment />} />
         <Route path={"equipment/:id"} element={<ViewEquipment />} />
         <Route path={"equipment/:id/edit"} element={<EditEquipment />} />
-        {/* Task */}
-        <Route path={"/tasks"} element={<TasksList />} />
-        <Route path={"/tasks/create"} element={<CreateTask />} />
-        <Route path={"/tasks/:id"} element={<ViewTask />} />
-        <Route path={"/tasks:id/edit"} element={<EditTask />} />
       </Routes>
     </BrowserRouter>
   );

@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { Point } from "../../types";
 
-import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 import {
@@ -62,7 +61,7 @@ export default function ViewPoint() {
   return (
     <GenericViewPage
       title={point.name}
-      description={point.coordinates ?? ""}
+      description={point.plannedCoordinates ?? ""}
       navbarActiveLink={`/projects`}
       setRecord={setPoint}
       fetchRecordLink={`http://localhost:3333/points/${id}`}
