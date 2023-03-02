@@ -8,12 +8,13 @@ import {
   Form,
   SpaceBetween,
   Button,
-  Alert,
   AlertProps,
 } from "@cloudscape-design/components";
 import Navbar from "../../Navbar";
-import { toUpperCase } from "../GenericFunctions";
 import { GenericRecordProps } from "../GenericInterfaces";
+import GenericReturnMessageAlert, {
+  GenericReturnMessageAlertProps,
+} from "../GenericReturnMessageAlert";
 
 export interface GenericRecordFormProps {
   edit: boolean;
@@ -36,19 +37,6 @@ export default function GenericCreateAndEditPage(
   props: PropsWithChildren<GenericCreateAndEditPageProps>
 ) {
   const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";
-
-  const alertText =
-    props.alertType === "success"
-      ? `${toUpperCase(recordGenderArticle)} ${
-          props.recordCategorySingular
-        } foi ${
-          props.edit ? "editad" : "criad"
-        }${recordGenderArticle} com sucesso!`
-      : `Não foi possível ${
-          props.edit ? "editar" : "criar"
-        } ${recordGenderArticle} ${
-          props.recordCategorySingular
-        }! Tente novamente.`;
 
   return (
     <AppLayout
@@ -87,17 +75,14 @@ export default function GenericCreateAndEditPage(
               </Form>
             </form>
           </Container>
-          {props.alertVisible && (
-            <Alert
-              onDismiss={() => props.setAlertVisible(false)}
-              dismissAriaLabel="Fechar alerta"
-              dismissible
-              type={props.alertType}
-              className="absolute right-0 w-fit mt-8 mr-8"
-            >
-              {alertText}
-            </Alert>
-          )}
+          <GenericReturnMessageAlert
+            alertVisible={props.alertVisible}
+            setAlertVisible={props.setAlertVisible}
+            alertType={props.alertType}
+            recordGenderArticle={recordGenderArticle}
+            recordCategorySingular={props.recordCategorySingular}
+            edit={props.edit}
+          />
         </ContentLayout>
       }
       headerSelector="#header"
