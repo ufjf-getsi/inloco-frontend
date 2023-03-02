@@ -6,7 +6,6 @@ import {
   SpaceBetween,
   FormField,
   Input,
-  BreadcrumbGroup,
   SelectProps,
   Multiselect,
 } from "@cloudscape-design/components";
@@ -18,10 +17,11 @@ import {
   localizedPageTypeName,
 } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
+import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;
-  coordinates: string;
+  plannedCoordinates: string;
   parameters: SelectProps.Options;
 }
 
@@ -41,7 +41,7 @@ interface ImplementedRecordFormProps
 
 export const emptyFields: Fields = {
   name: "",
-  coordinates: "",
+  plannedCoordinates: "",
   parameters: [],
 };
 
@@ -49,7 +49,8 @@ export const notLoadedRecord: Point = {
   id: "",
   collectionId: "",
   name: "Carregando...",
-  coordinates: "",
+  plannedCoordinates: "",
+  actualCoordinates: "",
   measurements: [],
 };
 
@@ -83,7 +84,7 @@ export const breadcrumpGroupItems = ({
     ...(pageType !== "list"
       ? [
           {
-            text: `${localizedPageTypeName(pageType)} point`,
+            text: `${localizedPageTypeName(pageType)} ponto`,
             href: "#",
           },
         ]
@@ -124,7 +125,7 @@ export function fetchAllParameterOptionsList({
 export function validateFields(inputValues: Fields): boolean {
   if (
     inputValues.name &&
-    inputValues.coordinates &&
+    inputValues.plannedCoordinates &&
     inputValues.parameters.length > 0
   ) {
     return true;
@@ -141,14 +142,12 @@ export function RecordForm(props: ImplementedRecordFormProps) {
       description={`Um ponto é determinada localização de onde se deve aferir parâmetros.`}
       navbarActiveLink={`/projects`}
       breadcrumbs={
-        <BreadcrumbGroup
+        <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({
             projectId: props.projectId,
             collectionId: props.collectionId,
             pageType: props.edit ? "edit" : "create",
           })}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
         />
       }
       cancelRedirectLink={props.cancelRedirectLink}
@@ -186,11 +185,11 @@ function FormFields({
       </FormField>
       <FormField label="Coordenadas">
         <Input
-          value={inputValues.coordinates}
+          value={inputValues.plannedCoordinates}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
-              coordinates: event.detail.value,
+              plannedCoordinates: event.detail.value,
             }))
           }
         />

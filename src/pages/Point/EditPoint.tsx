@@ -31,7 +31,7 @@ export default function EditCollection() {
         setCollectionId(response.data.collectionId);
         setInputValues({
           name: response.data.name,
-          coordinates: response.data.coordinates ?? "",
+          plannedCoordinates: response.data.plannedCoordinates ?? "",
           parameters: response.data.measurements.map(
             (measurement: Measurement) => {
               return {
@@ -71,7 +71,7 @@ export default function EditCollection() {
       try {
         await axios.patch(`http://localhost:3333/points/${id}`, {
           name: inputValues.name,
-          coordinates: inputValues.coordinates,
+          plannedCoordinates: inputValues.plannedCoordinates,
           measurements: inputValues.parameters.map(
             (selectedOption: OptionDefinition) => {
               return {
@@ -102,7 +102,7 @@ export default function EditCollection() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/collections/${id}`}
+      cancelRedirectLink={`/collections/${collectionId}`}
       allParameterOptionsList={allParameterOptionsList}
       collectionId={collectionId}
       projectId={projectId}

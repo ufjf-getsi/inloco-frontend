@@ -1,8 +1,6 @@
 import axios from "axios";
-import { Task } from "../../types";
-
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
 
 import {
   AppLayout,
@@ -14,71 +12,82 @@ import {
 } from "@cloudscape-design/components";
 import Navbar from "../../components/Navbar";
 import { FormConnection, FormHeader } from "../../components/Task/FormTask";
+import {
+  emptyFields,
+  Fields,
+  RecordForm,
+  validateFields,
+} from "../../components/Task/GenericTask";
+import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
+import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
 export default function EditTask() {
+  const navigate = useNavigate();
   const { id } = useParams();
+
+  const [projectId, setProjectId] = useState("");
+  const [collectionId, setCollectionId] = useState("");
+  const [inputValues, setInputValues] = useState<Fields>(emptyFields);
+
+  function fetchRecordData() {
+    axios(`http://localhost:3333/tasks/${id}`)
+      .then((response) => {
+        setProjectId(response.data.projectId);
+        setCollectionId(response.data.collectionId);
+        setInputValues({
+          title: response.data.title,
+        });
+      })
+      .catch((error) =>
+        cancelLoadAndRedirectBackwards({
+          navigate: navigate,
+          error: error,
+          previousPageLink: `${
+            collectionId ? `/collections/${collectionId}` : "/projects"
+          }`,
+        })
+      );
+  }
+  useEffect(() => {
+    fetchRecordData();
+  }, []);
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (validateFields(inputValues)) {
+      // Send to the server
+      try {
+        await axios.patch(`http://localhost:3333/tasks/${id}`, {
+          title: inputValues.title,
+        });
+        setAlertType("success");
+        setAlertVisible(true);
+        setTimeout(() => navigate(`/tasks/${id}`), 1000);
+      } catch (error) {
+        console.log(error);
+        setAlertType("error");
+        setAlertVisible(true);
+      }
+    } else {
+      // Fazer alert para dados inválidos
+    }
+  }
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  const [alertText, setAlertText] = useState(
-    "A tarefa foi editado com sucesso!"
-  );
-  const [task, setTask] = useState<Task>({
-    id: "",
-    title: "404",
-    status: "null",
-    url: "null",
-  });
-
-  useEffect(() => {
-    fetchTaskData();
-  }, []);
-
-  function fetchTaskData() {
-    axios(`http://localhost:3333/tasks/${id}`).then((response) => {
-      setTask(response.data);
-    });
-  }
 
   return (
-    <AppLayout
-      navigation={<Navbar />}
-      toolsHide
-      contentType="form"
-      content={
-        <ContentLayout header={<FormHeader edit={true} />}>
-          <Container>
-            <FormConnection
-              edit={true}
-              setAlertVisible={setAlertVisible}
-              setAlertType={setAlertType}
-              setAlertText={setAlertText}
-            />
-          </Container>
-          <Alert
-            onDismiss={() => setAlertVisible(false)}
-            visible={alertVisible}
-            dismissAriaLabel="Fechar alerta"
-            dismissible
-            type={alertType}
-            className="absolute right-0 w-fit mt-8 mr-8"
-          >
-            {alertText}
-          </Alert>
-        </ContentLayout>
-      }
-      headerSelector="#header"
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Tarefas", href: "/tasks" },
-            { text: "Tarefa", href: "./" },
-            { text: "Editar tarefa", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
+    <RecordForm
+      edit={true}
+      handleSubmit={handleSubmit}
+      alertType={alertType}
+      alertVisible={alertVisible}
+      setAlertVisible={setAlertVisible}
+      inputValues={inputValues}
+      setInputValues={setInputValues}
+      cancelRedirectLink={`/collections/${collectionId}`}
+      collectionId={collectionId}
+      projectId={projectId}
     />
   );
 }

@@ -65,7 +65,7 @@ export default function ViewCollection() {
     recordCategorySingular: `tarefa`,
     recordCategoryPlural: `tarefas`,
     recordGenderFeminine: true,
-    addRecordLink: `#`,
+    addRecordLink: `/collections/${id}/createTask`,
     visibleContent: visibleContentTasks,
     setSelectedRecords: setSelectedPoints,
   };

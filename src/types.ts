@@ -21,7 +21,8 @@ export interface Point {
   id: string;
   collectionId: string;
   name: string;
-  coordinates?: string;
+  plannedCoordinates: string;
+  actualCoordinates: string;
   measurements: Measurement[];
 }
 
@@ -61,6 +62,6 @@ export interface Task {
   id: string;
   title: string;
   url: string;
-  status: string;
+  isPending: boolean;
   collectionId: string;
 }
