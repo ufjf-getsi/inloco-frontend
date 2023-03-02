@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import { Collection } from "../../types";
+import { useEffect, useState } from "react";
+import { Collection, Task } from "../../types";
 
 import {
   BreadcrumbGroup,
@@ -22,6 +22,7 @@ import {
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
 import PlanningModal from "../../components/PlanningModal";
+import axios from "axios";
 
 export default function ViewCollection() {
   const { id } = useParams();
@@ -42,11 +43,17 @@ export default function ViewCollection() {
     setSelectedRecords: setSelectedPoints,
   };
 
-  const tasks = [
-    { id: "id1", title: "Pegar fita métrica", status: "pendente" },
-    { id: "id2", title: "Pegar termômetro", status: "concluída" },
-    { id: "id3", title: "Tirar fotos", status: "pendente" },
-  ];
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTableData();
+  }, []);
+
+  function fetchTableData() {
+    axios(`http://localhost:3333/collections/${id}/tasks`).then((response) => {
+      setTasks(response.data);
+    });
+  }
 
   const tableConfigTasks: GenericTableProps = {
     allRecords: tasks,
@@ -113,7 +120,9 @@ export default function ViewCollection() {
         </Button>,
       ]}
     >
-      <GenericTable {...tableConfigTasks} />
+      <div style={{ marginTop: "15vh" }}>
+        <GenericTable {...tableConfigTasks} />
+      </div>
       <PlanningModal
         key={`planningModal`}
         collectionId={collection.id}
