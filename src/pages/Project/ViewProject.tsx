@@ -10,7 +10,11 @@ import {
 } from "../../components/Collection/TableConfig";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
-import { notLoadedRecord } from "../../components/Project/GenericProject";
+import {
+  breadcrumpGroupItems,
+  notLoadedRecord,
+} from "../../components/Project/GenericProject";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ViewProject() {
   const { id } = useParams();
@@ -48,13 +52,8 @@ export default function ViewProject() {
       setRecord={setProject}
       fetchRecordLink={`http://localhost:3333/projects/${id}`}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Projetos", href: "/projects" },
-            { text: "Projeto", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({ pageType: "view" })}
         />
       }
       editRecordLink={`/projects/${project.id}/edit`}

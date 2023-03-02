@@ -8,7 +8,10 @@ import {
   Container,
 } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import { notLoadedRecord } from "../../components/Collection/GenericCollection";
+import {
+  breadcrumpGroupItems,
+  notLoadedRecord,
+} from "../../components/Collection/GenericCollection";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 import GenericTable, {
   GenericTableProps,
@@ -23,6 +26,7 @@ import {
 } from "../../components/Task/TableConfig";
 import PlanningModal from "../../components/PlanningModal";
 import axios from "axios";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ViewCollection() {
   const { id } = useParams();
@@ -86,21 +90,11 @@ export default function ViewCollection() {
       setRecord={setCollection}
       fetchRecordLink={`http://localhost:3333/collections/${id}`}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Projetos", href: "/projects" },
-            {
-              text: "Projeto",
-              href: `/${
-                collection.projectId !== ""
-                  ? "projects/" + collection.projectId
-                  : ""
-              }`,
-            },
-            { text: "Coleta", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({
+            pageType: "view",
+            projectId: collection.projectId,
+          })}
         />
       }
       editRecordLink={`/collections/${collection.id}/edit`}

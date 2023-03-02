@@ -7,6 +7,8 @@ import {
   visibleContent,
 } from "../../components/Project/TableConfig";
 import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
+import { breadcrumpGroupItems } from "../../components/Project/GenericProject";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ProjectsList() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -28,10 +30,8 @@ export default function ProjectsList() {
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedProjects}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[{ text: "Projetos", href: "#" }]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({ pageType: "list" })}
         />
       }
     />

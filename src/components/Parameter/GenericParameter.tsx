@@ -14,8 +14,14 @@ import {
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
-import { OptionStringString as Option } from "../Generic/GenericInterfaces";
-import { cancelLoadAndRedirectBackwards } from "../Generic/GenericFunctions";
+import {
+  OptionStringString as Option,
+  PageType,
+} from "../Generic/GenericInterfaces";
+import {
+  cancelLoadAndRedirectBackwards,
+  localizedPageTypeName,
+} from "../Generic/GenericFunctions";
 
 export interface Fields {
   name: string;
@@ -64,6 +70,25 @@ export const notLoadedRecord: Parameter = {
   unit: "",
   dataType: "",
   equipmentList: [],
+};
+
+interface BreadcrumbGroupItemsProps {
+  pageType: PageType;
+}
+export const breadcrumpGroupItems = ({
+  pageType,
+}: BreadcrumbGroupItemsProps) => {
+  return [
+    { text: "Parâmetros", href: "/parameters" },
+    ...(pageType !== "list"
+      ? [
+          {
+            text: `${localizedPageTypeName(pageType)} parâmetro`,
+            href: "#",
+          },
+        ]
+      : []),
+  ];
 };
 
 export function fetchAllEquipmentOptionsList({
@@ -121,13 +146,9 @@ export function RecordForm(props: ImplementedRecordFormProps) {
       navbarActiveLink={`/parameters`}
       breadcrumbs={
         <BreadcrumbGroup
-          items={[
-            { text: "Parâmetros", href: "/parameters" },
-            {
-              text: (props.edit ? `Editar` : `Criar`) + " parâmetro",
-              href: "#",
-            },
-          ]}
+          items={breadcrumpGroupItems({
+            pageType: props.edit ? "edit" : "create",
+          })}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
         />
