@@ -5,13 +5,17 @@ import { Point } from "../../types";
 import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
-import { notLoadedRecord } from "../../components/Point/GenericPoint";
+import {
+  breadcrumpGroupItems,
+  notLoadedRecord,
+} from "../../components/Point/GenericPoint";
 import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   Item,
   visibleContent,
 } from "../../components/Measurement/TableConfig";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 interface PointWithProjectId extends Point {
   projectId: string;
@@ -55,14 +59,6 @@ export default function ViewPoint() {
     afterDeleteRedirectLink: `/collections/${point.collectionId}`,
   };
 
-  const projectBreadcrumbLink = `/projects${
-    point.projectId && point.projectId !== "" ? "/" + point.projectId : ""
-  }`;
-  const collectionBreadcrumbLink =
-    point.collectionId && point.collectionId !== ""
-      ? `/collections/${point.collectionId}`
-      : "/projects";
-
   return (
     <GenericViewPage
       title={point.name}
@@ -71,21 +67,12 @@ export default function ViewPoint() {
       setRecord={setPoint}
       fetchRecordLink={`http://localhost:3333/points/${id}`}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Projetos", href: "/projects" },
-            {
-              text: "Projeto",
-              href: projectBreadcrumbLink,
-            },
-            {
-              text: "Coleta",
-              href: collectionBreadcrumbLink,
-            },
-            { text: "Ponto", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({
+            projectId: point.projectId,
+            collectionId: point.collectionId,
+            pageType: "view",
+          })}
         />
       }
       editRecordLink={`/points/${point.id}/edit`}

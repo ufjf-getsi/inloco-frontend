@@ -9,3 +9,5 @@ export interface OptionStringString {
   label: string;
   value: string;
 }
+
+export type PageType = "list" | "view" | "create" | "edit";

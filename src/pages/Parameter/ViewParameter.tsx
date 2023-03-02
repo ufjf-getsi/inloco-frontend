@@ -6,6 +6,7 @@ import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 import {
+  breadcrumpGroupItems,
   formatDataType,
   notLoadedRecord,
 } from "../../components/Parameter/GenericParameter";
@@ -15,6 +16,7 @@ import {
   Item,
   visibleContent,
 } from "../../components/Equipment/TableConfig";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ViewParameter() {
   const { id } = useParams();
@@ -57,13 +59,8 @@ export default function ViewParameter() {
       setRecord={setParameter}
       fetchRecordLink={`http://localhost:3333/parameters/${id}`}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Parâmetros", href: "/parameters" },
-            { text: "Parâmetro", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({ pageType: "view" })}
         />
       }
       editRecordLink={`/parameters/${parameter.id}/edit`}

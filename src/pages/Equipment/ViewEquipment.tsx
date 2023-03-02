@@ -5,7 +5,11 @@ import { Equipment } from "../../types";
 import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
-import { notLoadedRecord } from "../../components/Equipment/GenericEquipment";
+import {
+  breadcrumpGroupItems,
+  notLoadedRecord,
+} from "../../components/Equipment/GenericEquipment";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ViewEquipment() {
   const { id } = useParams();
@@ -32,13 +36,8 @@ export default function ViewEquipment() {
       setRecord={setEquipment}
       fetchRecordLink={`http://localhost:3333/equipment/${id}`}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: "Equipamentos", href: "/equipment" },
-            { text: "Equipamento", href: "#" },
-          ]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({ pageType: "view" })}
         />
       }
       editRecordLink={`/equipment/${equipment.id}/edit`}

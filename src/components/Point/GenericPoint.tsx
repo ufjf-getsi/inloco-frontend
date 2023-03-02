@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import { NavigateFunction } from "react-router-dom";
 import { Parameter, Point } from "../../types";
 
 import {
@@ -12,9 +13,11 @@ import {
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
-import axios from "axios";
-import { cancelLoadAndRedirectBackwards } from "../Generic/GenericFunctions";
-import { NavigateFunction } from "react-router-dom";
+import {
+  cancelLoadAndRedirectBackwards,
+  localizedPageTypeName,
+} from "../Generic/GenericFunctions";
+import { PageType } from "../Generic/GenericInterfaces";
 
 export interface Fields {
   name: string;
@@ -48,6 +51,44 @@ export const notLoadedRecord: Point = {
   name: "Carregando...",
   coordinates: "",
   measurements: [],
+};
+
+interface BreadcrumbGroupItemsProps {
+  projectId?: string;
+  collectionId?: string;
+  pageType: PageType;
+}
+export const breadcrumpGroupItems = ({
+  projectId,
+  collectionId,
+  pageType,
+}: BreadcrumbGroupItemsProps) => {
+  const projectBreadcrumbLink = `/projects${
+    projectId && projectId !== "" ? "/" + projectId : ""
+  }`;
+  const collectionBreadcrumbLink =
+    collectionId && collectionId !== ""
+      ? `/collections/${collectionId}`
+      : "/projects";
+  return [
+    { text: "Projetos", href: "/projects" },
+    {
+      text: "Projeto",
+      href: projectBreadcrumbLink,
+    },
+    {
+      text: "Coleta",
+      href: collectionBreadcrumbLink,
+    },
+    ...(pageType !== "list"
+      ? [
+          {
+            text: `${localizedPageTypeName(pageType)} point`,
+            href: "#",
+          },
+        ]
+      : []),
+  ];
 };
 
 export function fetchAllParameterOptionsList({
@@ -91,14 +132,6 @@ export function validateFields(inputValues: Fields): boolean {
 }
 
 export function RecordForm(props: ImplementedRecordFormProps) {
-  const projectBreadcrumbLink = `/projects${
-    props.projectId && props.projectId !== "" ? "/" + props.projectId : ""
-  }`;
-  const collectionBreadcrumbLink =
-    props.collectionId && props.collectionId !== ""
-      ? `/collections/${props.collectionId}`
-      : "/projects";
-
   return (
     <GenericCreateAndEditPage
       edit={props.edit}
@@ -109,18 +142,11 @@ export function RecordForm(props: ImplementedRecordFormProps) {
       navbarActiveLink={`/projects`}
       breadcrumbs={
         <BreadcrumbGroup
-          items={[
-            { text: "Projetos", href: "/projects" },
-            {
-              text: "Projeto",
-              href: projectBreadcrumbLink,
-            },
-            {
-              text: "Coleta",
-              href: collectionBreadcrumbLink,
-            },
-            { text: (props.edit ? `Editar` : `Criar`) + " ponto", href: "#" },
-          ]}
+          items={breadcrumpGroupItems({
+            projectId: props.projectId,
+            collectionId: props.collectionId,
+            pageType: props.edit ? "edit" : "create",
+          })}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
         />

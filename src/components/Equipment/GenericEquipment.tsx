@@ -9,6 +9,8 @@ import {
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
+import { localizedPageTypeName } from "../Generic/GenericFunctions";
+import { PageType } from "../Generic/GenericInterfaces";
 
 export interface Fields {
   name: string;
@@ -35,6 +37,25 @@ export const notLoadedRecord: Equipment = {
   name: "Carregando...",
 };
 
+interface BreadcrumbGroupItemsProps {
+  pageType: PageType;
+}
+export const breadcrumpGroupItems = ({
+  pageType,
+}: BreadcrumbGroupItemsProps) => {
+  return [
+    { text: "Equipamentos", href: "/equipment" },
+    ...(pageType !== "list"
+      ? [
+          {
+            text: `${localizedPageTypeName(pageType)} equipamento`,
+            href: "#",
+          },
+        ]
+      : []),
+  ];
+};
+
 export function validateFields(inputValues: Fields): boolean {
   if (inputValues.name) {
     return true;
@@ -52,13 +73,9 @@ export function RecordForm(props: ImplementedRecordFormProps) {
       navbarActiveLink={`/equipment`}
       breadcrumbs={
         <BreadcrumbGroup
-          items={[
-            { text: "Equipamentos", href: "/equipment" },
-            {
-              text: (props.edit ? `Editar` : `Criar`) + " equipamento",
-              href: "#",
-            },
-          ]}
+          items={breadcrumpGroupItems({
+            pageType: props.edit ? "edit" : "create",
+          })}
           expandAriaLabel="Mostrar caminho"
           ariaLabel="Breadcrumbs"
         />

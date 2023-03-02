@@ -7,6 +7,8 @@ import {
   visibleContent,
 } from "../../components/Parameter/TableConfig";
 import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
+import { breadcrumpGroupItems } from "../../components/Parameter/GenericParameter";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ParametersList() {
   const [parameters, setParameters] = useState<Parameter[]>([]);
@@ -28,10 +30,8 @@ export default function ParametersList() {
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedParameters}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[{ text: "Parâmetros", href: "#" }]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({ pageType: "list" })}
         />
       }
     />

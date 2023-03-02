@@ -7,6 +7,8 @@ import {
   visibleContent,
 } from "../../components/Equipment/TableConfig";
 import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
+import { breadcrumpGroupItems } from "../../components/Equipment/GenericEquipment";
+import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function EquipmentList() {
   const [equipmentArray, setEquipmentArray] = useState<Equipment[]>([]);
@@ -28,10 +30,8 @@ export default function EquipmentList() {
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedEquipmentList}
       breadcrumbs={
-        <BreadcrumbGroup
-          items={[{ text: "Equipamentos", href: "#" }]}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
+        <GenericBreadcrumbGroup
+          items={breadcrumpGroupItems({ pageType: "list" })}
         />
       }
     />
