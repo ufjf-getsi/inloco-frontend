@@ -27,7 +27,7 @@ export default function EditParameter() {
     useState<SelectProps.Options>([]);
 
   function fetchRecordData() {
-    axios(`http://localhost:3333/parameters/${id}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/parameters/${id}`)
       .then((response) => {
         setInputValues({
           name: response.data.name,
@@ -61,7 +61,7 @@ export default function EditParameter() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.patch(`http://localhost:3333/parameters/${id}`, {
+        await axios.patch(`${import.meta.env.VITE_SERVER_URL}/parameters/${id}`, {
           name: inputValues.name,
           unit: inputValues.unit === "" ? "N/A" : inputValues.unit,
           dataType: inputValues.dataType.value,

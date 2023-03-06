@@ -16,7 +16,7 @@ export default function CreateCollection() {
   const { projectId } = useParams();
 
   function checkIfParentRecordExists() {
-    axios(`http://localhost:3333/projects/${projectId}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/projects/${projectId}`)
       .then((response) => {
         if (!response.data) {
           cancelLoadAndRedirectBackwards({
@@ -48,7 +48,7 @@ export default function CreateCollection() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post("http://localhost:3333/collections", {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/collections`, {
           title: inputValues.title,
           projectId: projectId,
         });

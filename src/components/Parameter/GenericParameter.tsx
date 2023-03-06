@@ -99,7 +99,7 @@ export function fetchAllEquipmentOptionsList({
   setAllEquipmentOptionsList: Function;
 }) {
   axios
-    .get<Equipment[]>("http://localhost:3333/equipment")
+    .get<Equipment[]>(`${import.meta.env.VITE_SERVER_URL}/equipment`)
     .then((response) => {
       setAllEquipmentOptionsList(
         response.data.map((item: Equipment) => ({

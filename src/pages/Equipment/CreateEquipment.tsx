@@ -23,7 +23,7 @@ export default function CreateEquipment() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post("http://localhost:3333/equipment", {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/equipment`, {
           name: inputValues.name,
         });
         setAlertType("success");

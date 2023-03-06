@@ -24,7 +24,7 @@ export default function EditEquipment() {
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   function fetchRecordData() {
-    axios(`http://localhost:3333/equipment/${id}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/equipment/${id}`)
       .then((response) => {
         setInputValues({
           name: response.data.name,
@@ -41,9 +41,12 @@ export default function EditEquipment() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.patch(`http://localhost:3333/equipment/${id}`, {
-          name: inputValues.name,
-        });
+        await axios.patch(
+          `${import.meta.env.VITE_SERVER_URL}/equipment/${id}`,
+          {
+            name: inputValues.name,
+          }
+        );
         setAlertType("success");
         setAlertVisible(true);
         setTimeout(() => navigate(`/equipment/${id}`), 1000);

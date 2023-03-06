@@ -31,7 +31,7 @@ export default function CreateParameter() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post("http://localhost:3333/parameters", {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/parameters`, {
           name: inputValues.name,
           unit: inputValues.unit === "" ? "N/A" : inputValues.unit,
           dataType: inputValues.dataType.value,

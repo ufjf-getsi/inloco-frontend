@@ -102,7 +102,7 @@ export function fetchAllParameterOptionsList({
   setAllParameterOptionsList: Function;
 }) {
   axios
-    .get<Parameter[]>("http://localhost:3333/parameters")
+    .get<Parameter[]>(`${import.meta.env.VITE_SERVER_URL}/parameters`)
     .then((response) => {
       setAllParameterOptionsList(
         response.data.map((item) => ({

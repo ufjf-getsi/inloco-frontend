@@ -17,7 +17,7 @@ interface PlanningModalProps {
 async function handleClick(props: PlanningModalProps) {
   for (const point of props.points) {
     for (const measurement of point.measurements) {
-      await axios.post("http://localhost:3333/tasks", {
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/tasks`, {
         title: `Pegar equipamento para análise de ${measurement.parameter.name}`,
         url: "url",
         collectionId: props.collectionId,

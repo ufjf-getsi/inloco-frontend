@@ -23,7 +23,7 @@ export default function CreateProject() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post("http://localhost:3333/projects", {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/projects`, {
           title: inputValues.title,
           description: inputValues.description,
         });

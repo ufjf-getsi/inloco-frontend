@@ -29,7 +29,7 @@ export default function ViewTask() {
     recordCategorySingular: "tarefa",
     recordCategoryPlural: "tarefas",
     recordGenderFeminine: true,
-    serverDeleteLink: `http://localhost:3333/tasks/${id}`,
+    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/tasks/${id}`,
     afterDeleteRedirectLink: `/collections/${task.collectionId}`,
   };
 
@@ -39,7 +39,7 @@ export default function ViewTask() {
       description={task.url}
       navbarActiveLink={`/projects`}
       setRecord={setTask}
-      fetchRecordLink={`http://localhost:3333/tasks/${id}`}
+      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({

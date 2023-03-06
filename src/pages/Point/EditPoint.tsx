@@ -25,7 +25,7 @@ export default function EditCollection() {
     useState<SelectProps.Options>([]);
 
   function fetchRecordData() {
-    axios(`http://localhost:3333/points/${id}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/points/${id}`)
       .then((response) => {
         setProjectId(response.data.projectId);
         setCollectionId(response.data.collectionId);
@@ -69,7 +69,7 @@ export default function EditCollection() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.patch(`http://localhost:3333/points/${id}`, {
+        await axios.patch(`${import.meta.env.VITE_SERVER_URL}/points/${id}`, {
           name: inputValues.name,
           plannedCoordinates: inputValues.plannedCoordinates,
           measurements: inputValues.parameters.map(

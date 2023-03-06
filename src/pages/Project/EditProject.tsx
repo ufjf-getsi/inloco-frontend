@@ -24,7 +24,7 @@ export default function EditProject() {
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   function fetchRecordData() {
-    axios(`http://localhost:3333/projects/${id}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/projects/${id}`)
       .then((response) => {
         setInputValues({
           title: response.data.title,
@@ -42,7 +42,7 @@ export default function EditProject() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.patch(`http://localhost:3333/projects/${id}`, {
+        await axios.patch(`${import.meta.env.VITE_SERVER_URL}/projects/${id}`, {
           title: inputValues.title,
           description: inputValues.description,
         });

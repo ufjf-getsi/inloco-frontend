@@ -22,7 +22,7 @@ export default function EditCollection() {
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   function fetchRecordData() {
-    axios(`http://localhost:3333/collections/${id}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/collections/${id}`)
       .then((response) => {
         setProjectId(response.data.projectId);
         setInputValues({
@@ -46,9 +46,12 @@ export default function EditCollection() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.patch(`http://localhost:3333/collections/${id}`, {
-          title: inputValues.title,
-        });
+        await axios.patch(
+          `${import.meta.env.VITE_SERVER_URL}/collections/${id}`,
+          {
+            title: inputValues.title,
+          }
+        );
         setAlertType("success");
         setAlertVisible(true);
         setTimeout(() => navigate(`/collections/${id}`), 1000);
