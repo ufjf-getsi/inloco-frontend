@@ -47,7 +47,7 @@ export default function ViewParameter() {
     recordCategoryPlural: "parâmetros",
     recordName: parameter.name,
     recordGenderFeminine: false,
-    serverDeleteLink: `http://localhost:3333/parameters/${id}`,
+    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/parameters/${id}`,
     afterDeleteRedirectLink: "/parameters",
   };
 
@@ -57,7 +57,7 @@ export default function ViewParameter() {
       description={`Tipo de dado: ${formatDataType(parameter.dataType)}`}
       navbarActiveLink={`/parameters`}
       setRecord={setParameter}
-      fetchRecordLink={`http://localhost:3333/parameters/${id}`}
+      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/parameters/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}

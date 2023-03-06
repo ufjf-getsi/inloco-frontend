@@ -54,9 +54,11 @@ export default function ViewCollection() {
   }, []);
 
   function fetchTableData() {
-    axios(`http://localhost:3333/collections/${id}/tasks`).then((response) => {
-      setTasks(response.data);
-    });
+    axios(`${import.meta.env.VITE_SERVER_URL}/collections/${id}/tasks`).then(
+      (response) => {
+        setTasks(response.data);
+      }
+    );
   }
 
   const tableConfigTasks: GenericTableProps = {
@@ -76,7 +78,7 @@ export default function ViewCollection() {
     recordCategorySingular: "coleta",
     recordCategoryPlural: "coletas",
     recordGenderFeminine: true,
-    serverDeleteLink: `http://localhost:3333/collections/${id}`,
+    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/collections/${id}`,
     afterDeleteRedirectLink: `/projects/${collection.projectId}`,
     alertText: `Proceder com esta ação deletará a coleta com todo o seu conteúdo,
     incluindo todos os pontos e registros associados a si.`,
@@ -88,7 +90,7 @@ export default function ViewCollection() {
       description={""}
       navbarActiveLink={`/projects`}
       setRecord={setCollection}
-      fetchRecordLink={`http://localhost:3333/collections/${id}`}
+      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/collections/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({

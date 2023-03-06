@@ -30,7 +30,7 @@ export default function EditTask() {
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   function fetchRecordData() {
-    axios(`http://localhost:3333/tasks/${id}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`)
       .then((response) => {
         setProjectId(response.data.projectId);
         setCollectionId(response.data.collectionId);
@@ -57,7 +57,7 @@ export default function EditTask() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.patch(`http://localhost:3333/tasks/${id}`, {
+        await axios.patch(`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`, {
           title: inputValues.title,
         });
         setAlertType("success");

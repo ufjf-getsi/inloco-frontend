@@ -18,7 +18,7 @@ export default function CreateTask() {
   const [projectId, setProjectId] = useState("");
 
   function checkIfParentRecordExists() {
-    axios(`http://localhost:3333/collections/${collectionId}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/collections/${collectionId}`)
       .then((response) => {
         if (response.data) {
           setProjectId(response.data.projectId);
@@ -55,7 +55,7 @@ export default function CreateTask() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post("http://localhost:3333/tasks", {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/tasks`, {
           collectionId: collectionId,
           title: inputValues.title,
           url: "url",

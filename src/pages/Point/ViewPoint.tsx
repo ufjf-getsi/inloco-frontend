@@ -54,7 +54,7 @@ export default function ViewPoint() {
     recordCategorySingular: "ponto",
     recordCategoryPlural: "pontos",
     recordGenderFeminine: false,
-    serverDeleteLink: `http://localhost:3333/points/${id}`,
+    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/points/${id}`,
     afterDeleteRedirectLink: `/collections/${point.collectionId}`,
   };
 
@@ -64,7 +64,7 @@ export default function ViewPoint() {
       description={point.plannedCoordinates ?? ""}
       navbarActiveLink={`/projects`}
       setRecord={setPoint}
-      fetchRecordLink={`http://localhost:3333/points/${id}`}
+      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/points/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({

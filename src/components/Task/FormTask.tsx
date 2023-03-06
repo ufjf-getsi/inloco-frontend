@@ -103,7 +103,7 @@ export function FormConnectionCreate(props: FormConnectionSpecificProps) {
     }
 
     try {
-      await axios.post("http://localhost:3333/tasks", {
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/tasks`, {
         title: props.inputValues.title,
       });
 
@@ -130,9 +130,12 @@ export function FormConnectionEdit(props: FormConnectionSpecificProps) {
     }
 
     try {
-      await axios.patch(`http://localhost:3333/tasks/${props.taskId}`, {
-        title: props.inputValues.title,
-      });
+      await axios.patch(
+        `${import.meta.env.VITE_SERVER_URL}/tasks/${props.taskId}`,
+        {
+          title: props.inputValues.title,
+        }
+      );
 
       props.setAlertVisible(true);
 

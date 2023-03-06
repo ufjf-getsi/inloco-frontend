@@ -24,7 +24,7 @@ export default function ViewEquipment() {
     recordCategoryPlural: "equipamentos",
     recordName: equipment.name,
     recordGenderFeminine: false,
-    serverDeleteLink: `http://localhost:3333/equipment/${id}`,
+    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/equipment/${id}`,
     afterDeleteRedirectLink: "/equipment",
   };
 
@@ -34,7 +34,7 @@ export default function ViewEquipment() {
       description={""}
       navbarActiveLink={`/equipment`}
       setRecord={setEquipment}
-      fetchRecordLink={`http://localhost:3333/equipment/${id}`}
+      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/equipment/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}

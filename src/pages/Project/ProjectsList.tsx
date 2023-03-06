@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Project } from "../../types";
 
-import { BreadcrumbGroup } from "@cloudscape-design/components";
 import {
   columnDefinitions,
   visibleContent,
@@ -21,7 +20,7 @@ export default function ProjectsList() {
       navbarActiveLink={`/projects`}
       allRecords={projects}
       setRecords={setProjects}
-      fetchRecordsLink={`http://localhost:3333/projects`}
+      fetchRecordsLink={`${import.meta.env.VITE_SERVER_URL}/projects`}
       columnDefinitions={columnDefinitions}
       recordCategorySingular={`projeto`}
       recordCategoryPlural={`projetos`}

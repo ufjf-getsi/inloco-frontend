@@ -23,7 +23,7 @@ export default function CreatePoint() {
     useState<SelectProps.Options>([]);
 
   function checkIfParentRecordExists() {
-    axios(`http://localhost:3333/collections/${collectionId}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/collections/${collectionId}`)
       .then((response) => {
         if (response.data) {
           setProjectId(response.data.projectId);
@@ -65,7 +65,7 @@ export default function CreatePoint() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post("http://localhost:3333/points", {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/points`, {
           collectionId: collectionId,
           name: inputValues.name,
           plannedCoordinates: inputValues.plannedCoordinates,

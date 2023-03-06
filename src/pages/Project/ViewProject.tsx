@@ -40,7 +40,7 @@ export default function ViewProject() {
     recordCategorySingular: "projeto",
     recordCategoryPlural: "projetos",
     recordGenderFeminine: false,
-    serverDeleteLink: `http://localhost:3333/projects/${id}`,
+    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/projects/${id}`,
     afterDeleteRedirectLink: "/projects",
   };
 
@@ -50,7 +50,7 @@ export default function ViewProject() {
       description={project.description}
       navbarActiveLink={`/projects`}
       setRecord={setProject}
-      fetchRecordLink={`http://localhost:3333/projects/${id}`}
+      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/projects/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}
