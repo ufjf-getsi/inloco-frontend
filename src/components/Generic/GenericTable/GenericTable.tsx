@@ -110,7 +110,7 @@ export default function GenericTable({
       {...collectionProps}
       items={items}
       selectionType={selectionType}
-      columnDefinitions={columnDefinitions}
+      columnDefinitions={columnDefinitions as TableProps.ColumnDefinition<{}>[]}
       visibleColumns={preferences.visibleContent}
       stripedRows
       trackBy="id"
