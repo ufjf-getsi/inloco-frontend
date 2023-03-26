@@ -112,7 +112,6 @@ export default function GenericTable({
       selectionType={selectionType}
       columnDefinitions={columnDefinitions as TableProps.ColumnDefinition<{}>[]}
       visibleColumns={preferences.visibleContent}
-      stripedRows
       trackBy="id"
       wrapLines
       variant="embedded"
