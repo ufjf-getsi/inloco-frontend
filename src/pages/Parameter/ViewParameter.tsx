@@ -48,7 +48,7 @@ export default function ViewParameter() {
     recordName: parameter.name,
     recordGenderFeminine: false,
     serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/parameters/${id}`,
-    afterDeleteRedirectLink: "/parameters",
+    afterDeleteRedirectLink: `${import.meta.env.BASE_URL}parameters`,
   };
 
   return (

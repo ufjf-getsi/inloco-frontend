@@ -11,6 +11,7 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
+import { useParams } from "react-router-dom";
 
 export interface Fields {
   title: string;
@@ -47,10 +48,19 @@ interface BreadcrumbGroupItemsProps {
 export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
+  const { id } = useParams();
   return [
-    { text: "Projetos", href: "/projects" },
+    { text: "Projetos", href: `${import.meta.env.BASE_URL}projects` },
     ...(pageType !== "list"
       ? [
+          ...(pageType === "edit"
+            ? [
+                {
+                  text: `Projeto`,
+                  href: `${import.meta.env.BASE_URL}projects/${id}`,
+                },
+              ]
+            : []),
           {
             text: `${localizedPageTypeName(pageType)} projeto`,
             href: "#",

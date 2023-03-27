@@ -25,7 +25,7 @@ export default function ViewEquipment() {
     recordName: equipment.name,
     recordGenderFeminine: false,
     serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/equipment/${id}`,
-    afterDeleteRedirectLink: "/equipment",
+    afterDeleteRedirectLink: `${import.meta.env.BASE_URL}equipment`,
   };
 
   return (
@@ -41,7 +41,7 @@ export default function ViewEquipment() {
         />
       }
       editRecordLink={`/equipment/${equipment.id}/edit`}
-      previousPageLink={`/equipment`}
+      previousPageLink={`${import.meta.env.BASE_URL}equipment`}
       deleteModal={deleteModalConfig}
     />
   );

@@ -25,7 +25,7 @@ export default function ProjectsList() {
       recordCategorySingular={`projeto`}
       recordCategoryPlural={`projetos`}
       recordGenderFeminine={false}
-      addRecordLink={`projects/create`}
+      addRecordLink={`/projects/create`}
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedProjects}
       breadcrumbs={

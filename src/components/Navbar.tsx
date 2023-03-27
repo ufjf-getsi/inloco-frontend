@@ -21,10 +21,26 @@ export default function Navbar(props: NavbarProps) {
         }
       }}
       items={[
-        { type: "link", text: "Projetos", href: "/projects" },
-        { type: "link", text: "Parâmetros", href: "/parameters" },
-        { type: "link", text: "Equipamento", href: "/equipment" },
-        { type: "link", text: "Tarefas", href: "/tasks" },
+        {
+          type: "link",
+          text: "Projetos",
+          href: `${import.meta.env.BASE_URL}projects`,
+        },
+        {
+          type: "link",
+          text: "Parâmetros",
+          href: `${import.meta.env.BASE_URL}parameters`,
+        },
+        {
+          type: "link",
+          text: "Equipamentos",
+          href: `${import.meta.env.BASE_URL}equipment`,
+        },
+        {
+          type: "link",
+          text: "Tarefas",
+          href: `${import.meta.env.BASE_URL}tasks`,
+        },
         { type: "divider" },
       ]}
     />

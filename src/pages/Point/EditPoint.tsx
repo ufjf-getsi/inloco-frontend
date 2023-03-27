@@ -47,7 +47,9 @@ export default function EditCollection() {
           navigate: navigate,
           error: error,
           previousPageLink: `${
-            collectionId ? `/collections/${collectionId}` : "/projects"
+            collectionId
+              ? `/collections/${collectionId}`
+              : `${import.meta.env.BASE_URL}projects`
           }`,
         })
       );

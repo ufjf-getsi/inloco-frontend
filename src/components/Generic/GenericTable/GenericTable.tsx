@@ -135,7 +135,7 @@ export default function GenericTable({
                 <Button
                   iconName="add-plus"
                   variant="primary"
-                  href={addRecordLink}
+                  href={import.meta.env.BASE_URL.slice(0, -1) + addRecordLink}
                 >
                   Novo
                 </Button>

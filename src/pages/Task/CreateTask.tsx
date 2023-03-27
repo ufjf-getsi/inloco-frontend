@@ -26,7 +26,7 @@ export default function CreateTask() {
           cancelLoadAndRedirectBackwards({
             navigate: navigate,
             error: "404: Not found",
-            previousPageLink: `/projects`,
+            previousPageLink: `${import.meta.env.BASE_URL}projects`,
           });
         }
       })
@@ -35,7 +35,9 @@ export default function CreateTask() {
           navigate: navigate,
           error: error,
           previousPageLink: `${
-            collectionId ? `/collections/${collectionId}` : "/projects"
+            collectionId
+              ? `/collections/${collectionId}`
+              : `${import.meta.env.BASE_URL}projects`
           }`,
         })
       );
@@ -82,7 +84,7 @@ export default function CreateTask() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/projects`}
+      cancelRedirectLink={`${import.meta.env.BASE_URL}projects`}
       collectionId={collectionId}
       projectId={projectId}
     />

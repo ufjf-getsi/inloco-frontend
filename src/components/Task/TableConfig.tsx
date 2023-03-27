@@ -9,7 +9,8 @@ interface Item {
 
 export const visibleContent = ["title", "status"];
 
-const recordViewPageLink = (item: Item) => `/tasks/${item.id}`;
+const recordViewPageLink = (item: Item) =>
+  `${import.meta.env.BASE_URL}tasks/${item.id}`;
 
 export const columnDefinitions = [
   {

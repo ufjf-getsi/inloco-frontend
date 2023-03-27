@@ -26,7 +26,7 @@ export default function ParametersList() {
       recordCategorySingular={`parâmetro`}
       recordCategoryPlural={`parâmetros`}
       recordGenderFeminine={false}
-      addRecordLink={`parameters/create`}
+      addRecordLink={`/parameters/create`}
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedParameters}
       breadcrumbs={

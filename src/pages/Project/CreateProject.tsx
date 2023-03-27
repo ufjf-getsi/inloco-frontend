@@ -29,7 +29,7 @@ export default function CreateProject() {
         });
         setAlertType("success");
         setAlertVisible(true);
-        setTimeout(() => navigate("/projects"), 1000);
+        setTimeout(() => navigate(`/projects`), 1000);
       } catch (error) {
         console.log(error);
         setAlertType("error");
@@ -49,7 +49,7 @@ export default function CreateProject() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/projects`}
+      cancelRedirectLink={`${import.meta.env.BASE_URL}projects`}
     />
   );
 }

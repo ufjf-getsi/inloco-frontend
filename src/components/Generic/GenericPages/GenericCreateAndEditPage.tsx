@@ -40,7 +40,13 @@ export default function GenericCreateAndEditPage(
 
   return (
     <AppLayout
-      navigation={<Navbar activeLink={props.navbarActiveLink} />}
+      navigation={
+        <Navbar
+          activeLink={
+            import.meta.env.BASE_URL.slice(0, -1) + props.navbarActiveLink
+          }
+        />
+      }
       toolsHide
       contentType="form"
       content={
@@ -59,7 +65,10 @@ export default function GenericCreateAndEditPage(
                     <Button
                       formAction="none"
                       variant="link"
-                      href={props.cancelRedirectLink}
+                      href={
+                        import.meta.env.BASE_URL.slice(0, -1) +
+                        props.cancelRedirectLink
+                      }
                     >
                       Cancelar
                     </Button>
