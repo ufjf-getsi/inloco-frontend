@@ -28,7 +28,7 @@ export default function CreateEquipment() {
         });
         setAlertType("success");
         setAlertVisible(true);
-        setTimeout(() => navigate("/equipment"), 1000);
+        setTimeout(() => navigate(`/equipment`), 1000);
       } catch (error) {
         console.log(error);
         setAlertType("error");
@@ -48,7 +48,7 @@ export default function CreateEquipment() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/projects`}
+      cancelRedirectLink={`/equipment`}
     />
   );
 }

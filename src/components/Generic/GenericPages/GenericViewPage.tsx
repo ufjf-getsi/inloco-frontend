@@ -63,7 +63,13 @@ export default function GenericViewPage(
 
   return (
     <AppLayout
-      navigation={<Navbar activeLink={props.navbarActiveLink} />}
+      navigation={
+        <Navbar
+          activeLink={
+            import.meta.env.BASE_URL.slice(0, -1) + props.navbarActiveLink
+          }
+        />
+      }
       toolsHide
       contentType="form"
       content={
@@ -75,7 +81,13 @@ export default function GenericViewPage(
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
                   {props.otherHeaderActions}
-                  <Button iconName="edit" href={props.editRecordLink}>
+                  <Button
+                    iconName="edit"
+                    href={
+                      import.meta.env.BASE_URL.slice(0, -1) +
+                      props.editRecordLink
+                    }
+                  >
                     Editar
                   </Button>
                   <Button

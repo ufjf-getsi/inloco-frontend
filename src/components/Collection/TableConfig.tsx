@@ -8,7 +8,8 @@ interface Item {
 
 export const visibleContent = ["title"];
 
-const recordViewPageLink = (item: Item) => `/collections/${item.id}`;
+const recordViewPageLink = (item: Item) =>
+  `${import.meta.env.BASE_URL}collections/${item.id}`;
 
 export const columnDefinitions = [
   {

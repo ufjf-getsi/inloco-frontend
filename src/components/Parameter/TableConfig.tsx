@@ -11,7 +11,8 @@ interface Item {
 
 export const visibleContent = ["name", "unit", "dataType"];
 
-const recordViewPageLink = (item: Item) => `/parameters/${item.id}`;
+const recordViewPageLink = (item: Item) =>
+  `${import.meta.env.BASE_URL}parameters/${item.id}`;
 
 export const columnDefinitions = [
   {
