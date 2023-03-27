@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ProjectsList from "./pages/Project/ProjectsList";
 import ViewProject from "./pages/Project/ViewProject";
 import CreateProject from "./pages/Project/CreateProject";
@@ -25,47 +25,45 @@ import EditPoint from "./pages/Point/EditPoint";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Project */}
-        <Route index element={<Navigate to="projects" />} />
-        <Route path={"projects"} element={<ProjectsList />} />
-        <Route path={"projects/create"} element={<CreateProject />} />
-        <Route path={"projects/:id"} element={<ViewProject />} />
-        <Route path={"projects/:id/edit"} element={<EditProject />} />
-        {/* Project -> Collection */}
-        <Route
-          path={"projects/:projectId/createCollection"}
-          element={<CreateCollection />}
-        />
-        <Route path={"/collections/:id"} element={<ViewCollection />} />
-        <Route path={"/collections/:id/edit"} element={<EditCollection />} />
-        {/* Project -> Collection -> Point */}
-        <Route
-          path={"collections/:collectionId/createPoint"}
-          element={<CreatePoint />}
-        />
-        <Route path={"/points/:id"} element={<ViewPoint />} />
-        <Route path={"/points/:id/edit"} element={<EditPoint />} />
-        {/* Project -> Collection -> Task */}
-        <Route
-          path={"/collections/:collectionId/createTask"}
-          element={<CreateTask />}
-        />
-        <Route path={"/tasks/:id"} element={<ViewTask />} />
-        <Route path={"/tasks/:id/edit"} element={<EditTask />} />
-        {/* Parameter */}
-        <Route path={"/parameters"} element={<ParametersList />} />
-        <Route path={"parameters/create"} element={<CreateParameter />} />
-        <Route path={"parameters/:id"} element={<ViewParameter />} />
-        <Route path={"parameters/:id/edit"} element={<EditParameter />} />
-        {/* Equipment */}
-        <Route path={"/equipment"} element={<EquipmentList />} />
-        <Route path={"equipment/create"} element={<CreateEquipment />} />
-        <Route path={"equipment/:id"} element={<ViewEquipment />} />
-        <Route path={"equipment/:id/edit"} element={<EditEquipment />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {/* Project */}
+      <Route index element={<Navigate to="/projects" />} />
+      <Route path={"/projects"} element={<ProjectsList />} />
+      <Route path={"/projects/create"} element={<CreateProject />} />
+      <Route path={"/projects/:id"} element={<ViewProject />} />
+      <Route path={"/projects/:id/edit"} element={<EditProject />} />
+      {/* Project -> Collection */}
+      <Route
+        path={"/projects/:projectId/createCollection"}
+        element={<CreateCollection />}
+      />
+      <Route path={"/collections/:id"} element={<ViewCollection />} />
+      <Route path={"/collections/:id/edit"} element={<EditCollection />} />
+      {/* Project -> Collection -> Point */}
+      <Route
+        path={"/collections/:collectionId/createPoint"}
+        element={<CreatePoint />}
+      />
+      <Route path={"/points/:id"} element={<ViewPoint />} />
+      <Route path={"/points/:id/edit"} element={<EditPoint />} />
+      {/* Project -> Collection -> Task */}
+      <Route
+        path={"/collections/:collectionId/createTask"}
+        element={<CreateTask />}
+      />
+      <Route path={"/tasks/:id"} element={<ViewTask />} />
+      <Route path={"/tasks/:id/edit"} element={<EditTask />} />
+      {/* Parameter */}
+      <Route path={"/parameters"} element={<ParametersList />} />
+      <Route path={"/parameters/create"} element={<CreateParameter />} />
+      <Route path={"/parameters/:id"} element={<ViewParameter />} />
+      <Route path={"/parameters/:id/edit"} element={<EditParameter />} />
+      {/* Equipment */}
+      <Route path={"/equipment"} element={<EquipmentList />} />
+      <Route path={"/equipment/create"} element={<CreateEquipment />} />
+      <Route path={"/equipment/:id"} element={<ViewEquipment />} />
+      <Route path={"/equipment/:id/edit"} element={<EditEquipment />} />
+    </Routes>
   );
 }
 

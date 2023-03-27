@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useParams } from "react-router-dom";
 import { Equipment, Parameter } from "../../types";
 
 import {
@@ -78,10 +78,22 @@ interface BreadcrumbGroupItemsProps {
 export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
+  const { id } = useParams();
   return [
-    { text: "Parâmetros", href: "/parameters" },
+    {
+      text: "Parâmetros",
+      href: `${import.meta.env.VITE_BASE_URL_HASH}parameters`,
+    },
     ...(pageType !== "list"
       ? [
+          ...(pageType === "edit"
+            ? [
+                {
+                  text: `Parâmetro`,
+                  href: `${import.meta.env.VITE_BASE_URL_HASH}parameters/${id}`,
+                },
+              ]
+            : []),
           {
             text: `${localizedPageTypeName(pageType)} parâmetro`,
             href: "#",

@@ -100,7 +100,7 @@ export default function ViewCollection() {
         />
       }
       editRecordLink={`/collections/${collection.id}/edit`}
-      previousPageLink={`/projects`}
+      previousPageLink={`${import.meta.env.VITE_BASE_URL_HASH}projects`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
       otherHeaderActions={[

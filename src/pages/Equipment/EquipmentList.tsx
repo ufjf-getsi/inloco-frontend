@@ -26,7 +26,7 @@ export default function EquipmentList() {
       recordCategorySingular={`equipamento`}
       recordCategoryPlural={`equipamentos`}
       recordGenderFeminine={false}
-      addRecordLink={`equipment/create`}
+      addRecordLink={`/equipment/create`}
       visibleContent={visibleContent}
       setSelectedRecords={setSelectedEquipmentList}
       breadcrumbs={

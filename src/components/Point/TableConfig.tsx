@@ -9,7 +9,8 @@ interface Item {
 
 export const visibleContent = ["name", "coordinates"];
 
-const recordViewPageLink = (item: Item) => `/points/${item.id}`;
+const recordViewPageLink = (item: Item) =>
+  `${import.meta.env.VITE_BASE_URL_HASH}points/${item.id}`;
 
 export const columnDefinitions = [
   {
