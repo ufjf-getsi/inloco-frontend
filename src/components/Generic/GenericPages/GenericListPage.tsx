@@ -36,7 +36,8 @@ export default function GenericListPage(
       navigation={
         <Navbar
           activeLink={
-            import.meta.env.BASE_URL.slice(0, -1) + props.navbarActiveLink
+            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
+            props.navbarActiveLink
           }
         />
       }

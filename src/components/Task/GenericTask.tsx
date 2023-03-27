@@ -53,9 +53,9 @@ export const breadcrumpGroupItems = ({
   const collectionBreadcrumbLink =
     collectionId && collectionId !== ""
       ? `/collections/${collectionId}`
-      : `${import.meta.env.BASE_URL}projects`;
+      : `${import.meta.env.VITE_BASE_URL_HASH}projects`;
   return [
-    { text: "Projetos", href: `${import.meta.env.BASE_URL}projects` },
+    { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
     {
       text: "Projeto",
       href: projectBreadcrumbLink,

@@ -41,7 +41,7 @@ export default function ViewProject() {
     recordCategoryPlural: "projetos",
     recordGenderFeminine: false,
     serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/projects/${id}`,
-    afterDeleteRedirectLink: `${import.meta.env.BASE_URL}projects`,
+    afterDeleteRedirectLink: `${import.meta.env.VITE_BASE_URL_HASH}projects`,
   };
 
   return (
@@ -57,7 +57,7 @@ export default function ViewProject() {
         />
       }
       editRecordLink={`/projects/${project.id}/edit`}
-      previousPageLink={`${import.meta.env.BASE_URL}projects`}
+      previousPageLink={`${import.meta.env.VITE_BASE_URL_HASH}projects`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
     />

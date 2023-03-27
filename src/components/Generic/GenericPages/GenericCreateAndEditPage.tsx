@@ -43,7 +43,8 @@ export default function GenericCreateAndEditPage(
       navigation={
         <Navbar
           activeLink={
-            import.meta.env.BASE_URL.slice(0, -1) + props.navbarActiveLink
+            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
+            props.navbarActiveLink
           }
         />
       }
@@ -66,7 +67,7 @@ export default function GenericCreateAndEditPage(
                       formAction="none"
                       variant="link"
                       href={
-                        import.meta.env.BASE_URL.slice(0, -1) +
+                        import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
                         props.cancelRedirectLink
                       }
                     >

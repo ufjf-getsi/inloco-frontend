@@ -45,7 +45,7 @@ export default function EditTask() {
           previousPageLink: `${
             collectionId
               ? `/collections/${collectionId}`
-              : `${import.meta.env.BASE_URL}projects`
+              : `${import.meta.env.VITE_BASE_URL_HASH}projects`
           }`,
         })
       );

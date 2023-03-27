@@ -9,7 +9,7 @@ interface Item {
 export const visibleContent = ["title"];
 
 const recordViewPageLink = (item: Item) =>
-  `${import.meta.env.BASE_URL}collections/${item.id}`;
+  `${import.meta.env.VITE_BASE_URL_HASH}collections/${item.id}`;
 
 export const columnDefinitions = [
   {
