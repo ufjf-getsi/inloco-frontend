@@ -43,7 +43,7 @@ export default function CreateParameter() {
         });
         setAlertType("success");
         setAlertVisible(true);
-        setTimeout(() => navigate("/parameters"), 1000);
+        setTimeout(() => navigate(`/parameters`), 1000);
       } catch (error) {
         console.log(error);
         setAlertType("error");
@@ -66,7 +66,7 @@ export default function CreateParameter() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/projects`}
+      cancelRedirectLink={`/parameters`}
       allEquipmentOptionsList={allEquipmentOptionsList}
     />
   );

@@ -43,7 +43,9 @@ export default function EditTask() {
           navigate: navigate,
           error: error,
           previousPageLink: `${
-            collectionId ? `/collections/${collectionId}` : "/projects"
+            collectionId
+              ? `/collections/${collectionId}`
+              : `${import.meta.env.VITE_BASE_URL_HASH}projects`
           }`,
         })
       );

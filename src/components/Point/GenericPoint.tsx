@@ -70,9 +70,9 @@ export const breadcrumpGroupItems = ({
   const collectionBreadcrumbLink =
     collectionId && collectionId !== ""
       ? `/collections/${collectionId}`
-      : "/projects";
+      : `${import.meta.env.VITE_BASE_URL_HASH}projects`;
   return [
-    { text: "Projetos", href: "/projects" },
+    { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
     {
       text: "Projeto",
       href: projectBreadcrumbLink,
@@ -116,7 +116,9 @@ export function fetchAllParameterOptionsList({
         navigate: navigate,
         error: error,
         previousPageLink: `${
-          collectionId ? `/collections/${collectionId}` : "/projects"
+          collectionId
+            ? `/collections/${collectionId}`
+            : `${import.meta.env.VITE_BASE_URL_HASH}projects`
         }`,
       })
     );

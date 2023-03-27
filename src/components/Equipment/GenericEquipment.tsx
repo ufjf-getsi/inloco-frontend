@@ -11,6 +11,7 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
+import { useParams } from "react-router-dom";
 
 export interface Fields {
   name: string;
@@ -43,10 +44,22 @@ interface BreadcrumbGroupItemsProps {
 export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
+  const { id } = useParams();
   return [
-    { text: "Equipamentos", href: "/equipment" },
+    {
+      text: "Equipamentos",
+      href: `${import.meta.env.VITE_BASE_URL_HASH}equipment`,
+    },
     ...(pageType !== "list"
       ? [
+          ...(pageType === "edit"
+            ? [
+                {
+                  text: `Equipamento`,
+                  href: `${import.meta.env.VITE_BASE_URL_HASH}equipment/${id}`,
+                },
+              ]
+            : []),
           {
             text: `${localizedPageTypeName(pageType)} equipamento`,
             href: "#",
