@@ -66,7 +66,8 @@ export default function GenericViewPage(
       navigation={
         <Navbar
           activeLink={
-            import.meta.env.BASE_URL.slice(0, -1) + props.navbarActiveLink
+            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
+            props.navbarActiveLink
           }
         />
       }
@@ -84,7 +85,7 @@ export default function GenericViewPage(
                   <Button
                     iconName="edit"
                     href={
-                      import.meta.env.BASE_URL.slice(0, -1) +
+                      import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
                       props.editRecordLink
                     }
                   >

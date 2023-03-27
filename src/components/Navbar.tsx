@@ -24,22 +24,22 @@ export default function Navbar(props: NavbarProps) {
         {
           type: "link",
           text: "Projetos",
-          href: `${import.meta.env.BASE_URL}projects`,
+          href: `${import.meta.env.VITE_BASE_URL_HASH}projects`,
         },
         {
           type: "link",
           text: "Parâmetros",
-          href: `${import.meta.env.BASE_URL}parameters`,
+          href: `${import.meta.env.VITE_BASE_URL_HASH}parameters`,
         },
         {
           type: "link",
           text: "Equipamentos",
-          href: `${import.meta.env.BASE_URL}equipment`,
+          href: `${import.meta.env.VITE_BASE_URL_HASH}equipment`,
         },
         {
           type: "link",
           text: "Tarefas",
-          href: `${import.meta.env.BASE_URL}tasks`,
+          href: `${import.meta.env.VITE_BASE_URL_HASH}tasks`,
         },
         { type: "divider" },
       ]}

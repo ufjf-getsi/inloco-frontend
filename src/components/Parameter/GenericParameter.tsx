@@ -80,14 +80,17 @@ export const breadcrumpGroupItems = ({
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
   return [
-    { text: "Parâmetros", href: `${import.meta.env.BASE_URL}parameters` },
+    {
+      text: "Parâmetros",
+      href: `${import.meta.env.VITE_BASE_URL_HASH}parameters`,
+    },
     ...(pageType !== "list"
       ? [
           ...(pageType === "edit"
             ? [
                 {
                   text: `Parâmetro`,
-                  href: `${import.meta.env.BASE_URL}parameters/${id}`,
+                  href: `${import.meta.env.VITE_BASE_URL_HASH}parameters/${id}`,
                 },
               ]
             : []),

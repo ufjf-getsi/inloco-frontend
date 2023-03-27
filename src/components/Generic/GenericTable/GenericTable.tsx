@@ -80,7 +80,14 @@ export default function GenericTable({
           subtitle={`Não há ${recordCategoryPlural} para mostrar.`}
           action={
             addRecordLink ? (
-              <Button iconName="add-plus" variant="normal" href={addRecordLink}>
+              <Button
+                iconName="add-plus"
+                variant="normal"
+                href={
+                  import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
+                  addRecordLink
+                }
+              >
                 Adicionar {recordCategorySingular}
               </Button>
             ) : undefined
@@ -135,7 +142,10 @@ export default function GenericTable({
                 <Button
                   iconName="add-plus"
                   variant="primary"
-                  href={import.meta.env.BASE_URL.slice(0, -1) + addRecordLink}
+                  href={
+                    import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
+                    addRecordLink
+                  }
                 >
                   Novo
                 </Button>

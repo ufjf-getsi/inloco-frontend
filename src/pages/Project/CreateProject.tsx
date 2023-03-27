@@ -49,7 +49,7 @@ export default function CreateProject() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`${import.meta.env.BASE_URL}projects`}
+      cancelRedirectLink={`${import.meta.env.VITE_BASE_URL_HASH}projects`}
     />
   );
 }
