@@ -104,7 +104,7 @@ export default function EditCollection() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/collections/${collectionId}`}
+      cancelRedirectLink={`/points/${id}`}
       allParameterOptionsList={allParameterOptionsList}
       collectionId={collectionId}
       projectId={projectId}

@@ -79,28 +79,25 @@ export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
-  return [
+  const breadcrumbsItemsList = [
     {
       text: "Parâmetros",
       href: `${import.meta.env.VITE_BASE_URL_HASH}parameters`,
     },
-    ...(pageType !== "list"
-      ? [
-          ...(pageType === "edit"
-            ? [
-                {
-                  text: `Parâmetro`,
-                  href: `${import.meta.env.VITE_BASE_URL_HASH}parameters/${id}`,
-                },
-              ]
-            : []),
-          {
-            text: `${localizedPageTypeName(pageType)} parâmetro`,
-            href: "#",
-          },
-        ]
-      : []),
   ];
+  if (pageType !== "list") {
+    if (pageType === "edit") {
+      breadcrumbsItemsList.push({
+        text: `Parâmetro`,
+        href: `${import.meta.env.VITE_BASE_URL_HASH}parameters/${id}`,
+      });
+    }
+    breadcrumbsItemsList.push({
+      text: `${localizedPageTypeName(pageType)} parâmetro`,
+      href: "#",
+    });
+  }
+  return breadcrumbsItemsList;
 };
 
 export function fetchAllEquipmentOptionsList({

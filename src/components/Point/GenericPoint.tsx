@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useParams } from "react-router-dom";
 import { Parameter, Point } from "../../types";
 
 import {
@@ -64,14 +64,16 @@ export const breadcrumpGroupItems = ({
   collectionId,
   pageType,
 }: BreadcrumbGroupItemsProps) => {
-  const projectBreadcrumbLink = `/projects${
+  const { id } = useParams();
+  const projectBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}projects${
     projectId && projectId !== "" ? "/" + projectId : ""
   }`;
-  const collectionBreadcrumbLink =
+  const collectionBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}${
     collectionId && collectionId !== ""
-      ? `/collections/${collectionId}`
-      : `${import.meta.env.VITE_BASE_URL_HASH}projects`;
-  return [
+      ? `collections/${collectionId}`
+      : `projects`
+  }`;
+  const breadcrumbsItemsList = [
     { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
     {
       text: "Projeto",
@@ -81,15 +83,20 @@ export const breadcrumpGroupItems = ({
       text: "Coleta",
       href: collectionBreadcrumbLink,
     },
-    ...(pageType !== "list"
-      ? [
-          {
-            text: `${localizedPageTypeName(pageType)} ponto`,
-            href: "#",
-          },
-        ]
-      : []),
   ];
+  if (pageType !== "list") {
+    if (pageType === "edit") {
+      breadcrumbsItemsList.push({
+        text: `Ponto`,
+        href: `${import.meta.env.VITE_BASE_URL_HASH}points/${id}`,
+      });
+    }
+    breadcrumbsItemsList.push({
+      text: `${localizedPageTypeName(pageType)} ponto`,
+      href: "#",
+    });
+  }
+  return breadcrumbsItemsList;
 };
 
 export function fetchAllParameterOptionsList({

@@ -8,6 +8,7 @@ import {
   Alert,
 } from "@cloudscape-design/components";
 import { GenericRecordProps } from "./GenericInterfaces";
+import { useHref } from "react-router-dom";
 
 export interface GenericDeleteModalProps extends GenericRecordProps {
   visible: boolean;
@@ -47,7 +48,7 @@ export default function GenericDeleteModal(props: GenericDeleteModalProps) {
             <Button
               variant="primary"
               onClick={() => deleteRecord()}
-              href={props.afterDeleteRedirectLink}
+              href={useHref(props.afterDeleteRedirectLink)}
             >
               Excluir
             </Button>

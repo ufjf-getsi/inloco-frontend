@@ -50,7 +50,7 @@ export default function ViewTask() {
         />
       }
       editRecordLink={`/tasks/${task.id}/edit`}
-      previousPageLink={`/collections/${task.collectionId}`}
+      previousPageLink={`/projects`}
       deleteModal={deleteModalConfig}
     />
   );

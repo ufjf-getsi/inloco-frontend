@@ -11,6 +11,7 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
+import { useParams } from "react-router-dom";
 
 export interface Fields {
   title: string;
@@ -50,7 +51,8 @@ export const breadcrumpGroupItems = ({
   projectId,
   pageType,
 }: BreadcrumbGroupItemsProps) => {
-  return [
+  const { id } = useParams();
+  const breadcrumbsItemsList = [
     { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
     {
       text: "Projeto",
@@ -58,15 +60,20 @@ export const breadcrumpGroupItems = ({
         projectId && projectId !== "" ? "/" + projectId : ""
       }`,
     },
-    ...(pageType !== "list"
-      ? [
-          {
-            text: `${localizedPageTypeName(pageType)} coleta`,
-            href: "#",
-          },
-        ]
-      : []),
   ];
+  if (pageType !== "list") {
+    if (pageType === "edit") {
+      breadcrumbsItemsList.push({
+        text: `Coleta`,
+        href: `${import.meta.env.VITE_BASE_URL_HASH}collections/${id}`,
+      });
+    }
+    breadcrumbsItemsList.push({
+      text: `${localizedPageTypeName(pageType)} coleta`,
+      href: "#",
+    });
+  }
+  return breadcrumbsItemsList;
 };
 
 export function validateFields(inputValues: Fields): boolean {

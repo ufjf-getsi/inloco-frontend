@@ -2,16 +2,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 
-import {
-  AppLayout,
-  ContentLayout,
-  Container,
-  BreadcrumbGroup,
-  Alert,
-  AlertProps,
-} from "@cloudscape-design/components";
-import Navbar from "../../components/Navbar";
-import { FormConnection, FormHeader } from "../../components/Task/FormTask";
+import { AlertProps } from "@cloudscape-design/components";
 import {
   emptyFields,
   Fields,
@@ -19,7 +10,6 @@ import {
   validateFields,
 } from "../../components/Task/GenericTask";
 import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
-import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
 export default function EditTask() {
   const navigate = useNavigate();
@@ -87,7 +77,7 @@ export default function EditTask() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`/collections/${collectionId}`}
+      cancelRedirectLink={`/tasks/${id}`}
       collectionId={collectionId}
       projectId={projectId}
     />

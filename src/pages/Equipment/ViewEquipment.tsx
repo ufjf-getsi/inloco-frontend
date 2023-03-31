@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Equipment } from "../../types";
 
-import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 import {
@@ -41,7 +40,7 @@ export default function ViewEquipment() {
         />
       }
       editRecordLink={`/equipment/${equipment.id}/edit`}
-      previousPageLink={`${import.meta.env.VITE_BASE_URL_HASH}equipment`}
+      previousPageLink={`/equipment`}
       deleteModal={deleteModalConfig}
     />
   );
