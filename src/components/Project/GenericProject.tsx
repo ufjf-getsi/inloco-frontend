@@ -49,25 +49,22 @@ export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
-  return [
+  const breadcrumbsItemsList = [
     { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
-    ...(pageType !== "list"
-      ? [
-          ...(pageType === "edit"
-            ? [
-                {
-                  text: `Projeto`,
-                  href: `${import.meta.env.VITE_BASE_URL_HASH}projects/${id}`,
-                },
-              ]
-            : []),
-          {
-            text: `${localizedPageTypeName(pageType)} projeto`,
-            href: "#",
-          },
-        ]
-      : []),
   ];
+  if (pageType !== "list") {
+    if (pageType === "edit") {
+      breadcrumbsItemsList.push({
+        text: `Projeto`,
+        href: `${import.meta.env.VITE_BASE_URL_HASH}projects/${id}`,
+      });
+    }
+    breadcrumbsItemsList.push({
+      text: `${localizedPageTypeName(pageType)} projeto`,
+      href: "#",
+    });
+  }
+  return breadcrumbsItemsList;
 };
 
 export function validateFields(inputValues: Fields): boolean {

@@ -7,6 +7,7 @@ import GenericCreateAndEditPage, {
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+import { useParams } from "react-router-dom";
 
 export interface Fields {
   title: string;
@@ -47,32 +48,39 @@ export const breadcrumpGroupItems = ({
   collectionId,
   pageType,
 }: BreadcrumbGroupItemsProps) => {
-  const projectBreadcrumbLink = `/projects${
+  const { id } = useParams();
+  const projectBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}projects${
     projectId && projectId !== "" ? "/" + projectId : ""
   }`;
-  const collectionBreadcrumbLink =
+  const collectionBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}${
     collectionId && collectionId !== ""
-      ? `/collections/${collectionId}`
-      : `${import.meta.env.VITE_BASE_URL_HASH}projects`;
-  return [
+      ? `collections/${collectionId}`
+      : `projects`
+  }`;
+  const breadcrumbsItemsList = [
     { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
     {
       text: "Projeto",
       href: projectBreadcrumbLink,
     },
     {
-      text: "Tarefa",
+      text: "Coleta",
       href: collectionBreadcrumbLink,
     },
-    ...(pageType !== "list"
-      ? [
-          {
-            text: `${localizedPageTypeName(pageType)} tarefa`,
-            href: "#",
-          },
-        ]
-      : []),
   ];
+  if (pageType !== "list") {
+    if (pageType === "edit") {
+      breadcrumbsItemsList.push({
+        text: `Tarefa`,
+        href: `${import.meta.env.VITE_BASE_URL_HASH}tasks/${id}`,
+      });
+    }
+    breadcrumbsItemsList.push({
+      text: `${localizedPageTypeName(pageType)} tarefa`,
+      href: "#",
+    });
+  }
+  return breadcrumbsItemsList;
 };
 
 export function validateFields(inputValues: Fields): boolean {

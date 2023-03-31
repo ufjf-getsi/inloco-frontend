@@ -1,4 +1,4 @@
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
 import { PageType } from "./GenericInterfaces";
 
 export function toUpperCase(text: String) {
