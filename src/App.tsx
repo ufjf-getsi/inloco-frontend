@@ -18,10 +18,12 @@ import CreateTask from "./pages/Task/CreateTask";
 import EditTask from "./pages/Task/EditTask";
 import ViewTask from "./pages/Task/ViewTask";
 import ViewPoint from "./pages/Point/ViewPoint";
-import "@cloudscape-design/global-styles/index.css";
-import "./styles/main.css";
 import CreatePoint from "./pages/Point/CreatePoint";
 import EditPoint from "./pages/Point/EditPoint";
+import PageNotFound from "./pages/PageNotFound";
+
+import "@cloudscape-design/global-styles/index.css";
+import "./styles/main.css";
 
 function App() {
   return (
@@ -63,6 +65,8 @@ function App() {
       <Route path={"/equipment/create"} element={<CreateEquipment />} />
       <Route path={"/equipment/:id"} element={<ViewEquipment />} />
       <Route path={"/equipment/:id/edit"} element={<EditEquipment />} />
+      {/* Page Not Found */}
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 }
