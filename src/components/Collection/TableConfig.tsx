@@ -4,9 +4,11 @@ import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunction
 interface Item {
   id: string;
   title: string;
+  startDate: string;
+  endDate: string;
 }
 
-export const visibleContent = ["title"];
+export const visibleContent = ["title", "startDate"];
 
 const recordViewPageLink = (item: Item) =>
   `${import.meta.env.VITE_BASE_URL_HASH}collections/${item.id}`;
@@ -33,5 +35,16 @@ export const columnDefinitions = [
     ),
     ariaLabel: createLabelFunction("Título"),
     sortingField: "title",
+  },
+  {
+    id: "startDate",
+    header: "Data de início",
+    cell: (item: Item) => (
+      <Link href={recordViewPageLink(item)}>
+        <span className="font-bold">{item.startDate}</span>
+      </Link>
+    ),
+    ariaLabel: createLabelFunction("Data de início"),
+    sortingField: "startDate",
   },
 ];

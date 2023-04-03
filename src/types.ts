@@ -12,6 +12,8 @@ export interface Collection {
   id: string;
   projectId: string;
   title: string;
+  startDate: string;
+  endDate: string;
   points: Point[];
   tasks: Task[];
 }

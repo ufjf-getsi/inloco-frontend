@@ -5,6 +5,7 @@ import {
   FormField,
   Input,
   BreadcrumbGroup,
+  DatePicker,
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
@@ -12,9 +13,12 @@ import GenericCreateAndEditPage, {
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 export interface Fields {
   title: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface FormFieldsProps {
@@ -32,12 +36,16 @@ interface ImplementedRecordFormProps
 
 export const emptyFields: Fields = {
   title: "",
+  startDate: "",
+  endDate: "",
 };
 
 export const notLoadedRecord: Collection = {
   id: "",
   projectId: "",
   title: "Carregando...",
+  startDate: "",
+  endDate: "",
   points: [],
   tasks: [],
 };
@@ -116,6 +124,9 @@ export function RecordForm(props: ImplementedRecordFormProps) {
 }
 
 function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
+  //const [beginValue, setBeginValue] = useState("");
+  //const [endValue, setEndValue] = useState("");
+
   return (
     <SpaceBetween size="l">
       <FormField label="Nome">
@@ -125,6 +136,30 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
             setInputValues((prevState: Fields) => ({
               ...prevState,
               title: event.detail.value,
+            }))
+          }
+        />
+      </FormField>
+
+      <FormField label="Data de início">
+        <Input
+          value={inputValues.startDate}
+          onChange={(event) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              startDate: event.detail.value,
+            }))
+          }
+        />
+      </FormField>
+
+      <FormField label="Data de fim">
+        <Input
+          value={inputValues.endDate}
+          onChange={(event) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              endDate: event.detail.value,
             }))
           }
         />

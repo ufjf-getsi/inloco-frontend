@@ -51,6 +51,8 @@ export default function CreateCollection() {
         await axios.post(`${import.meta.env.VITE_SERVER_URL}/collections`, {
           title: inputValues.title,
           projectId: projectId,
+          startDate: inputValues.startDate,
+          endDate: inputValues.endDate,
         });
         setAlertType("success");
         setAlertVisible(true);

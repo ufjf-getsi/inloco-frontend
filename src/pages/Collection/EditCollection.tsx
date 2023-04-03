@@ -27,6 +27,8 @@ export default function EditCollection() {
         setProjectId(response.data.projectId);
         setInputValues({
           title: response.data.title,
+          startDate: response.data.startDate,
+          endDate: response.data.endDate,
         });
       })
       .catch((error) =>
@@ -50,6 +52,8 @@ export default function EditCollection() {
           `${import.meta.env.VITE_SERVER_URL}/collections/${id}`,
           {
             title: inputValues.title,
+            startDate: inputValues.startDate,
+            endDate: inputValues.startDate,
           }
         );
         setAlertType("success");
