@@ -124,9 +124,6 @@ export function RecordForm(props: ImplementedRecordFormProps) {
 }
 
 function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
-  //const [beginValue, setBeginValue] = useState("");
-  //const [endValue, setEndValue] = useState("");
-
   return (
     <SpaceBetween size="l">
       <FormField label="Nome">
@@ -142,26 +139,34 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       </FormField>
 
       <FormField label="Data de início">
-        <Input
-          value={inputValues.startDate}
+        <DatePicker
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
               startDate: event.detail.value,
             }))
           }
+          value={inputValues.startDate}
+          nextMonthAriaLabel="Next month"
+          placeholder="YYYY/MM/DD"
+          previousMonthAriaLabel="Previous month"
+          todayAriaLabel="Today"
         />
       </FormField>
 
       <FormField label="Data de fim">
-        <Input
-          value={inputValues.endDate}
+        <DatePicker
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
               endDate: event.detail.value,
             }))
           }
+          value={inputValues.endDate}
+          nextMonthAriaLabel="Next month"
+          placeholder="YYYY/MM/DD"
+          previousMonthAriaLabel="Previous month"
+          todayAriaLabel="Today"
         />
       </FormField>
     </SpaceBetween>
