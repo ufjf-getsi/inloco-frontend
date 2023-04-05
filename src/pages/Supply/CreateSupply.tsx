@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { FormEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FormEvent, useState } from "react";
 
 import { AlertProps } from "@cloudscape-design/components";
 import {
-  emptyFields,
   Fields,
-  RecordForm,
+  emptyFields,
   validateFields,
+  RecordForm,
 } from "../../components/Supply/GenericSupply";
 
 export default function CreateSupply() {
@@ -29,7 +29,7 @@ export default function CreateSupply() {
         });
         setAlertType("success");
         setAlertVisible(true);
-        setTimeout(() => navigate(`/equipment`), 1000);
+        setTimeout(() => navigate(`/supplies`), 1000);
       } catch (error) {
         console.log(error);
         setAlertType("error");
@@ -49,7 +49,7 @@ export default function CreateSupply() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`${import.meta.env.VITE_BASE_URL_HASH}equipment`}
+      cancelRedirectLink={`${import.meta.env.VITE_BASE_URL_HASH}supplies`}
     />
   );
 }

@@ -18,9 +18,10 @@ import {
 import axios from "axios";
 
 export default function EquipmentList() {
-  const [supplies, setSupplies] = useState<Supply[]>([]);
   const [equipmentArray, setEquipmentArray] = useState<Equipment[]>([]);
   const [selectedEquipmentList, setSelectedEquipmentList] = useState([]);
+
+  const [supplies, setSupplies] = useState<Supply[]>([]);
 
   useEffect(() => {
     fetchTableData();
