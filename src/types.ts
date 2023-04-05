@@ -49,6 +49,14 @@ export interface Parameter {
 export interface Equipment {
   id: string;
   name: string;
+  availability: boolean;
+}
+
+// Suprimento
+export interface Supply {
+  id: string;
+  name: string;
+  quantity: string;
 }
 
 // Nota
