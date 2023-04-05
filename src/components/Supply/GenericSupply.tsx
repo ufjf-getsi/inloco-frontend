@@ -69,7 +69,7 @@ export const breadcrumpGroupItems = ({
 };
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.name) {
+  if (inputValues.name && inputValues.quantity) {
     return true;
   } else return false;
 }
@@ -109,13 +109,13 @@ export function RecordForm(props: ImplementedRecordFormProps) {
 function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
   return (
     <SpaceBetween size="l">
-      <FormField label="Nome">
+      <FormField label="Suprimento">
         <Input
           value={inputValues.name}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
-              title: event.detail.value,
+              name: event.detail.value,
             }))
           }
         />
@@ -126,7 +126,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
-              description: event.detail.value,
+              quantity: event.detail.value,
             }))
           }
         />
