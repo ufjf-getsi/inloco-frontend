@@ -33,7 +33,7 @@ export default function Navbar(props: NavbarProps) {
         },
         {
           type: "link",
-          text: "Equipamentos",
+          text: "Estoque",
           href: `${import.meta.env.VITE_BASE_URL_HASH}equipment`,
         },
         {
