@@ -24,6 +24,10 @@ import PageNotFound from "./pages/PageNotFound";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
+import SuppliesList from "./pages/Supply/SuppliesList";
+import CreateSupply from "./pages/Supply/CreateSupply";
+import ViewSupply from "./pages/Supply/ViewSupply";
+import EditSupply from "./pages/Supply/EditSupply";
 
 function App() {
   return (
@@ -65,6 +69,12 @@ function App() {
       <Route path={"/equipment/create"} element={<CreateEquipment />} />
       <Route path={"/equipment/:id"} element={<ViewEquipment />} />
       <Route path={"/equipment/:id/edit"} element={<EditEquipment />} />
+      {/* Supply */}
+      <Route path={"/supplies"} element={<SuppliesList />} />
+      <Route path={"/supplies/create"} element={<CreateSupply />} />
+      <Route path={"/supplies/:id"} element={<ViewSupply />} />
+      <Route path={"/supplies/:id/edit"} element={<EditSupply />} />
+
       {/* Page Not Found */}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
