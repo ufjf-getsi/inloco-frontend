@@ -22,7 +22,7 @@ export default function CreateCollection() {
           cancelLoadAndRedirectBackwards({
             navigate: navigate,
             error: "404: Not found",
-            previousPageLink: `${import.meta.env.VITE_BASE_URL_HASH}projects`,
+            previousPageLink: `/projects`,
           });
         }
       })
@@ -30,7 +30,7 @@ export default function CreateCollection() {
         cancelLoadAndRedirectBackwards({
           navigate: navigate,
           error: error,
-          previousPageLink: `${import.meta.env.VITE_BASE_URL_HASH}projects`,
+          previousPageLink: `/projects`,
         })
       );
   }
@@ -76,7 +76,7 @@ export default function CreateCollection() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`${import.meta.env.VITE_BASE_URL_HASH}projects`}
+      cancelRedirectLink={`/projects/${projectId}`}
       projectId={projectId}
     />
   );

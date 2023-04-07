@@ -15,6 +15,7 @@ import { GenericRecordProps } from "../GenericInterfaces";
 import GenericReturnMessageAlert, {
   GenericReturnMessageAlertProps,
 } from "../GenericReturnMessageAlert";
+import { useHref } from "react-router-dom";
 
 export interface GenericRecordFormProps {
   edit: boolean;
@@ -26,7 +27,7 @@ export interface GenericRecordFormProps {
 
 interface GenericCreateAndEditPageProps
   extends GenericRecordProps,
-    GenericRecordFormProps {
+  GenericRecordFormProps {
   description: string;
   navbarActiveLink: string;
   breadcrumbs: ReactNode;
@@ -42,10 +43,7 @@ export default function GenericCreateAndEditPage(
     <AppLayout
       navigation={
         <Navbar
-          activeLink={
-            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-            props.navbarActiveLink
-          }
+          activeLink={props.navbarActiveLink}
         />
       }
       toolsHide
@@ -66,10 +64,7 @@ export default function GenericCreateAndEditPage(
                     <Button
                       formAction="none"
                       variant="link"
-                      href={
-                        import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-                        props.cancelRedirectLink
-                      }
+                      href={useHref(props.cancelRedirectLink)}
                     >
                       Cancelar
                     </Button>

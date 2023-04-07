@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NavigateFunction, useParams } from "react-router-dom";
+import { NavigateFunction, useHref, useParams } from "react-router-dom";
 import { Equipment, Parameter } from "../../types";
 
 import {
@@ -38,7 +38,7 @@ interface FormFieldsProps {
 
 interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
-    FormFieldsProps {
+  FormFieldsProps {
   cancelRedirectLink: string;
 }
 
@@ -82,14 +82,14 @@ export const breadcrumpGroupItems = ({
   const breadcrumbsItemsList = [
     {
       text: "Parâmetros",
-      href: `${import.meta.env.VITE_BASE_URL_HASH}parameters`,
+      href: useHref(`/parameters`),
     },
   ];
   if (pageType !== "list") {
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Parâmetro`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}parameters/${id}`,
+        href: useHref(`/parameters/${id}`),
       });
     }
     breadcrumbsItemsList.push({

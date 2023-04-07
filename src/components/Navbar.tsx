@@ -1,3 +1,4 @@
+import { useHref } from "react-router-dom";
 import { useState } from "react";
 import SideNavigation from "@cloudscape-design/components/side-navigation";
 
@@ -24,22 +25,22 @@ export default function Navbar(props: NavbarProps) {
         {
           type: "link",
           text: "Projetos",
-          href: `${import.meta.env.VITE_BASE_URL_HASH}projects`,
+          href: useHref(`/projects`),
         },
         {
           type: "link",
           text: "Parâmetros",
-          href: `${import.meta.env.VITE_BASE_URL_HASH}parameters`,
+          href: useHref(`/parameters`),
         },
         {
           type: "link",
           text: "Equipamentos",
-          href: `${import.meta.env.VITE_BASE_URL_HASH}equipment`,
+          href: useHref(`/equipment`),
         },
         {
           type: "link",
           text: "Tarefas",
-          href: `${import.meta.env.VITE_BASE_URL_HASH}tasks`,
+          href: useHref(`/tasks`),
         },
         { type: "divider" },
       ]}

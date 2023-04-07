@@ -7,7 +7,7 @@ import GenericCreateAndEditPage, {
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
-import { useParams } from "react-router-dom";
+import { useHref, useParams } from "react-router-dom";
 
 export interface Fields {
   title: string;
@@ -20,7 +20,7 @@ interface FormFieldsProps {
 
 interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
-    FormFieldsProps {
+  FormFieldsProps {
   cancelRedirectLink: string;
   projectId?: string;
   collectionId?: string;
@@ -49,16 +49,14 @@ export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
-  const projectBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}projects${
-    projectId && projectId !== "" ? "/" + projectId : ""
-  }`;
-  const collectionBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}${
-    collectionId && collectionId !== ""
-      ? `collections/${collectionId}`
-      : `projects`
-  }`;
+  const projectBreadcrumbLink = useHref(`/projects${projectId && projectId !== ""
+    ? "/" + projectId : ""}`);
+  const collectionBreadcrumbLink = useHref(`/${collectionId && collectionId !== ""
+    ? `collections/${collectionId}`
+    : `projects`
+    }`);
   const breadcrumbsItemsList = [
-    { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
+    { text: "Projetos", href: useHref(`/projects`) },
     {
       text: "Projeto",
       href: projectBreadcrumbLink,
@@ -72,7 +70,7 @@ export const breadcrumpGroupItems = ({
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Tarefa`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}tasks/${id}`,
+        href: useHref(`/tasks/${id}`),
       });
     }
     breadcrumbsItemsList.push({

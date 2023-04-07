@@ -1,3 +1,4 @@
+import { useHref, useParams } from "react-router-dom";
 import { Equipment } from "../../types";
 
 import {
@@ -11,7 +12,6 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
-import { useParams } from "react-router-dom";
 
 export interface Fields {
   name: string;
@@ -25,7 +25,7 @@ interface FormFieldsProps {
 
 interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
-    FormFieldsProps {
+  FormFieldsProps {
   cancelRedirectLink: string;
 }
 
@@ -48,14 +48,14 @@ export const breadcrumpGroupItems = ({
   const breadcrumbsItemsList = [
     {
       text: "Equipamentos",
-      href: `${import.meta.env.VITE_BASE_URL_HASH}equipment`,
+      href: useHref(`/equipment`),
     },
   ];
   if (pageType !== "list") {
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Equipamento`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}equipment/${id}`,
+        href: useHref(`/equipment/${id}`),
       });
     }
     breadcrumbsItemsList.push({

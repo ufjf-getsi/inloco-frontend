@@ -33,14 +33,7 @@ export default function GenericListPage(
 
   return (
     <AppLayout
-      navigation={
-        <Navbar
-          activeLink={
-            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-            props.navbarActiveLink
-          }
-        />
-      }
+      navigation={<Navbar activeLink={props.navbarActiveLink} />}
       toolsHide
       contentType="form"
       content={
