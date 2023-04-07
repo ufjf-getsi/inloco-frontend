@@ -1,12 +1,8 @@
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Collection, Task } from "../../types";
+import { Collection, Task, TaskType } from "../../types";
 
-import {
-  BreadcrumbGroup,
-  Button,
-  Container,
-} from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import {
   breadcrumpGroupItems,
@@ -21,11 +17,11 @@ import {
   visibleContent,
 } from "../../components/Point/TableConfig";
 import {
+  Item,
   columnDefinitions as columnDefinitionsTasks,
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
 import PlanningModal from "../../components/PlanningModal";
-import axios from "axios";
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ViewCollection() {
@@ -47,7 +43,7 @@ export default function ViewCollection() {
     setSelectedRecords: setSelectedPoints,
   };
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasksAsItems, setTasksAsItems] = useState<Item[]>([]);
 
   useEffect(() => {
     fetchTableData();
@@ -56,13 +52,23 @@ export default function ViewCollection() {
   function fetchTableData() {
     axios(`${import.meta.env.VITE_SERVER_URL}/collections/${id}/tasks`).then(
       (response) => {
-        setTasks(response.data);
+        const items: Item[] = [];
+        response.data.map((task: Task) => {
+          if (task.type === TaskType.commonTask) {
+            items.push({
+              id: task.id,
+              status: task.isPending ? "Pendente" : "Concluída",
+              title: task.title,
+            });
+          }
+        });
+        setTasksAsItems(items);
       }
     );
   }
 
   const tableConfigTasks: GenericTableProps = {
-    allRecords: tasks,
+    allRecords: tasksAsItems,
     columnDefinitions: columnDefinitionsTasks,
     recordCategorySingular: `tarefa`,
     recordCategoryPlural: `tarefas`,
@@ -103,18 +109,6 @@ export default function ViewCollection() {
       previousPageLink={`/projects`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
-      otherHeaderActions={[
-        <Button
-          key={`generatePlanningButton`}
-          onClick={() => {
-            setPlanningModalVisible(true);
-          }}
-          iconName="file"
-          variant="primary"
-        >
-          Gerar planejamento
-        </Button>,
-      ]}
     >
       <div style={{ marginTop: "15vh" }}>
         <GenericTable {...tableConfigTasks} />

@@ -1,4 +1,5 @@
-import { Task } from "../../types";
+import { useHref, useParams } from "react-router-dom";
+import { Task, TaskType } from "../../types";
 
 import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
@@ -7,7 +8,6 @@ import GenericCreateAndEditPage, {
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
-import { useHref, useParams } from "react-router-dom";
 
 export interface Fields {
   title: string;
@@ -20,7 +20,7 @@ interface FormFieldsProps {
 
 interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
-  FormFieldsProps {
+    FormFieldsProps {
   cancelRedirectLink: string;
   projectId?: string;
   collectionId?: string;
@@ -32,10 +32,10 @@ export const emptyFields: Fields = {
 
 export const notLoadedRecord: Task = {
   id: "",
+  type: TaskType.commonTask,
   collectionId: "",
   title: "Carregando...",
   isPending: true,
-  url: "",
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -49,12 +49,16 @@ export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
-  const projectBreadcrumbLink = useHref(`/projects${projectId && projectId !== ""
-    ? "/" + projectId : ""}`);
-  const collectionBreadcrumbLink = useHref(`/${collectionId && collectionId !== ""
-    ? `collections/${collectionId}`
-    : `projects`
-    }`);
+  const projectBreadcrumbLink = useHref(
+    `/projects${projectId && projectId !== "" ? "/" + projectId : ""}`
+  );
+  const collectionBreadcrumbLink = useHref(
+    `/${
+      collectionId && collectionId !== ""
+        ? `collections/${collectionId}`
+        : `projects`
+    }`
+  );
   const breadcrumbsItemsList = [
     { text: "Projetos", href: useHref(`/projects`) },
     {

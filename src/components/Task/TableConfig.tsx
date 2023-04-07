@@ -2,7 +2,7 @@ import { useHref } from "react-router-dom";
 import { Link } from "@cloudscape-design/components";
 import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunctions";
 
-interface Item {
+export interface Item {
   id: string;
   title: string;
   status: string;
