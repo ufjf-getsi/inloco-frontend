@@ -21,6 +21,7 @@ import {
 import {
   cancelLoadAndRedirectBackwards,
   localizedPageTypeName,
+  searchLabelByValue,
 } from "../Generic/GenericFunctions";
 
 export interface Fields {
@@ -38,7 +39,7 @@ interface FormFieldsProps {
 
 interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
-  FormFieldsProps {
+    FormFieldsProps {
   cancelRedirectLink: string;
 }
 
@@ -127,11 +128,7 @@ export function fetchAllEquipmentOptionsList({
 }
 
 export function formatDataType(dataType: string): string {
-  return (
-    dataTypeOptions.find((option) => {
-      return option.value === dataType;
-    })?.label ?? dataType
-  );
+  return searchLabelByValue(dataTypeOptions, dataType);
 }
 
 export function validateFields(inputValues: Fields): boolean {
