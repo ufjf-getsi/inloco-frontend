@@ -6,10 +6,12 @@ import { AlertProps } from "@cloudscape-design/components";
 import {
   emptyFields,
   Fields,
+  formatStatus,
   RecordForm,
   validateFields,
 } from "../../components/Task/GenericTask";
-import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
+import { handleErrorRedirect } from "../../components/Generic/GenericFunctions";
+import { TaskType } from "../../types";
 
 export default function EditTask() {
   const navigate = useNavigate();
@@ -20,24 +22,25 @@ export default function EditTask() {
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   function fetchRecordData() {
-    axios(`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`)
+    axios(`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`, {
+      validateStatus: function (status) {
+        return status === 200;
+      },
+    })
       .then((response) => {
         setProjectId(response.data.projectId);
         setCollectionId(response.data.collectionId);
         setInputValues({
           title: response.data.title,
+          status: {
+            label: formatStatus(
+              response.data.isPending ? "pending" : "completed"
+            ),
+            value: response.data.status,
+          },
         });
       })
-      .catch((error) =>
-        cancelLoadAndRedirectBackwards({
-          navigate: navigate,
-          error: error,
-          previousPageLink: `${collectionId
-              ? `/collections/${collectionId}`
-              : `/projects`
-            }`,
-        })
-      );
+      .catch((error) => handleErrorRedirect(navigate, error));
   }
   useEffect(() => {
     fetchRecordData();
@@ -49,7 +52,9 @@ export default function EditTask() {
       // Send to the server
       try {
         await axios.patch(`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`, {
+          type: TaskType.commonTask,
           title: inputValues.title,
+          isPending: inputValues.status.value !== "completed",
         });
         setAlertType("success");
         setAlertVisible(true);

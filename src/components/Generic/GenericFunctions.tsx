@@ -1,5 +1,5 @@
 import { NavigateFunction, useHref } from "react-router-dom";
-import { PageType } from "./GenericInterfaces";
+import { PageType, OptionStringString as Option } from "./GenericInterfaces";
 
 export function toUpperCase(text: String) {
   return text.charAt(0).toLocaleUpperCase() + text.slice(1);
@@ -24,6 +24,17 @@ export function cancelLoadAndRedirectBackwards({
 export function handleErrorRedirect(navigate: NavigateFunction, error: any) {
   console.error(error);
   navigate(import.meta.env.BASE_URL.slice(0, -1) + "/404", { replace: true });
+}
+
+export function searchLabelByValue(
+  optionsList: Option[],
+  searchedValue: string
+): string {
+  return (
+    optionsList.find((option) => {
+      return option.value === searchedValue;
+    })?.label ?? searchedValue
+  );
 }
 
 export function localizedPageTypeName(pageType: PageType) {

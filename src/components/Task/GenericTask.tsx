@@ -1,16 +1,28 @@
 import { useHref, useParams } from "react-router-dom";
 import { Task, TaskType } from "../../types";
 
-import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
+import {
+  SpaceBetween,
+  FormField,
+  Input,
+  Select,
+} from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
-import { localizedPageTypeName } from "../Generic/GenericFunctions";
-import { PageType } from "../Generic/GenericInterfaces";
+import {
+  localizedPageTypeName,
+  searchLabelByValue,
+} from "../Generic/GenericFunctions";
+import {
+  PageType,
+  OptionStringString as Option,
+} from "../Generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   title: string;
+  status: Option;
 }
 
 interface FormFieldsProps {
@@ -26,8 +38,20 @@ interface ImplementedRecordFormProps
   collectionId?: string;
 }
 
+const statusOptions: Array<Option> = [
+  {
+    label: "Pendente",
+    value: "pending",
+  },
+  {
+    label: "Concluída",
+    value: "completed",
+  },
+];
+
 export const emptyFields: Fields = {
   title: "",
+  status: statusOptions[0],
 };
 
 export const notLoadedRecord: Task = {
@@ -85,8 +109,12 @@ export const breadcrumpGroupItems = ({
   return breadcrumbsItemsList;
 };
 
+export function formatStatus(status: string): string {
+  return searchLabelByValue(statusOptions, status);
+}
+
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.title) {
+  if (inputValues.title && inputValues.status) {
     return true;
   } else return false;
 }
@@ -129,12 +157,26 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Título">
         <Input
           value={inputValues.title}
+          placeholder={`Título da tarefa`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
               title: event.detail.value,
             }))
           }
+        />
+      </FormField>
+      <FormField label="Status">
+        <Select
+          selectedOption={inputValues.status}
+          onChange={({ detail }) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              status: detail.selectedOption,
+            }))
+          }
+          options={statusOptions}
+          selectedAriaLabel="Selected"
         />
       </FormField>
     </SpaceBetween>

@@ -1,13 +1,10 @@
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { CommonTask } from "../../types";
+import { CommonTask, TaskType } from "../../types";
 
 import { AlertProps } from "@cloudscape-design/components";
-import {
-  cancelLoadAndRedirectBackwards,
-  handleErrorRedirect,
-} from "../../components/Generic/GenericFunctions";
+import { handleErrorRedirect } from "../../components/Generic/GenericFunctions";
 import {
   emptyFields,
   Fields,
@@ -38,20 +35,11 @@ export default function CreateTask() {
           setProjectId(response.data.projectId);
           setCollectionId(paramsCollectionId ?? "");
         }
-        // else {
-        //   // cancelLoadAndRedirectBackwards({
-        //   //   navigate: navigate,
-        //   //   error: "404: Not found",
-        //   //   previousPageLink: `/projects`,
-        //   // });
-        //   throw new Error("404: Not found");
-        // }
       })
       .catch((error) => {
         handleErrorRedirect(navigate, error);
       });
   }
-
   useEffect(() => {
     checkIfParentRecordExists();
   }, []);
@@ -65,6 +53,9 @@ export default function CreateTask() {
     event.preventDefault();
 
     const sendableData: CommonTask = {
+      type: TaskType.commonTask,
+      id: "",
+      isPending: inputValues.status.value !== "completed",
       collectionId: collectionId,
       title: inputValues.title,
     };
@@ -72,7 +63,10 @@ export default function CreateTask() {
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post(`${import.meta.env.VITE_SERVER_URL}/tasks`);
+        await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/tasks`,
+          sendableData
+        );
         setAlertType("success");
         setAlertVisible(true);
         setTimeout(() => navigate(`/collections/${collectionId}`), 1000);
