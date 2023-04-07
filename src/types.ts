@@ -77,5 +77,6 @@ export interface CommonTask extends BaseTask {
 export interface EquipmentTask extends BaseTask {
   type: TaskType.equipmentTask;
   equipmentId: string;
+  equipment?: Equipment;
   isBringingBack: boolean;
 }
