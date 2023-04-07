@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -10,7 +10,10 @@ import {
   RecordForm,
   validateFields,
 } from "../../components/Task/GenericTask";
-import { handleErrorRedirect } from "../../components/Generic/GenericFunctions";
+import {
+  fetchRecordData,
+  handleErrorRedirect,
+} from "../../components/Generic/GenericFunctions";
 import { TaskType } from "../../types";
 
 export default function EditTask() {
@@ -21,29 +24,19 @@ export default function EditTask() {
   const [collectionId, setCollectionId] = useState("");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
-  function fetchRecordData() {
-    axios(`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`, {
-      validateStatus: function (status) {
-        return status === 200;
+  function handleFetchResponse(response: AxiosResponse<any, any>) {
+    setProjectId(response.data.projectId);
+    setCollectionId(response.data.collectionId);
+    setInputValues({
+      title: response.data.title,
+      status: {
+        label: formatStatus(response.data.isPending ? "pending" : "completed"),
+        value: response.data.status,
       },
-    })
-      .then((response) => {
-        setProjectId(response.data.projectId);
-        setCollectionId(response.data.collectionId);
-        setInputValues({
-          title: response.data.title,
-          status: {
-            label: formatStatus(
-              response.data.isPending ? "pending" : "completed"
-            ),
-            value: response.data.status,
-          },
-        });
-      })
-      .catch((error) => handleErrorRedirect(navigate, error));
+    });
   }
   useEffect(() => {
-    fetchRecordData();
+    fetchRecordData(`/tasks/${id}`, navigate, handleFetchResponse);
   }, []);
 
   async function handleSubmit(event: FormEvent) {

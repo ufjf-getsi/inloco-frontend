@@ -1,4 +1,5 @@
-import { NavigateFunction, useHref } from "react-router-dom";
+import axios from "axios";
+import { NavigateFunction } from "react-router-dom";
 import { PageType, OptionStringString as Option } from "./GenericInterfaces";
 
 export function toUpperCase(text: String) {
@@ -48,4 +49,18 @@ export function localizedPageTypeName(pageType: PageType) {
     case "edit":
       return "Editar";
   }
+}
+
+export function fetchRecordData(
+  relativeUrl: string,
+  navigate: NavigateFunction,
+  handleFetchResponse: Function
+) {
+  axios(import.meta.env.VITE_SERVER_URL + relativeUrl, {
+    validateStatus: function (status) {
+      return status === 200;
+    },
+  })
+    .then((response) => handleFetchResponse(response))
+    .catch((error) => handleErrorRedirect(navigate, error));
 }
