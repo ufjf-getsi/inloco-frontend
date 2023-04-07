@@ -16,7 +16,7 @@ export function cancelLoadAndRedirectBackwards({
   previousPageLink,
 }: cancelLoadAndRedirectBackwardsProps) {
   console.log(error);
-  navigate(previousPageLink ?? `/`);
+  navigate(import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) + previousPageLink ?? `/`);
 }
 
 export function localizedPageTypeName(pageType: PageType) {

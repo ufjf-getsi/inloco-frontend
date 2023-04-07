@@ -1,3 +1,4 @@
+import { useHref } from "react-router-dom";
 import { Link } from "@cloudscape-design/components";
 import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunctions";
 
@@ -9,8 +10,7 @@ interface Item {
 
 export const visibleContent = ["title", "status"];
 
-const recordViewPageLink = (item: Item) =>
-  `${import.meta.env.VITE_BASE_URL_HASH}tasks/${item.id}`;
+const recordViewPageLink = (item: Item) => useHref(`/tasks/${item.id}`);
 
 export const columnDefinitions = [
   {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useHref, useNavigate } from "react-router-dom";
 import { PropsWithChildren, ReactNode, useEffect } from "react";
 
 import {
@@ -65,10 +65,7 @@ export default function GenericViewPage(
     <AppLayout
       navigation={
         <Navbar
-          activeLink={
-            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-            props.navbarActiveLink
-          }
+          activeLink={props.navbarActiveLink}
         />
       }
       toolsHide
@@ -84,10 +81,7 @@ export default function GenericViewPage(
                   {props.otherHeaderActions}
                   <Button
                     iconName="edit"
-                    href={
-                      import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-                      props.editRecordLink
-                    }
+                    href={useHref(props.editRecordLink)}
                   >
                     Editar
                   </Button>

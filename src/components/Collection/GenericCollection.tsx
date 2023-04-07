@@ -1,3 +1,4 @@
+import { useHref, useParams } from "react-router-dom";
 import { Collection } from "../../types";
 
 import {
@@ -12,8 +13,6 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 export interface Fields {
   title: string;
@@ -28,7 +27,7 @@ interface FormFieldsProps {
 
 interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
-    FormFieldsProps {
+  FormFieldsProps {
   cancelRedirectLink: string;
   projectId?: string;
   collectionId?: string;
@@ -61,19 +60,18 @@ export const breadcrumpGroupItems = ({
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
   const breadcrumbsItemsList = [
-    { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
+    { text: "Projetos", href: useHref(`/projects`) },
     {
       text: "Projeto",
-      href: `${import.meta.env.VITE_BASE_URL_HASH}projects${
-        projectId && projectId !== "" ? "/" + projectId : ""
-      }`,
+      href: useHref(`/projects${projectId && projectId !== "" ?
+        "/" + projectId : ""}`),
     },
   ];
   if (pageType !== "list") {
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Coleta`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}collections/${id}`,
+        href: useHref(`/collections/${id}`),
       });
     }
     breadcrumbsItemsList.push({

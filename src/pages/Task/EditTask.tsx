@@ -32,11 +32,10 @@ export default function EditTask() {
         cancelLoadAndRedirectBackwards({
           navigate: navigate,
           error: error,
-          previousPageLink: `${
-            collectionId
+          previousPageLink: `${collectionId
               ? `/collections/${collectionId}`
-              : `${import.meta.env.VITE_BASE_URL_HASH}projects`
-          }`,
+              : `/projects`
+            }`,
         })
       );
   }

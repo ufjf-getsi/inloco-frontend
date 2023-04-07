@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NavigateFunction, useParams } from "react-router-dom";
+import { NavigateFunction, useHref, useParams } from "react-router-dom";
 import { Parameter, Point } from "../../types";
 
 import {
@@ -33,7 +33,7 @@ interface FormFieldsProps {
 
 interface ImplementedRecordFormProps
   extends GenericRecordFormProps,
-    FormFieldsProps {
+  FormFieldsProps {
   cancelRedirectLink: string;
   projectId?: string;
   collectionId?: string;
@@ -65,16 +65,13 @@ export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
-  const projectBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}projects${
-    projectId && projectId !== "" ? "/" + projectId : ""
-  }`;
-  const collectionBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}${
-    collectionId && collectionId !== ""
-      ? `collections/${collectionId}`
-      : `projects`
-  }`;
+  const projectBreadcrumbLink = useHref(`/projects${projectId && projectId !== ""
+    ? "/" + projectId : ""}`);
+  const collectionBreadcrumbLink = useHref(`/${collectionId && collectionId !== ""
+    ? `collections/${collectionId}`
+    : `projects`}`);
   const breadcrumbsItemsList = [
-    { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
+    { text: "Projetos", href: useHref(`/projects`) },
     {
       text: "Projeto",
       href: projectBreadcrumbLink,
@@ -88,7 +85,7 @@ export const breadcrumpGroupItems = ({
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Ponto`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}points/${id}`,
+        href: useHref(`/points/${id}`),
       });
     }
     breadcrumbsItemsList.push({
@@ -122,11 +119,9 @@ export function fetchAllParameterOptionsList({
       cancelLoadAndRedirectBackwards({
         navigate: navigate,
         error: error,
-        previousPageLink: `${
-          collectionId
-            ? `/collections/${collectionId}`
-            : `${import.meta.env.VITE_BASE_URL_HASH}projects`
-        }`,
+        previousPageLink: useHref(`${collectionId
+          ? `/collections/${collectionId}`
+          : `/projects`}`),
       })
     );
 }

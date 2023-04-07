@@ -24,7 +24,7 @@ export default function ViewEquipment() {
     recordName: equipment.name,
     recordGenderFeminine: false,
     serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/equipment/${id}`,
-    afterDeleteRedirectLink: `${import.meta.env.VITE_BASE_URL_HASH}equipment`,
+    afterDeleteRedirectLink: `/equipment`,
   };
 
   return (

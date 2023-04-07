@@ -31,7 +31,7 @@ export default function CreatePoint() {
           cancelLoadAndRedirectBackwards({
             navigate: navigate,
             error: "404: Not found",
-            previousPageLink: `${import.meta.env.VITE_BASE_URL_HASH}projects`,
+            previousPageLink: `/projects`,
           });
         }
       })
@@ -39,11 +39,10 @@ export default function CreatePoint() {
         cancelLoadAndRedirectBackwards({
           navigate: navigate,
           error: error,
-          previousPageLink: `${
-            collectionId
-              ? `/collections/${collectionId}`
-              : `${import.meta.env.VITE_BASE_URL_HASH}projects`
-          }`,
+          previousPageLink: `${collectionId
+            ? `/collections/${collectionId}`
+            : `/projects`
+            }`,
         })
       );
   }
@@ -102,7 +101,7 @@ export default function CreatePoint() {
       setAlertVisible={setAlertVisible}
       inputValues={inputValues}
       setInputValues={setInputValues}
-      cancelRedirectLink={`${import.meta.env.VITE_BASE_URL_HASH}projects`}
+      cancelRedirectLink={`/collections/${collectionId}`}
       allParameterOptionsList={allParameterOptionsList}
       collectionId={collectionId}
       projectId={projectId}
