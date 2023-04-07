@@ -1,4 +1,4 @@
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useHref } from "react-router-dom";
 import { PageType } from "./GenericInterfaces";
 
 export function toUpperCase(text: String) {
@@ -16,7 +16,14 @@ export function cancelLoadAndRedirectBackwards({
   previousPageLink,
 }: cancelLoadAndRedirectBackwardsProps) {
   console.log(error);
-  navigate(import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) + previousPageLink ?? `/`);
+  navigate(
+    import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) + previousPageLink ?? `/`
+  );
+}
+
+export function handleErrorRedirect(navigate: NavigateFunction, error: any) {
+  console.error(error);
+  navigate(import.meta.env.BASE_URL.slice(0, -1) + "/404", { replace: true });
 }
 
 export function localizedPageTypeName(pageType: PageType) {

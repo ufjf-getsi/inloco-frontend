@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
+import { CommonTask } from "../../types";
 
 import { AlertProps } from "@cloudscape-design/components";
-import { cancelLoadAndRedirectBackwards } from "../../components/Generic/GenericFunctions";
+import {
+  cancelLoadAndRedirectBackwards,
+  handleErrorRedirect,
+} from "../../components/Generic/GenericFunctions";
 import {
   emptyFields,
   Fields,
@@ -13,33 +17,39 @@ import {
 
 export default function CreateTask() {
   const navigate = useNavigate();
-  const { collectionId } = useParams();
+  const paramsCollectionId = useParams().collectionId;
 
   const [projectId, setProjectId] = useState("");
+  const [collectionId, setCollectionId] = useState("");
 
   function checkIfParentRecordExists() {
-    axios(`${import.meta.env.VITE_SERVER_URL}/collections/${collectionId}`)
+    axios
+      .get(
+        `${import.meta.env.VITE_SERVER_URL}/collections/${paramsCollectionId}`,
+        {
+          validateStatus: function (status) {
+            return status === 200;
+          },
+        }
+      )
       .then((response) => {
         if (response.data) {
+          console.log(paramsCollectionId);
           setProjectId(response.data.projectId);
-        } else {
-          cancelLoadAndRedirectBackwards({
-            navigate: navigate,
-            error: "404: Not found",
-            previousPageLink: `/projects`,
-          });
+          setCollectionId(paramsCollectionId ?? "");
         }
+        // else {
+        //   // cancelLoadAndRedirectBackwards({
+        //   //   navigate: navigate,
+        //   //   error: "404: Not found",
+        //   //   previousPageLink: `/projects`,
+        //   // });
+        //   throw new Error("404: Not found");
+        // }
       })
-      .catch((error) =>
-        cancelLoadAndRedirectBackwards({
-          navigate: navigate,
-          error: error,
-          previousPageLink: `${collectionId
-            ? `/collections/${collectionId}`
-            : `/projects`
-            }`,
-        })
-      );
+      .catch((error) => {
+        handleErrorRedirect(navigate, error);
+      });
   }
 
   useEffect(() => {
@@ -53,14 +63,16 @@ export default function CreateTask() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
+    const sendableData: CommonTask = {
+      collectionId: collectionId,
+      title: inputValues.title,
+    };
+
     if (validateFields(inputValues)) {
       // Send to the server
       try {
-        await axios.post(`${import.meta.env.VITE_SERVER_URL}/tasks`, {
-          collectionId: collectionId,
-          title: inputValues.title,
-          url: "url",
-        });
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/tasks`);
         setAlertType("success");
         setAlertVisible(true);
         setTimeout(() => navigate(`/collections/${collectionId}`), 1000);
