@@ -69,6 +69,7 @@ interface BaseTask {
   id: string;
   isPending: boolean;
   collectionId: string;
+  projectId?: string;
 }
 export interface CommonTask extends BaseTask {
   type: TaskType.commonTask;

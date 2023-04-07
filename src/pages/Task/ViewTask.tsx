@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { Task } from "../../types";
+import { Task, TaskType } from "../../types";
 
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
@@ -10,14 +10,10 @@ import {
 } from "../../components/Task/GenericTask";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 
-interface TaskWithProjectId extends Task {
-  projectId: string;
-}
-
 export default function ViewTask() {
   const { id } = useParams();
 
-  const [task, setTask] = useState<TaskWithProjectId>({
+  const [task, setTask] = useState<Task>({
     projectId: "",
     ...notLoadedRecord,
   });
@@ -33,10 +29,19 @@ export default function ViewTask() {
     afterDeleteRedirectLink: `/collections/${task.collectionId}`,
   };
 
+  let pageTitle = "Tarefa";
+  if (task.type === TaskType.commonTask) {
+    pageTitle = task.title;
+  } else if (task.type === TaskType.equipmentTask) {
+    pageTitle = `${task.isBringingBack ? "Trazer" : "Levar"} ${
+      task.equipment?.name ?? task.equipmentId
+    }`;
+  }
+
   return (
     <GenericViewPage
-      title={task.title}
-      description={task.url}
+      title={pageTitle}
+      description={task.isPending ? "Tarefa pendente" : "Tarefa concluída"}
       navbarActiveLink={`/projects`}
       setRecord={setTask}
       fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`}

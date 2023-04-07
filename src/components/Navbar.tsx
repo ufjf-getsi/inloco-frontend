@@ -14,8 +14,8 @@ export default function Navbar(props: NavbarProps) {
   const [activeHref, setActiveHref] = useState(props.activeLink);
   return (
     <SideNavigation
-      activeHref={activeHref}
-      header={{ href: "/", text: "InLoco" }}
+      activeHref={useHref(activeHref)}
+      header={{ href: useHref("/"), text: "InLoco" }}
       onFollow={(event) => {
         if (!event.detail.external) {
           setActiveHref(event.detail.href);
