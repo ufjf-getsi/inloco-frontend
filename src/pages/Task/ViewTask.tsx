@@ -6,6 +6,7 @@ import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPa
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 import {
   breadcrumpGroupItems,
+  formatTitle,
   notLoadedRecord,
 } from "../../components/Task/GenericTask";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
@@ -29,22 +30,13 @@ export default function ViewTask() {
     afterDeleteRedirectLink: `/collections/${task.collectionId}`,
   };
 
-  let pageTitle = "Tarefa";
-  if (task.type === TaskType.commonTask) {
-    pageTitle = task.title;
-  } else if (task.type === TaskType.equipmentTask) {
-    pageTitle = `${task.isBringingBack ? "Trazer" : "Levar"} ${
-      task.equipment?.name ?? task.equipmentId
-    }`;
-  }
-
   return (
     <GenericViewPage
-      title={pageTitle}
+      title={formatTitle(task)}
       description={task.isPending ? "Tarefa pendente" : "Tarefa concluída"}
       navbarActiveLink={`/projects`}
       setRecord={setTask}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`}
+      fetchRecordLink={`/tasks/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({

@@ -1,17 +1,13 @@
 import { useHref, useParams } from "react-router-dom";
 import { Project } from "../../types";
 
-import {
-  SpaceBetween,
-  FormField,
-  Input,
-  BreadcrumbGroup,
-} from "@cloudscape-design/components";
+import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
+import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   title: string;
@@ -23,11 +19,10 @@ interface FormFieldsProps {
   setInputValues: Function;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-  FormFieldsProps {
-  cancelRedirectLink: string;
-}
+type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+  };
 
 export const emptyFields: Fields = {
   title: "",
@@ -74,29 +69,36 @@ export function validateFields(inputValues: Fields): boolean {
 }
 
 export function RecordForm(props: ImplementedRecordFormProps) {
+  const commonAttributes: any = {
+    recordCategorySingular: `projeto`,
+    recordCategoryPlural: `projetos`,
+    recordGenderFeminine: false,
+    description: `Um projeto é uma coleção que guarda registros de todas as coletas realizadas com um propósito em comum.`,
+    navbarActiveLink: `/projects`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          pageType: props.edit ? "edit" : "create",
+        })}
+        expandAriaLabel="Mostrar caminho"
+        ariaLabel="Breadcrumbs"
+      />
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+  };
+  if (props.edit) {
+    commonAttributes.edit = true;
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+  }
   return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`projeto`}
-      recordCategoryPlural={`projetos`}
-      recordGenderFeminine={false}
-      description={`Um projeto é uma coleção que guarda registros de todas as coletas realizadas com um propósito em comum.`}
-      navbarActiveLink={`/projects`}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={breadcrumpGroupItems({
-            pageType: props.edit ? "edit" : "create",
-          })}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
+    <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}

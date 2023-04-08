@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Project } from "../../types";
 
-import { BreadcrumbGroup } from "@cloudscape-design/components";
 import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
@@ -50,7 +49,7 @@ export default function ViewProject() {
       description={project.description}
       navbarActiveLink={`/projects`}
       setRecord={setProject}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/projects/${id}`}
+      fetchRecordLink={`/projects/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}

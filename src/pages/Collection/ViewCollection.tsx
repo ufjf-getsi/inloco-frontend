@@ -96,7 +96,7 @@ export default function ViewCollection() {
       description={""}
       navbarActiveLink={`/projects`}
       setRecord={setCollection}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/collections/${id}`}
+      fetchRecordLink={`/collections/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({
