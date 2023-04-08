@@ -57,7 +57,7 @@ export default function ViewParameter() {
       description={`Tipo de dado: ${formatDataType(parameter.dataType)}`}
       navbarActiveLink={`/parameters`}
       setRecord={setParameter}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/parameters/${id}`}
+      fetchRecordLink={`/parameters/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}

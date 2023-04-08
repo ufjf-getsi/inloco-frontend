@@ -30,13 +30,12 @@ interface FormFieldsProps {
   setInputValues: Function;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-    FormFieldsProps {
-  cancelRedirectLink: string;
-  projectId?: string;
-  collectionId?: string;
-}
+type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+    projectId?: string;
+    collectionId?: string;
+  };
 
 const statusOptions: Array<Option> = [
   {
@@ -109,6 +108,18 @@ export const breadcrumpGroupItems = ({
   return breadcrumbsItemsList;
 };
 
+export function formatTitle(task: Task) {
+  let formattedTitle = "Tarefa";
+  if (task.type === TaskType.commonTask) {
+    formattedTitle = task.title;
+  } else if (task.type === TaskType.equipmentTask) {
+    formattedTitle = `${task.isBringingBack ? "Trazer" : "Levar"} ${
+      task.equipment?.name ?? task.equipmentId
+    }`;
+  }
+  return formattedTitle;
+}
+
 export function formatStatus(status: string): string {
   return searchLabelByValue(statusOptions, status);
 }
@@ -120,29 +131,36 @@ export function validateFields(inputValues: Fields): boolean {
 }
 
 export function RecordForm(props: ImplementedRecordFormProps) {
+  const commonAttributes: any = {
+    recordCategorySingular: `tarefa`,
+    recordCategoryPlural: `tarefas`,
+    recordGenderFeminine: true,
+    description: `Tarefas incluem equipamentos necessários, parâmetros a aferir, e outras atividades.`,
+    navbarActiveLink: `/projects`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          projectId: props.projectId,
+          collectionId: props.collectionId,
+          pageType: props.edit ? "edit" : "create",
+        })}
+      />
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+  };
+  if (props.edit) {
+    commonAttributes.edit = true;
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+  }
   return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`tarefa`}
-      recordCategoryPlural={`tarefas`}
-      recordGenderFeminine={true}
-      description={`Tarefas incluem equipamentos necessários, parâmetros a aferir, e outras atividades.`}
-      navbarActiveLink={`/projects`}
-      breadcrumbs={
-        <GenericBreadcrumbGroup
-          items={breadcrumpGroupItems({
-            projectId: props.projectId,
-            collectionId: props.collectionId,
-            pageType: props.edit ? "edit" : "create",
-          })}
-        />
-      }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
+    <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}

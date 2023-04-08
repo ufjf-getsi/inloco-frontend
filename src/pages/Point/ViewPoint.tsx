@@ -64,7 +64,7 @@ export default function ViewPoint() {
       description={point.plannedCoordinates ?? ""}
       navbarActiveLink={`/projects`}
       setRecord={setPoint}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/points/${id}`}
+      fetchRecordLink={`/points/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({

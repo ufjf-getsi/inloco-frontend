@@ -33,7 +33,7 @@ export default function ViewEquipment() {
       description={""}
       navbarActiveLink={`/equipment`}
       setRecord={setEquipment}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/equipment/${id}`}
+      fetchRecordLink={`/equipment/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}
