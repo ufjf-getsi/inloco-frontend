@@ -5,7 +5,6 @@ import {
   SpaceBetween,
   FormField,
   Input,
-  BreadcrumbGroup,
   DatePicker,
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
@@ -13,6 +12,7 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
+import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   title: string;
@@ -25,13 +25,11 @@ interface FormFieldsProps {
   setInputValues: Function;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-  FormFieldsProps {
-  cancelRedirectLink: string;
-  projectId?: string;
-  collectionId?: string;
-}
+type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+    projectId?: string;
+  };
 
 export const emptyFields: Fields = {
   title: "",
@@ -51,7 +49,6 @@ export const notLoadedRecord: Collection = {
 
 interface BreadcrumbGroupItemsProps {
   projectId?: string;
-  collectionId?: string;
   pageType: PageType;
 }
 export const breadcrumpGroupItems = ({
@@ -63,8 +60,9 @@ export const breadcrumpGroupItems = ({
     { text: "Projetos", href: useHref(`/projects`) },
     {
       text: "Projeto",
-      href: useHref(`/projects${projectId && projectId !== "" ?
-        "/" + projectId : ""}`),
+      href: useHref(
+        `/projects${projectId && projectId !== "" ? "/" + projectId : ""}`
+      ),
     },
   ];
   if (pageType !== "list") {
@@ -88,31 +86,53 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
+export function getSendableData({
+  parentId,
+  inputValues,
+}: {
+  parentId?: string;
+  inputValues: Fields;
+}): Collection {
+  return {
+    id: "",
+    projectId: parentId ?? "",
+    title: inputValues.title,
+    startDate: inputValues.startDate,
+    endDate: inputValues.endDate,
+    points: [],
+    tasks: [],
+  };
+}
+
 export function RecordForm(props: ImplementedRecordFormProps) {
+  const commonAttributes: any = {
+    recordCategorySingular: `coleta`,
+    recordCategoryPlural: `coletas`,
+    recordGenderFeminine: true,
+    description: `Uma coleta é uma expedição realizada a fim de obter dados de determinados pontos.`,
+    navbarActiveLink: `/projects`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          projectId: props.projectId,
+          pageType: props.edit ? "edit" : "create",
+        })}
+      />
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+    edit: props.edit,
+    hasParent: props.hasParent,
+  };
+  if (props.edit || props.hasParent) {
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  }
   return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`coleta`}
-      recordCategoryPlural={`coletas`}
-      recordGenderFeminine={true}
-      description={`Uma coleta é uma expedição realizada a fim de obter dados de determinados pontos.`}
-      navbarActiveLink={`/projects`}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={breadcrumpGroupItems({
-            projectId: props.projectId,
-            pageType: props.edit ? "edit" : "create",
-          })}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
+    <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
@@ -127,6 +147,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Nome">
         <Input
           value={inputValues.title}
+          placeholder={`Nome da coleta`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
