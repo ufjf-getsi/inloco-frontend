@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
 
@@ -8,36 +7,29 @@ import {
   emptyFields,
   validateFields,
   RecordForm,
+  getSendableData,
 } from "../../components/Project/GenericProject";
+import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
 
 export default function CreateProject() {
   const navigate = useNavigate();
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    if (validateFields(inputValues)) {
-      // Send to the server
-      try {
-        await axios.post(`${import.meta.env.VITE_SERVER_URL}/projects`, {
-          title: inputValues.title,
-          description: inputValues.description,
-        });
-        setAlertType("success");
-        setAlertVisible(true);
-        setTimeout(() => navigate(`/projects`), 1000);
-      } catch (error) {
-        console.log(error);
-        setAlertType("error");
-        setAlertVisible(true);
-      }
-    } else {
-      // Fazer alert para dados inválidos
-    }
+    handleFormSubmit({
+      event: event,
+      edit: false,
+      validFields: validateFields(inputValues),
+      relativeServerUrl: `/projects`,
+      sendableData: getSendableData(inputValues),
+      setAlertType: setAlertType,
+      setAlertVisible: setAlertVisible,
+      navigate: navigate,
+      successRedirectLink: `/projects`,
+    });
   }
 
   return (

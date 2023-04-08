@@ -1,43 +1,43 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
+import { Task, TaskType } from "../../types";
 
 import { AlertProps } from "@cloudscape-design/components";
 import {
   emptyFields,
   Fields,
   formatStatus,
+  formatTitle,
+  notLoadedRecord,
   RecordForm,
   validateFields,
 } from "../../components/Task/GenericTask";
-import {
-  fetchRecordData,
-  handleErrorRedirect,
-} from "../../components/Generic/GenericFunctions";
-import { TaskType } from "../../types";
+import { handleErrorRedirect } from "../../components/Generic/GenericFunctions";
 
 export default function EditTask() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [projectId, setProjectId] = useState("");
-  const [collectionId, setCollectionId] = useState("");
+  const [task, setTask] = useState<Task>(notLoadedRecord);
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
-  function handleFetchResponse(response: AxiosResponse<any, any>) {
-    setProjectId(response.data.projectId);
-    setCollectionId(response.data.collectionId);
-    setInputValues({
-      title: response.data.title,
-      status: {
-        label: formatStatus(response.data.isPending ? "pending" : "completed"),
-        value: response.data.status,
-      },
-    });
+  function handleFetchResponse() {
+    if (task.type === TaskType.commonTask) {
+      setInputValues({
+        title: formatTitle(task),
+        status: {
+          label: formatStatus(task.isPending ? "pending" : "completed"),
+          value: task.isPending ? "pending" : "completed",
+        },
+      });
+    } else {
+      handleErrorRedirect(navigate, new Error("Task is not of editable type"));
+    }
   }
   useEffect(() => {
-    fetchRecordData(`/tasks/${id}`, navigate, handleFetchResponse);
-  }, []);
+    handleFetchResponse();
+  }, [task]);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -75,8 +75,10 @@ export default function EditTask() {
       inputValues={inputValues}
       setInputValues={setInputValues}
       cancelRedirectLink={`/tasks/${id}`}
-      collectionId={collectionId}
-      projectId={projectId}
+      fetchRecordLink={`/tasks/${id}`}
+      setRecord={setTask}
+      collectionId={task.collectionId}
+      projectId={task.projectId}
     />
   );
 }
