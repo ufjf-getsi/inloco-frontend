@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
+import { Project } from "../../types";
 
 import { AlertProps } from "@cloudscape-design/components";
 import {
@@ -8,55 +9,43 @@ import {
   emptyFields,
   Fields,
   RecordForm,
+  notLoadedRecord,
+  getSendableData,
 } from "../../components/Project/GenericProject";
+import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
 
 export default function EditProject() {
   const navigate = useNavigate();
-  function cancelLoadAndRedirectBackwards(error: any) {
-    console.log(error);
-    navigate(`/projects/${id}`);
-  }
   const { id } = useParams();
 
+  const [project, setProject] = useState<Project>(notLoadedRecord);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
 
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
-  function fetchRecordData() {
-    axios(`${import.meta.env.VITE_SERVER_URL}/projects/${id}`)
-      .then((response) => {
-        setInputValues({
-          title: response.data.title,
-          description: response.data.description,
-        });
-      })
-      .catch((error) => cancelLoadAndRedirectBackwards(error));
+  function handleFetchResponse() {
+    setInputValues({
+      title: project.title,
+      description: project.description,
+    });
   }
   useEffect(() => {
-    fetchRecordData();
-  }, []);
+    handleFetchResponse();
+  }, [project]);
 
   async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    if (validateFields(inputValues)) {
-      // Send to the server
-      try {
-        await axios.patch(`${import.meta.env.VITE_SERVER_URL}/projects/${id}`, {
-          title: inputValues.title,
-          description: inputValues.description,
-        });
-        setAlertType("success");
-        setAlertVisible(true);
-        setTimeout(() => navigate(`/projects/${id}`), 1000);
-      } catch (error) {
-        console.log(error);
-        setAlertType("error");
-        setAlertVisible(true);
-      }
-    } else {
-      // Fazer alert para dados inválidos
-    }
+    handleFormSubmit({
+      event: event,
+      edit: true,
+      validFields: validateFields(inputValues),
+      relativeServerUrl: `/projects/${id}`,
+      sendableData: getSendableData(inputValues),
+      setAlertType: setAlertType,
+      setAlertVisible: setAlertVisible,
+      navigate: navigate,
+      successRedirectLink: `/projects`,
+    });
   }
 
   return (
@@ -69,6 +58,8 @@ export default function EditProject() {
       inputValues={inputValues}
       setInputValues={setInputValues}
       cancelRedirectLink={`/projects/${id}`}
+      fetchRecordLink={`/projects/${id}`}
+      setRecord={setProject}
     />
   );
 }

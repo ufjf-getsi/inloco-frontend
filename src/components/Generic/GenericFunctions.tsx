@@ -1,5 +1,6 @@
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
+import { FormEvent } from "react";
 import { PageType, OptionStringString as Option } from "./GenericInterfaces";
 
 export function toUpperCase(text: String) {
@@ -63,4 +64,79 @@ export function fetchRecordData(
   })
     .then((response) => handleFetchResponse(response))
     .catch((error) => handleErrorRedirect(navigate, error));
+}
+
+export async function handleFormSubmit({
+  event,
+  edit,
+  validFields,
+  relativeServerUrl,
+  sendableData,
+  setAlertType,
+  setAlertVisible,
+  navigate,
+  successRedirectLink,
+}: {
+  event: FormEvent;
+  edit: boolean;
+  validFields: boolean;
+  relativeServerUrl: string;
+  sendableData: any;
+  setAlertType: Function;
+  setAlertVisible: Function;
+  navigate: NavigateFunction;
+  successRedirectLink: string;
+}) {
+  event.preventDefault();
+  if (validFields) {
+    if (await decideOperation(edit)(relativeServerUrl, sendableData)) {
+      setAlertType("success");
+      setAlertVisible(true);
+      setTimeout(() => navigate(successRedirectLink), 1000);
+    } else {
+      setAlertType("error");
+    }
+  } else {
+    setAlertType("warning");
+  }
+  setAlertVisible(true);
+}
+
+function decideOperation(edit: boolean) {
+  if (edit) {
+    return updateRecordOnServer;
+  } else {
+    return createRecordOnServer;
+  }
+}
+async function createRecordOnServer(
+  relativeServerUrl: string,
+  sendableData: any
+) {
+  try {
+    console.log(import.meta.env.VITE_SERVER_URL + relativeServerUrl);
+    await axios.post(
+      import.meta.env.VITE_SERVER_URL + relativeServerUrl,
+      sendableData
+    );
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+async function updateRecordOnServer(
+  relativeServerUrl: string,
+  sendableData: any
+) {
+  try {
+    await axios.patch(
+      import.meta.env.VITE_SERVER_URL + relativeServerUrl,
+      sendableData
+    );
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 }

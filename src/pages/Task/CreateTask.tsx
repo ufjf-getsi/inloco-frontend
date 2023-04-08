@@ -1,10 +1,13 @@
-import axios from "axios";
+import { AxiosResponse } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { CommonTask, TaskType } from "../../types";
 
 import { AlertProps } from "@cloudscape-design/components";
-import { handleErrorRedirect } from "../../components/Generic/GenericFunctions";
+import {
+  fetchRecordData,
+  handleFormSubmit,
+} from "../../components/Generic/GenericFunctions";
 import {
   emptyFields,
   Fields,
@@ -19,39 +22,22 @@ export default function CreateTask() {
   const [projectId, setProjectId] = useState("");
   const [collectionId, setCollectionId] = useState("");
 
-  function checkIfParentRecordExists() {
-    axios
-      .get(
-        `${import.meta.env.VITE_SERVER_URL}/collections/${paramsCollectionId}`,
-        {
-          validateStatus: function (status) {
-            return status === 200;
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data) {
-          console.log(paramsCollectionId);
-          setProjectId(response.data.projectId);
-          setCollectionId(paramsCollectionId ?? "");
-        }
-      })
-      .catch((error) => {
-        handleErrorRedirect(navigate, error);
-      });
-  }
   useEffect(() => {
-    checkIfParentRecordExists();
+    fetchRecordData(
+      `/collections/${paramsCollectionId}`,
+      navigate,
+      function (response: AxiosResponse<any, any>) {
+        setProjectId(response.data.projectId);
+        setCollectionId(paramsCollectionId ?? "");
+      }
+    );
   }, []);
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-
     const sendableData: CommonTask = {
       type: TaskType.commonTask,
       id: "",
@@ -59,25 +45,17 @@ export default function CreateTask() {
       collectionId: collectionId,
       title: inputValues.title,
     };
-
-    if (validateFields(inputValues)) {
-      // Send to the server
-      try {
-        await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/tasks`,
-          sendableData
-        );
-        setAlertType("success");
-        setAlertVisible(true);
-        setTimeout(() => navigate(`/collections/${collectionId}`), 1000);
-      } catch (error) {
-        console.log(error);
-        setAlertType("error");
-        setAlertVisible(true);
-      }
-    } else {
-      // Fazer alert para dados inválidos
-    }
+    handleFormSubmit({
+      event: event,
+      edit: false,
+      validFields: validateFields(inputValues),
+      relativeServerUrl: `/tasks`,
+      sendableData: sendableData,
+      setAlertType: setAlertType,
+      setAlertVisible: setAlertVisible,
+      navigate: navigate,
+      successRedirectLink: `/collections/${collectionId}`,
+    });
   }
 
   return (

@@ -68,6 +68,16 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
+export function getSendableData(inputValues: Fields): Project {
+  return {
+    id: "",
+    title: inputValues.title,
+    description: inputValues.description,
+    collections: [],
+    notes: [],
+  };
+}
+
 export function RecordForm(props: ImplementedRecordFormProps) {
   const commonAttributes: any = {
     recordCategorySingular: `projeto`,

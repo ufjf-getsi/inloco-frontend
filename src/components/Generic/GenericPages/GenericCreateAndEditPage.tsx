@@ -1,4 +1,5 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { useHref, useNavigate } from "react-router-dom";
+import { PropsWithChildren, ReactNode, useEffect } from "react";
 
 import {
   AppLayout,
@@ -12,40 +13,56 @@ import {
 } from "@cloudscape-design/components";
 import Navbar from "../../Navbar";
 import { GenericRecordProps } from "../GenericInterfaces";
-import GenericReturnMessageAlert, {
-  GenericReturnMessageAlertProps,
-} from "../GenericReturnMessageAlert";
-import { useHref } from "react-router-dom";
+import GenericReturnMessageAlert from "../GenericReturnMessageAlert";
+import { fetchRecordData } from "../GenericFunctions";
+import { AxiosResponse } from "axios";
 
-export interface GenericRecordFormProps {
-  edit: boolean;
+interface GenericBaseRecordFormProps {
   handleSubmit: Function;
   alertVisible: boolean;
   setAlertVisible: Function;
   alertType: AlertProps.Type;
 }
-
-interface GenericCreateAndEditPageProps
-  extends GenericRecordProps,
-  GenericRecordFormProps {
-  description: string;
-  navbarActiveLink: string;
-  breadcrumbs: ReactNode;
-  cancelRedirectLink: string;
+interface GenericCreateRecordFormProps extends GenericBaseRecordFormProps {
+  edit: false;
 }
+interface GenericEditRecordFormProps extends GenericBaseRecordFormProps {
+  edit: true;
+  fetchRecordLink: string;
+  setRecord: Function;
+}
+export type GenericRecordFormProps =
+  | GenericCreateRecordFormProps
+  | GenericEditRecordFormProps;
+
+type GenericCreateAndEditPageProps = GenericRecordProps &
+  GenericRecordFormProps & {
+    description: string;
+    navbarActiveLink: string;
+    breadcrumbs: ReactNode;
+    cancelRedirectLink: string;
+  };
 
 export default function GenericCreateAndEditPage(
   props: PropsWithChildren<GenericCreateAndEditPageProps>
 ) {
-  const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";
+  if (props.edit) {
+    const navigate = useNavigate();
+    useEffect(() => {
+      fetchRecordData(
+        props.fetchRecordLink,
+        navigate,
+        function (response: AxiosResponse<any, any>) {
+          props.setRecord(response.data);
+        }
+      );
+    }, []);
+  }
 
+  const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";
   return (
     <AppLayout
-      navigation={
-        <Navbar
-          activeLink={props.navbarActiveLink}
-        />
-      }
+      navigation={<Navbar activeLink={props.navbarActiveLink} />}
       toolsHide
       contentType="form"
       content={
