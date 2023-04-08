@@ -22,6 +22,7 @@ export interface Collection {
 export interface Point {
   id: string;
   collectionId: string;
+  collection?: Collection;
   name: string;
   plannedCoordinates: string;
   actualCoordinates: string;

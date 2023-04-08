@@ -114,7 +114,6 @@ async function createRecordOnServer(
   sendableData: any
 ) {
   try {
-    console.log(import.meta.env.VITE_SERVER_URL + relativeServerUrl);
     await axios.post(
       import.meta.env.VITE_SERVER_URL + relativeServerUrl,
       sendableData

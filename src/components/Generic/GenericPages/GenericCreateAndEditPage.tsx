@@ -23,9 +23,21 @@ interface GenericBaseRecordFormProps {
   setAlertVisible: Function;
   alertType: AlertProps.Type;
 }
-interface GenericCreateRecordFormProps extends GenericBaseRecordFormProps {
+interface GenericCreateRecordWithoutParentFormProps
+  extends GenericBaseRecordFormProps {
   edit: false;
+  hasParent: false;
 }
+interface GenericCreateRecordWithParentFormProps
+  extends GenericBaseRecordFormProps {
+  edit: false;
+  hasParent: true;
+  fetchRecordLink: string;
+  setRecord: Function;
+}
+type GenericCreateRecordFormProps =
+  | GenericCreateRecordWithoutParentFormProps
+  | GenericCreateRecordWithParentFormProps;
 interface GenericEditRecordFormProps extends GenericBaseRecordFormProps {
   edit: true;
   fetchRecordLink: string;
@@ -46,7 +58,7 @@ type GenericCreateAndEditPageProps = GenericRecordProps &
 export default function GenericCreateAndEditPage(
   props: PropsWithChildren<GenericCreateAndEditPageProps>
 ) {
-  if (props.edit) {
+  if (props.edit || props.hasParent) {
     const navigate = useNavigate();
     useEffect(() => {
       fetchRecordData(
@@ -54,6 +66,7 @@ export default function GenericCreateAndEditPage(
         navigate,
         function (response: AxiosResponse<any, any>) {
           props.setRecord(response.data);
+          console.log(response.data);
         }
       );
     }, []);

@@ -1,9 +1,4 @@
-import {
-  AppLayout,
-  Box,
-  Container,
-  ContentLayout,
-} from "@cloudscape-design/components";
+import { AppLayout, Box, ContentLayout } from "@cloudscape-design/components";
 import Navbar from "../components/Navbar";
 
 export default function PageNotFound() {

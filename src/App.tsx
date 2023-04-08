@@ -1,11 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProjectsList from "./pages/Project/ProjectsList";
 import ViewProject from "./pages/Project/ViewProject";
-import CreateProject from "./pages/Project/CreateProject";
-import CreateCollection from "./pages/Collection/CreateCollection";
-import EditProject from "./pages/Project/EditProject";
 import ViewCollection from "./pages/Collection/ViewCollection";
-import EditCollection from "./pages/Collection/EditCollection";
 import ParametersList from "./pages/Parameter/ParametersList";
 import CreateParameter from "./pages/Parameter/CreateParameter";
 import EditParameter from "./pages/Parameter/EditParameter";
@@ -18,12 +14,13 @@ import CreateTask from "./pages/Task/CreateTask";
 import EditTask from "./pages/Task/EditTask";
 import ViewTask from "./pages/Task/ViewTask";
 import ViewPoint from "./pages/Point/ViewPoint";
-import CreatePoint from "./pages/Point/CreatePoint";
-import EditPoint from "./pages/Point/EditPoint";
 import PageNotFound from "./pages/PageNotFound";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
+import CreateEditProject from "./pages/Project/CreateEditProject";
+import CreateEditCollection from "./pages/Collection/CreateEditCollection";
+import CreateEditPoint from "./pages/Point/CreateEditPoint";
 
 function App() {
   return (
@@ -31,23 +28,35 @@ function App() {
       {/* Project */}
       <Route index element={<Navigate to="/projects" />} />
       <Route path={"/projects"} element={<ProjectsList />} />
-      <Route path={"/projects/create"} element={<CreateProject />} />
+      <Route
+        path={"/projects/create"}
+        element={<CreateEditProject edit={false} />}
+      />
       <Route path={"/projects/:id"} element={<ViewProject />} />
-      <Route path={"/projects/:id/edit"} element={<EditProject />} />
+      <Route
+        path={"/projects/:id/edit"}
+        element={<CreateEditProject edit={true} />}
+      />
       {/* Project -> Collection */}
       <Route
         path={"/projects/:projectId/createCollection"}
-        element={<CreateCollection />}
+        element={<CreateEditCollection edit={false} />}
       />
       <Route path={"/collections/:id"} element={<ViewCollection />} />
-      <Route path={"/collections/:id/edit"} element={<EditCollection />} />
+      <Route
+        path={"/collections/:id/edit"}
+        element={<CreateEditCollection edit={true} />}
+      />
       {/* Project -> Collection -> Point */}
       <Route
         path={"/collections/:collectionId/createPoint"}
-        element={<CreatePoint />}
+        element={<CreateEditPoint edit={false} />}
       />
       <Route path={"/points/:id"} element={<ViewPoint />} />
-      <Route path={"/points/:id/edit"} element={<EditPoint />} />
+      <Route
+        path={"/points/:id/edit"}
+        element={<CreateEditPoint edit={true} />}
+      />
       {/* Project -> Collection -> Task */}
       <Route
         path={"/collections/:collectionId/createTask"}
