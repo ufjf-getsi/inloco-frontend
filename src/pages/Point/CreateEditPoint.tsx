@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Measurement } from "../../types";
+import { Measurement, PointWithProjectId } from "../../types";
 
 import { AlertProps, SelectProps } from "@cloudscape-design/components";
 import {
@@ -18,7 +18,10 @@ import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
 export default function CreateEditCollection({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
-  const [point, setPoint] = useState(notLoadedRecord);
+  const [point, setPoint] = useState<PointWithProjectId>({
+    projectId: "",
+    ...notLoadedRecord,
+  });
   const [collection, setCollection] = useState(notLoadedParent);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
@@ -40,7 +43,7 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
       pushRecordServerLink =
         `/points/${id}`;
     commonCollectionId = point.collectionId ?? ``;
-    commonProjectId = point.collection?.projectId ?? ``;
+    commonProjectId = point.projectId ?? ``;
     function handleFetchResponse() {
       setInputValues({
         name: point.name,

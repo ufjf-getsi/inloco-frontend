@@ -21,7 +21,7 @@ export interface GenericDeleteModalProps extends GenericRecordProps {
 
 export default function GenericDeleteModal(props: GenericDeleteModalProps) {
   function deleteRecord() {
-    axios.delete(props.serverDeleteLink);
+    axios.delete(import.meta.env.VITE_SERVER_URL + props.serverDeleteLink);
   }
 
   const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";

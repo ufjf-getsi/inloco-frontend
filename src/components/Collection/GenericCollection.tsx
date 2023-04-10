@@ -1,5 +1,5 @@
-import { useHref, useParams } from "react-router-dom";
-import { Collection } from "../../types";
+import { NavigateFunction, useHref, useParams } from "react-router-dom";
+import { Collection, Task, TaskType } from "../../types";
 
 import {
   SpaceBetween,
@@ -10,9 +10,14 @@ import {
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
-import { localizedPageTypeName } from "../Generic/GenericFunctions";
+import {
+  fetchRecordData,
+  localizedPageTypeName,
+} from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+import { AxiosResponse } from "axios";
+import { Item } from "../Task/TableConfig";
 
 export interface Fields {
   title: string;
@@ -79,6 +84,34 @@ export const breadcrumpGroupItems = ({
   }
   return breadcrumbsItemsList;
 };
+
+export function fetchTableData({
+  navigate,
+  setTasksAsItems,
+  collectionId,
+}: {
+  navigate: NavigateFunction;
+  setTasksAsItems: Function;
+  collectionId: string;
+}) {
+  fetchRecordData(
+    `/collections/${collectionId}/tasks`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
+      const items: Item[] = [];
+      response.data.map((task: Task) => {
+        if (task.type === TaskType.commonTask) {
+          items.push({
+            id: task.id,
+            status: task.isPending ? "Pendente" : "Concluída",
+            title: task.title,
+          });
+        }
+      });
+      setTasksAsItems(items);
+    }
+  );
+}
 
 export function validateFields(inputValues: Fields): boolean {
   if (inputValues.title) {

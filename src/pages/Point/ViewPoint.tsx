@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { Point } from "../../types";
+import { PointWithProjectId } from "../../types";
 
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
@@ -15,10 +15,6 @@ import {
   visibleContent,
 } from "../../components/Measurement/TableConfig";
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
-
-interface PointWithProjectId extends Point {
-  projectId: string;
-}
 
 export default function ViewPoint() {
   const { id } = useParams();
@@ -54,7 +50,7 @@ export default function ViewPoint() {
     recordCategorySingular: "ponto",
     recordCategoryPlural: "pontos",
     recordGenderFeminine: false,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/points/${id}`,
+    serverDeleteLink: `/points/${id}`,
     afterDeleteRedirectLink: `/collections/${point.collectionId}`,
   };
 

@@ -1,11 +1,11 @@
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Collection, Task, TaskType } from "../../types";
+import { Collection } from "../../types";
 
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import {
   breadcrumpGroupItems,
+  fetchTableData,
   notLoadedRecord,
 } from "../../components/Collection/GenericCollection";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
@@ -26,11 +26,21 @@ import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGr
 
 export default function ViewCollection() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [collection, setCollection] = useState<Collection>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [planningModalVisible, setPlanningModalVisible] = useState(false);
   const [selectedPoints, setSelectedPoints] = useState([]);
+  const [tasksAsItems, setTasksAsItems] = useState<Item[]>([]);
+
+  useEffect(() => {
+    fetchTableData({
+      navigate: navigate,
+      setTasksAsItems: setTasksAsItems,
+      collectionId: id ?? ``,
+    });
+  }, []);
 
   const tableConfig: GenericTableProps = {
     allRecords: collection.points,
@@ -42,30 +52,6 @@ export default function ViewCollection() {
     visibleContent: visibleContent,
     setSelectedRecords: setSelectedPoints,
   };
-
-  const [tasksAsItems, setTasksAsItems] = useState<Item[]>([]);
-
-  useEffect(() => {
-    fetchTableData();
-  }, []);
-
-  function fetchTableData() {
-    axios(`${import.meta.env.VITE_SERVER_URL}/collections/${id}/tasks`).then(
-      (response) => {
-        const items: Item[] = [];
-        response.data.map((task: Task) => {
-          if (task.type === TaskType.commonTask) {
-            items.push({
-              id: task.id,
-              status: task.isPending ? "Pendente" : "Concluída",
-              title: task.title,
-            });
-          }
-        });
-        setTasksAsItems(items);
-      }
-    );
-  }
 
   const tableConfigTasks: GenericTableProps = {
     allRecords: tasksAsItems,
@@ -84,7 +70,7 @@ export default function ViewCollection() {
     recordCategorySingular: "coleta",
     recordCategoryPlural: "coletas",
     recordGenderFeminine: true,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/collections/${id}`,
+    serverDeleteLink: `/collections/${id}`,
     afterDeleteRedirectLink: `/projects/${collection.projectId}`,
     alertText: `Proceder com esta ação deletará a coleta com todo o seu conteúdo,
     incluindo todos os pontos e registros associados a si.`,
