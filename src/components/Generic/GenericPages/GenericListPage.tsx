@@ -23,9 +23,11 @@ export default function GenericListPage(
   props: PropsWithChildren<GenericListPageProps>
 ) {
   function fetchTableData() {
-    axios(props.fetchRecordsLink).then((response) => {
-      props.setRecords(response.data);
-    });
+    axios(import.meta.env.VITE_SERVER_URL + props.fetchRecordsLink).then(
+      (response) => {
+        props.setRecords(response.data);
+      }
+    );
   }
   useEffect(() => {
     fetchTableData();

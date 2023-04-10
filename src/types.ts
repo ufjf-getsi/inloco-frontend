@@ -28,6 +28,9 @@ export interface Point {
   actualCoordinates: string;
   measurements: Measurement[];
 }
+export type PointWithProjectId = Point & {
+  projectId: string;
+};
 
 // Medição (leitura)
 export interface Measurement {

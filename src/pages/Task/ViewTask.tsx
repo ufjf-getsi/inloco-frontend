@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { Task, TaskType } from "../../types";
+import { Task } from "../../types";
 
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
@@ -26,7 +26,7 @@ export default function ViewTask() {
     recordCategorySingular: "tarefa",
     recordCategoryPlural: "tarefas",
     recordGenderFeminine: true,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/tasks/${id}`,
+    serverDeleteLink: `/tasks/${id}`,
     afterDeleteRedirectLink: `/collections/${task.collectionId}`,
   };
 

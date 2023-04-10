@@ -21,7 +21,7 @@ export default function EquipmentList() {
       navbarActiveLink={`/equipment`}
       allRecords={equipmentArray}
       setRecords={setEquipmentArray}
-      fetchRecordsLink={`${import.meta.env.VITE_SERVER_URL}/equipment`}
+      fetchRecordsLink={`/equipment`}
       columnDefinitions={columnDefinitions}
       recordCategorySingular={`equipamento`}
       recordCategoryPlural={`equipamentos`}

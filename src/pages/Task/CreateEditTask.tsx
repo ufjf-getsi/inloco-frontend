@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { Task, TaskType } from "../../types";
@@ -23,7 +22,10 @@ import {
 export default function CreateEditTask({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
-  const [task, setTask] = useState<Task>(notLoadedRecord);
+  const [task, setTask] = useState<Task>({
+    projectId: "",
+    ...notLoadedRecord,
+  });
   const [collection, setCollection] = useState(notLoadedParent);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
@@ -43,7 +45,7 @@ export default function CreateEditTask({ edit }: { edit: boolean }) {
       pushRecordServerLink =
         `/tasks/${id}`;
     commonCollectionId = task.collectionId ?? ``;
-    commonProjectId = task.collection?.projectId ?? ``;
+    commonProjectId = task.projectId ?? ``;
     function handleFetchResponse() {
       if (task.type === TaskType.commonTask) {
         setInputValues({

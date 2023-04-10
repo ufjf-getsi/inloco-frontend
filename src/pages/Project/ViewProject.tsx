@@ -39,7 +39,7 @@ export default function ViewProject() {
     recordCategorySingular: "projeto",
     recordCategoryPlural: "projetos",
     recordGenderFeminine: false,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/projects/${id}`,
+    serverDeleteLink: `/projects/${id}`,
     afterDeleteRedirectLink: `/projects`,
   };
 

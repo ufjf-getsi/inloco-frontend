@@ -23,7 +23,7 @@ export default function ViewEquipment() {
     recordCategoryPlural: "equipamentos",
     recordName: equipment.name,
     recordGenderFeminine: false,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/equipment/${id}`,
+    serverDeleteLink: `/equipment/${id}`,
     afterDeleteRedirectLink: `/equipment`,
   };
 
