@@ -1,30 +1,33 @@
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Measurement } from "../../types";
+import { Task, TaskType } from "../../types";
 
-import { AlertProps, SelectProps } from "@cloudscape-design/components";
+import { AlertProps } from "@cloudscape-design/components";
 import {
   emptyFields,
-  fetchAllParameterOptionsList,
   Fields,
+  formatStatus,
+  formatTitle,
   getSendableData,
   notLoadedRecord,
   RecordForm,
   validateFields,
-} from "../../components/Point/GenericPoint";
+} from "../../components/Task/GenericTask";
 import { notLoadedRecord as notLoadedParent } from "../../components/Collection/GenericCollection";
-import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
+import {
+  handleErrorRedirect,
+  handleFormSubmit,
+} from "../../components/Generic/GenericFunctions";
 
-export default function CreateEditCollection({ edit }: { edit: boolean }) {
+export default function CreateEditTask({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
-  const [point, setPoint] = useState(notLoadedRecord);
+  const [task, setTask] = useState<Task>(notLoadedRecord);
   const [collection, setCollection] = useState(notLoadedParent);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
-  const [allParameterOptionsList, setAllParameterOptionsList] =
-    useState<SelectProps.Options>([]);
 
   let commonCollectionId = ``;
   let commonProjectId = ``;
@@ -38,29 +41,34 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
     previousPageWebLink =
       fetchRecordServerLink =
       pushRecordServerLink =
-        `/points/${id}`;
-    commonCollectionId = point.collectionId ?? ``;
-    commonProjectId = point.collection?.projectId ?? ``;
+        `/tasks/${id}`;
+    commonCollectionId = task.collectionId ?? ``;
+    commonProjectId = task.collection?.projectId ?? ``;
     function handleFetchResponse() {
-      setInputValues({
-        name: point.name,
-        plannedCoordinates: point.plannedCoordinates ?? ``,
-        parameters: point.measurements.map((measurement: Measurement) => {
-          return {
-            value: measurement.parameter.id,
-            label: measurement.parameter.name,
-          };
-        }),
-      });
+      if (task.type === TaskType.commonTask) {
+        setInputValues({
+          title: formatTitle(task),
+          status: {
+            label: formatStatus(task.isPending ? "pending" : "completed"),
+            value: task.isPending ? "pending" : "completed",
+          },
+        });
+      } else {
+        handleErrorRedirect(
+          navigate,
+          new Error("Task is not of editable type"),
+          `/collections/${commonCollectionId}`
+        );
+      }
     }
     useEffect(() => {
       handleFetchResponse();
-    }, [point]);
+    }, [task]);
   } else {
     const { collectionId } = useParams();
     previousPageWebLink =
       fetchRecordServerLink = `/collections/${collectionId}`;
-    pushRecordServerLink = `/points`;
+    pushRecordServerLink = `/tasks`;
     commonCollectionId = collectionId ?? ``;
     commonProjectId = collection?.projectId ?? ``;
     sendableDataFunction = () =>
@@ -69,13 +77,6 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
         ...(collectionId ? { parentId: collectionId } : {}),
       });
   }
-
-  useEffect(() => {
-    fetchAllParameterOptionsList({
-      navigate: navigate,
-      setAllParameterOptionsList: setAllParameterOptionsList,
-    });
-  }, []);
 
   async function handleSubmit(event: FormEvent) {
     handleFormSubmit({
@@ -99,7 +100,6 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
     inputValues: inputValues,
     setInputValues: setInputValues,
     cancelRedirectLink: previousPageWebLink,
-    allParameterOptionsList: allParameterOptionsList,
     collectionId: commonCollectionId,
     projectId: commonProjectId,
     hasParent: true,
@@ -107,7 +107,7 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
   };
   if (edit) {
     commonAttributes.edit = true;
-    commonAttributes.setRecord = setPoint;
+    commonAttributes.setRecord = setTask;
   } else {
     commonAttributes.edit = false;
     commonAttributes.setRecord = setCollection;

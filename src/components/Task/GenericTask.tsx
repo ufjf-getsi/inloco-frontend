@@ -130,6 +130,22 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
+export function getSendableData({
+  parentId,
+  inputValues,
+}: {
+  parentId?: string;
+  inputValues: Fields;
+}): Task {
+  return {
+    type: TaskType.commonTask,
+    id: "",
+    collectionId: parentId ?? "",
+    title: inputValues.title,
+    isPending: inputValues.status.value === "completed" ? false : true,
+  };
+}
+
 export function RecordForm(props: ImplementedRecordFormProps) {
   const commonAttributes: any = {
     recordCategorySingular: `tarefa`,
@@ -158,6 +174,11 @@ export function RecordForm(props: ImplementedRecordFormProps) {
     commonAttributes.setRecord = props.setRecord;
   } else {
     commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
   }
   return (
     <GenericCreateAndEditPage {...commonAttributes}>

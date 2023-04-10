@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
 import { Measurement, Parameter, Point } from "../../types";
 
@@ -13,7 +13,6 @@ import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import {
-  cancelLoadAndRedirectBackwards,
   fetchRecordData,
   localizedPageTypeName,
 } from "../Generic/GenericFunctions";
@@ -33,7 +32,7 @@ interface FormFieldsProps {
   allParameterOptionsList: SelectProps.Options;
 }
 
-type ImplementedRecordFormProps = GenericRecordFormProps &
+export type ImplementedRecordFormProps = GenericRecordFormProps &
   FormFieldsProps & {
     cancelRedirectLink: string;
     projectId?: string;
@@ -193,7 +192,13 @@ export function RecordForm(props: ImplementedRecordFormProps) {
     commonAttributes.setRecord = props.setRecord;
   } else {
     commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
   }
+
   return (
     <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields

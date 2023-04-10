@@ -13,11 +13,7 @@ import {
 } from "../../components/Project/GenericProject";
 import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
 
-interface CreateEditProjectProps {
-  edit: boolean;
-}
-
-export default function EditProject({ edit }: CreateEditProjectProps) {
+export default function EditProject({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -26,11 +22,15 @@ export default function EditProject({ edit }: CreateEditProjectProps) {
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
-  let commonWebLink = `/projects`;
-  let commonServerLink = `/projects`;
+  let previousPageWebLink = `/projects`;
+  let pushRecordServerLink = `/projects`;
+  let fetchRecordServerLink = ``;
 
   if (edit) {
-    commonWebLink = commonServerLink = `/projects/${id}`;
+    previousPageWebLink =
+      fetchRecordServerLink =
+      pushRecordServerLink =
+        `/projects/${id}`;
     function handleFetchResponse() {
       setInputValues({
         title: project.title,
@@ -47,12 +47,12 @@ export default function EditProject({ edit }: CreateEditProjectProps) {
       event: event,
       edit: edit,
       validFields: validateFields(inputValues),
-      relativeServerUrl: commonServerLink,
+      relativeServerUrl: pushRecordServerLink,
       sendableData: getSendableData(inputValues),
       setAlertType: setAlertType,
       setAlertVisible: setAlertVisible,
       navigate: navigate,
-      successRedirectLink: commonWebLink,
+      successRedirectLink: previousPageWebLink,
     });
   }
 
@@ -63,11 +63,12 @@ export default function EditProject({ edit }: CreateEditProjectProps) {
     setAlertVisible: setAlertVisible,
     inputValues: inputValues,
     setInputValues: setInputValues,
-    cancelRedirectLink: commonWebLink,
+    cancelRedirectLink: previousPageWebLink,
+    hasParent: false,
   };
   if (edit) {
     commonAttributes.edit = true;
-    commonAttributes.fetchRecordLink = commonServerLink;
+    commonAttributes.fetchRecordLink = fetchRecordServerLink;
     commonAttributes.setRecord = setProject;
   } else {
     commonAttributes.edit = false;

@@ -106,6 +106,11 @@ export function RecordForm(props: ImplementedRecordFormProps) {
     commonAttributes.setRecord = props.setRecord;
   } else {
     commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
   }
   return (
     <GenericCreateAndEditPage {...commonAttributes}>
@@ -123,6 +128,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Nome">
         <Input
           value={inputValues.title}
+          placeholder={`Nome do projeto`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
@@ -134,6 +140,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Descrição">
         <Input
           value={inputValues.description}
+          placeholder={`Descrição do projeto`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,

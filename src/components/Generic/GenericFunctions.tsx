@@ -23,9 +23,19 @@ export function cancelLoadAndRedirectBackwards({
   );
 }
 
-export function handleErrorRedirect(navigate: NavigateFunction, error: any) {
+export function handleErrorRedirect(
+  navigate: NavigateFunction,
+  error: any,
+  redirectLink?: string
+) {
   console.error(error);
-  navigate(import.meta.env.BASE_URL.slice(0, -1) + "/404", { replace: true });
+  navigate(
+    import.meta.env.BASE_URL.slice(0, -1) +
+      (redirectLink ? redirectLink : "/404"),
+    {
+      replace: true,
+    }
+  );
 }
 
 export function searchLabelByValue(
