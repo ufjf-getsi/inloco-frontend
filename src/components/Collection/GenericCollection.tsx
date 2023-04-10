@@ -1,19 +1,23 @@
-import { Collection } from "../../types";
+import { NavigateFunction, useHref, useParams } from "react-router-dom";
+import { Collection, Task, TaskType } from "../../types";
 
 import {
   SpaceBetween,
   FormField,
   Input,
-  BreadcrumbGroup,
   DatePicker,
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
-import { localizedPageTypeName } from "../Generic/GenericFunctions";
+import {
+  fetchRecordData,
+  localizedPageTypeName,
+} from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+import { AxiosResponse } from "axios";
+import { Item } from "../Task/TableConfig";
 
 export interface Fields {
   title: string;
@@ -26,13 +30,11 @@ interface FormFieldsProps {
   setInputValues: Function;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-    FormFieldsProps {
-  cancelRedirectLink: string;
-  projectId?: string;
-  collectionId?: string;
-}
+type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+    projectId?: string;
+  };
 
 export const emptyFields: Fields = {
   title: "",
@@ -52,7 +54,6 @@ export const notLoadedRecord: Collection = {
 
 interface BreadcrumbGroupItemsProps {
   projectId?: string;
-  collectionId?: string;
   pageType: PageType;
 }
 export const breadcrumpGroupItems = ({
@@ -61,19 +62,19 @@ export const breadcrumpGroupItems = ({
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
   const breadcrumbsItemsList = [
-    { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
+    { text: "Projetos", href: useHref(`/projects`) },
     {
       text: "Projeto",
-      href: `${import.meta.env.VITE_BASE_URL_HASH}projects${
-        projectId && projectId !== "" ? "/" + projectId : ""
-      }`,
+      href: useHref(
+        `/projects${projectId && projectId !== "" ? "/" + projectId : ""}`
+      ),
     },
   ];
   if (pageType !== "list") {
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Coleta`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}collections/${id}`,
+        href: useHref(`/collections/${id}`),
       });
     }
     breadcrumbsItemsList.push({
@@ -84,37 +85,93 @@ export const breadcrumpGroupItems = ({
   return breadcrumbsItemsList;
 };
 
+export function fetchTableData({
+  navigate,
+  setTasksAsItems,
+  collectionId,
+}: {
+  navigate: NavigateFunction;
+  setTasksAsItems: Function;
+  collectionId: string;
+}) {
+  fetchRecordData(
+    `/collections/${collectionId}/tasks`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
+      const items: Item[] = [];
+      response.data.map((task: Task) => {
+        if (task.type === TaskType.commonTask) {
+          items.push({
+            id: task.id,
+            status: task.isPending ? "Pendente" : "Concluída",
+            title: task.title,
+          });
+        }
+      });
+      setTasksAsItems(items);
+    }
+  );
+}
+
 export function validateFields(inputValues: Fields): boolean {
   if (inputValues.title) {
     return true;
   } else return false;
 }
 
+export function getSendableData({
+  parentId,
+  inputValues,
+}: {
+  parentId?: string;
+  inputValues: Fields;
+}): Collection {
+  return {
+    id: "",
+    projectId: parentId ?? "",
+    title: inputValues.title,
+    startDate: inputValues.startDate,
+    endDate: inputValues.endDate,
+    points: [],
+    tasks: [],
+  };
+}
+
 export function RecordForm(props: ImplementedRecordFormProps) {
+  const commonAttributes: any = {
+    recordCategorySingular: `coleta`,
+    recordCategoryPlural: `coletas`,
+    recordGenderFeminine: true,
+    description: `Uma coleta é uma expedição realizada a fim de obter dados de determinados pontos.`,
+    navbarActiveLink: `/projects`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          projectId: props.projectId,
+          pageType: props.edit ? "edit" : "create",
+        })}
+      />
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+  };
+  if (props.edit) {
+    commonAttributes.edit = true;
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
+  }
   return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`coleta`}
-      recordCategoryPlural={`coletas`}
-      recordGenderFeminine={true}
-      description={`Uma coleta é uma expedição realizada a fim de obter dados de determinados pontos.`}
-      navbarActiveLink={`/projects`}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={breadcrumpGroupItems({
-            projectId: props.projectId,
-            pageType: props.edit ? "edit" : "create",
-          })}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
+    <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
@@ -129,6 +186,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Nome">
         <Input
           value={inputValues.title}
+          placeholder={`Nome da coleta`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,

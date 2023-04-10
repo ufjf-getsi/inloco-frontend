@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
+import { useHref, useNavigate } from "react-router-dom";
 import { PropsWithChildren, ReactNode, useEffect } from "react";
 
 import {
@@ -15,7 +15,7 @@ import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
 import GenericDeleteModal, {
   GenericDeleteModalProps,
 } from "../GenericDeleteModal";
-import { cancelLoadAndRedirectBackwards } from "../GenericFunctions";
+import { fetchRecordData } from "../GenericFunctions";
 
 interface GenericViewPageProps {
   title: string;
@@ -35,42 +35,19 @@ export default function GenericViewPage(
   props: PropsWithChildren<GenericViewPageProps>
 ) {
   const navigate = useNavigate();
-
-  function fetchRecordData() {
-    axios(props.fetchRecordLink)
-      .then((response) => {
-        if (response.data) {
-          props.setRecord(response.data);
-        } else {
-          cancelLoadAndRedirectBackwards({
-            navigate: navigate,
-            error: "404: Not Found",
-            previousPageLink: props.previousPageLink,
-          });
-        }
-      })
-      .catch((error) =>
-        cancelLoadAndRedirectBackwards({
-          navigate: navigate,
-          error: error,
-          previousPageLink: props.previousPageLink,
-        })
-      );
-  }
   useEffect(() => {
-    fetchRecordData();
+    fetchRecordData(
+      props.fetchRecordLink,
+      navigate,
+      function (response: AxiosResponse<any, any>) {
+        props.setRecord(response.data);
+      }
+    );
   }, []);
 
   return (
     <AppLayout
-      navigation={
-        <Navbar
-          activeLink={
-            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-            props.navbarActiveLink
-          }
-        />
-      }
+      navigation={<Navbar activeLink={props.navbarActiveLink} />}
       toolsHide
       contentType="form"
       content={
@@ -82,13 +59,7 @@ export default function GenericViewPage(
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
                   {props.otherHeaderActions}
-                  <Button
-                    iconName="edit"
-                    href={
-                      import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-                      props.editRecordLink
-                    }
-                  >
+                  <Button iconName="edit" href={useHref(props.editRecordLink)}>
                     Editar
                   </Button>
                   <Button

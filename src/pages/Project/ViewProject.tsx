@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Project } from "../../types";
 
-import { BreadcrumbGroup } from "@cloudscape-design/components";
 import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
@@ -40,8 +39,8 @@ export default function ViewProject() {
     recordCategorySingular: "projeto",
     recordCategoryPlural: "projetos",
     recordGenderFeminine: false,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/projects/${id}`,
-    afterDeleteRedirectLink: `${import.meta.env.VITE_BASE_URL_HASH}projects`,
+    serverDeleteLink: `/projects/${id}`,
+    afterDeleteRedirectLink: `/projects`,
   };
 
   return (
@@ -50,14 +49,14 @@ export default function ViewProject() {
       description={project.description}
       navbarActiveLink={`/projects`}
       setRecord={setProject}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/projects/${id}`}
+      fetchRecordLink={`/projects/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}
         />
       }
       editRecordLink={`/projects/${project.id}/edit`}
-      previousPageLink={`${import.meta.env.VITE_BASE_URL_HASH}projects`}
+      previousPageLink={`/projects`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
     />

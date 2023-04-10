@@ -1,4 +1,5 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { useHref, useNavigate } from "react-router-dom";
+import { PropsWithChildren, ReactNode, useEffect } from "react";
 
 import {
   AppLayout,
@@ -12,42 +13,68 @@ import {
 } from "@cloudscape-design/components";
 import Navbar from "../../Navbar";
 import { GenericRecordProps } from "../GenericInterfaces";
-import GenericReturnMessageAlert, {
-  GenericReturnMessageAlertProps,
-} from "../GenericReturnMessageAlert";
+import GenericReturnMessageAlert from "../GenericReturnMessageAlert";
+import { fetchRecordData } from "../GenericFunctions";
+import { AxiosResponse } from "axios";
 
-export interface GenericRecordFormProps {
-  edit: boolean;
+interface GenericBaseRecordFormProps {
   handleSubmit: Function;
   alertVisible: boolean;
   setAlertVisible: Function;
   alertType: AlertProps.Type;
 }
-
-interface GenericCreateAndEditPageProps
-  extends GenericRecordProps,
-    GenericRecordFormProps {
-  description: string;
-  navbarActiveLink: string;
-  breadcrumbs: ReactNode;
-  cancelRedirectLink: string;
+interface GenericCreateRecordWithoutParentFormProps
+  extends GenericBaseRecordFormProps {
+  edit: false;
+  hasParent: false;
 }
+interface GenericCreateRecordWithParentFormProps
+  extends GenericBaseRecordFormProps {
+  edit: false;
+  hasParent: true;
+  fetchRecordLink: string;
+  setRecord: Function;
+}
+type GenericCreateRecordFormProps =
+  | GenericCreateRecordWithoutParentFormProps
+  | GenericCreateRecordWithParentFormProps;
+type GenericEditRecordFormProps = GenericBaseRecordFormProps & {
+  edit: true;
+  fetchRecordLink: string;
+  setRecord: Function;
+};
+export type GenericRecordFormProps =
+  | GenericCreateRecordFormProps
+  | GenericEditRecordFormProps;
+
+type GenericCreateAndEditPageProps = GenericRecordProps &
+  GenericRecordFormProps & {
+    description: string;
+    navbarActiveLink: string;
+    breadcrumbs: ReactNode;
+    cancelRedirectLink: string;
+  };
 
 export default function GenericCreateAndEditPage(
   props: PropsWithChildren<GenericCreateAndEditPageProps>
 ) {
-  const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";
+  if (props.edit || props.hasParent) {
+    const navigate = useNavigate();
+    useEffect(() => {
+      fetchRecordData(
+        props.fetchRecordLink,
+        navigate,
+        function (response: AxiosResponse<any, any>) {
+          props.setRecord(response.data);
+        }
+      );
+    }, []);
+  }
 
+  const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";
   return (
     <AppLayout
-      navigation={
-        <Navbar
-          activeLink={
-            import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-            props.navbarActiveLink
-          }
-        />
-      }
+      navigation={<Navbar activeLink={props.navbarActiveLink} />}
       toolsHide
       contentType="form"
       content={
@@ -66,10 +93,7 @@ export default function GenericCreateAndEditPage(
                     <Button
                       formAction="none"
                       variant="link"
-                      href={
-                        import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-                        props.cancelRedirectLink
-                      }
+                      href={useHref(props.cancelRedirectLink)}
                     >
                       Cancelar
                     </Button>

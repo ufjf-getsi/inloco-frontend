@@ -1,6 +1,6 @@
-import axios from "axios";
-import { NavigateFunction, useParams } from "react-router-dom";
-import { Parameter, Point } from "../../types";
+import { AxiosResponse } from "axios";
+import { NavigateFunction, useHref, useParams } from "react-router-dom";
+import { Measurement, Parameter, Point } from "../../types";
 
 import {
   SpaceBetween,
@@ -13,11 +13,12 @@ import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import {
-  cancelLoadAndRedirectBackwards,
+  fetchRecordData,
   localizedPageTypeName,
 } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
 export interface Fields {
   name: string;
@@ -31,13 +32,12 @@ interface FormFieldsProps {
   allParameterOptionsList: SelectProps.Options;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-    FormFieldsProps {
-  cancelRedirectLink: string;
-  projectId?: string;
-  collectionId?: string;
-}
+export type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+    projectId?: string;
+    collectionId?: string;
+  };
 
 export const emptyFields: Fields = {
   name: "",
@@ -65,16 +65,18 @@ export const breadcrumpGroupItems = ({
   pageType,
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
-  const projectBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}projects${
-    projectId && projectId !== "" ? "/" + projectId : ""
-  }`;
-  const collectionBreadcrumbLink = `${import.meta.env.VITE_BASE_URL_HASH}${
-    collectionId && collectionId !== ""
-      ? `collections/${collectionId}`
-      : `projects`
-  }`;
+  const projectBreadcrumbLink = useHref(
+    `/projects${projectId && projectId !== "" ? "/" + projectId : ""}`
+  );
+  const collectionBreadcrumbLink = useHref(
+    `/${
+      collectionId && collectionId !== ""
+        ? `collections/${collectionId}`
+        : `projects`
+    }`
+  );
   const breadcrumbsItemsList = [
-    { text: "Projetos", href: `${import.meta.env.VITE_BASE_URL_HASH}projects` },
+    { text: "Projetos", href: useHref(`/projects`) },
     {
       text: "Projeto",
       href: projectBreadcrumbLink,
@@ -88,7 +90,7 @@ export const breadcrumpGroupItems = ({
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Ponto`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}points/${id}`,
+        href: useHref(`/points/${id}`),
       });
     }
     breadcrumbsItemsList.push({
@@ -101,34 +103,23 @@ export const breadcrumpGroupItems = ({
 
 export function fetchAllParameterOptionsList({
   navigate,
-  collectionId,
   setAllParameterOptionsList,
 }: {
   navigate: NavigateFunction;
-  collectionId: string;
   setAllParameterOptionsList: Function;
 }) {
-  axios
-    .get<Parameter[]>(`${import.meta.env.VITE_SERVER_URL}/parameters`)
-    .then((response) => {
+  fetchRecordData(
+    `/parameters`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
       setAllParameterOptionsList(
-        response.data.map((item) => ({
+        response.data.map((item: Parameter) => ({
           value: item.id,
           label: `${item.name} (${item.unit})`,
         }))
       );
-    })
-    .catch((error) =>
-      cancelLoadAndRedirectBackwards({
-        navigate: navigate,
-        error: error,
-        previousPageLink: `${
-          collectionId
-            ? `/collections/${collectionId}`
-            : `${import.meta.env.VITE_BASE_URL_HASH}projects`
-        }`,
-      })
-    );
+    }
+  );
 }
 
 export function validateFields(inputValues: Fields): boolean {
@@ -141,30 +132,75 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
-export function RecordForm(props: ImplementedRecordFormProps) {
-  return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`ponto`}
-      recordCategoryPlural={`pontos`}
-      recordGenderFeminine={false}
-      description={`Um ponto é determinada localização de onde se deve aferir parâmetros.`}
-      navbarActiveLink={`/projects`}
-      breadcrumbs={
-        <GenericBreadcrumbGroup
-          items={breadcrumpGroupItems({
-            projectId: props.projectId,
-            collectionId: props.collectionId,
-            pageType: props.edit ? "edit" : "create",
-          })}
-        />
+export function getSendableData({
+  parentId,
+  inputValues,
+}: {
+  parentId?: string;
+  inputValues: Fields;
+}): Point {
+  return {
+    id: "",
+    collectionId: parentId ?? "",
+    name: inputValues.name,
+    plannedCoordinates: inputValues.plannedCoordinates,
+    actualCoordinates: "",
+    measurements: inputValues.parameters.map(
+      (selectedOption: OptionDefinition): Measurement => {
+        return {
+          id: "",
+          isPending: true,
+          result: "",
+          parameter: {
+            id: selectedOption.value ?? "",
+            name: "",
+            unit: "",
+            dataType: "",
+            equipmentList: [],
+          },
+        };
       }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
+    ),
+  };
+}
+
+export function RecordForm(props: ImplementedRecordFormProps) {
+  const commonAttributes: any = {
+    recordCategorySingular: `ponto`,
+    recordCategoryPlural: `pontos`,
+    recordGenderFeminine: false,
+    description: `Um ponto é determinada localização de onde se deve aferir parâmetros.`,
+    navbarActiveLink: `/projects`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          projectId: props.projectId,
+          collectionId: props.collectionId,
+          pageType: props.edit ? "edit" : "create",
+        })}
+      />
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+  };
+  if (props.edit) {
+    commonAttributes.edit = true;
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
+  }
+
+  return (
+    <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
@@ -184,6 +220,7 @@ function FormFields({
       <FormField label="Nome">
         <Input
           value={inputValues.name}
+          placeholder={`Nome do ponto`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
@@ -195,6 +232,7 @@ function FormFields({
       <FormField label="Coordenadas">
         <Input
           value={inputValues.plannedCoordinates}
+          placeholder={`Coordenadas do ponto`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,

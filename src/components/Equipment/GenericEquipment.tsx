@@ -1,21 +1,16 @@
+import { useHref, useParams } from "react-router-dom";
 import { Equipment } from "../../types";
 
-import {
-  SpaceBetween,
-  FormField,
-  Input,
-  BreadcrumbGroup,
-} from "@cloudscape-design/components";
+import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
-import { useParams } from "react-router-dom";
+import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;
-  // selectedOptions: SelectProps.Options;
 }
 
 interface FormFieldsProps {
@@ -23,11 +18,10 @@ interface FormFieldsProps {
   setInputValues: Function;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-    FormFieldsProps {
-  cancelRedirectLink: string;
-}
+type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+  };
 
 export const emptyFields: Fields = {
   name: "",
@@ -48,14 +42,14 @@ export const breadcrumpGroupItems = ({
   const breadcrumbsItemsList = [
     {
       text: "Equipamentos",
-      href: `${import.meta.env.VITE_BASE_URL_HASH}equipment`,
+      href: useHref(`/equipment`),
     },
   ];
   if (pageType !== "list") {
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Equipamento`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}equipment/${id}`,
+        href: useHref(`/equipment/${id}`),
       });
     }
     breadcrumbsItemsList.push({
@@ -72,30 +66,49 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
+export function getSendableData(inputValues: Fields): Equipment {
+  return {
+    id: "",
+    name: inputValues.name,
+  };
+}
+
 export function RecordForm(props: ImplementedRecordFormProps) {
+  const commonAttributes: any = {
+    recordCategorySingular: `equipamento`,
+    recordCategoryPlural: `equipamentos`,
+    recordGenderFeminine: false,
+    description: `Equipamentos disponíveis para as aferições no campo.`,
+    navbarActiveLink: `/equipment`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          pageType: props.edit ? "edit" : "create",
+        })}
+        expandAriaLabel="Mostrar caminho"
+        ariaLabel="Breadcrumbs"
+      />
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+  };
+  if (props.edit) {
+    commonAttributes.edit = true;
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
+  }
   return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`equipamento`}
-      recordCategoryPlural={`equipamentos`}
-      recordGenderFeminine={false}
-      description={`Equipamentos disponíveis para as aferições no campo.`}
-      navbarActiveLink={`/equipment`}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={breadcrumpGroupItems({
-            pageType: props.edit ? "edit" : "create",
-          })}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
+    <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
@@ -110,6 +123,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Equipamento">
         <Input
           value={inputValues.name}
+          placeholder={`Nome do equipamento`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
@@ -118,26 +132,6 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
           }
         />
       </FormField>
-      {/* <FormField label="Parâmetro(s) medido(s)">
-            <Multiselect
-              selectedOptions={selectedOptions}
-              onChange={({ detail }) =>
-                setSelectedOptions(detail.selectedOptions)
-              }
-              deselectAriaLabel={(e) => `Remove ${e.label}`}
-              options={parameters}
-              loadingText="Carregando parâmetros"
-              placeholder="Selecione os parâmetros"
-              selectedAriaLabel="Selecionado"
-              statusType={
-                parameters
-                  ? parameters.length > 0
-                    ? "finished"
-                    : "loading"
-                  : "error"
-              }
-            />
-          </FormField> */}
     </SpaceBetween>
   );
 }

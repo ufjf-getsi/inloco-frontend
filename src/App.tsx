@@ -1,33 +1,27 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProjectsList from "./pages/Project/ProjectsList";
 import ViewProject from "./pages/Project/ViewProject";
-import CreateProject from "./pages/Project/CreateProject";
-import CreateCollection from "./pages/Collection/CreateCollection";
-import EditProject from "./pages/Project/EditProject";
 import ViewCollection from "./pages/Collection/ViewCollection";
-import EditCollection from "./pages/Collection/EditCollection";
 import ParametersList from "./pages/Parameter/ParametersList";
-import CreateParameter from "./pages/Parameter/CreateParameter";
-import EditParameter from "./pages/Parameter/EditParameter";
 import ViewParameter from "./pages/Parameter/ViewParameter";
 import EquipmentList from "./pages/Equipment/EquipmentList";
-import CreateEquipment from "./pages/Equipment/CreateEquipment";
-import EditEquipment from "./pages/Equipment/EditEquipment";
 import ViewEquipment from "./pages/Equipment/ViewEquipment";
-import CreateTask from "./pages/Task/CreateTask";
-import EditTask from "./pages/Task/EditTask";
 import ViewTask from "./pages/Task/ViewTask";
 import ViewPoint from "./pages/Point/ViewPoint";
-import CreatePoint from "./pages/Point/CreatePoint";
-import EditPoint from "./pages/Point/EditPoint";
 import PageNotFound from "./pages/PageNotFound";
-
-import "@cloudscape-design/global-styles/index.css";
-import "./styles/main.css";
+import CreateEditProject from "./pages/Project/CreateEditProject";
+import CreateEditCollection from "./pages/Collection/CreateEditCollection";
+import CreateEditPoint from "./pages/Point/CreateEditPoint";
+import CreateEditTask from "./pages/Task/CreateEditTask";
+import CreateEditParameter from "./pages/Parameter/CreateEditParameter";
+import CreateEditEquipment from "./pages/Equipment/CreateEditEquipment";
 import SuppliesList from "./pages/Supply/SuppliesList";
 import CreateSupply from "./pages/Supply/CreateSupply";
 import ViewSupply from "./pages/Supply/ViewSupply";
 import EditSupply from "./pages/Supply/EditSupply";
+
+import "@cloudscape-design/global-styles/index.css";
+import "./styles/main.css";
 
 function App() {
   return (
@@ -35,40 +29,67 @@ function App() {
       {/* Project */}
       <Route index element={<Navigate to="/projects" />} />
       <Route path={"/projects"} element={<ProjectsList />} />
-      <Route path={"/projects/create"} element={<CreateProject />} />
+      <Route
+        path={"/projects/create"}
+        element={<CreateEditProject edit={false} />}
+      />
       <Route path={"/projects/:id"} element={<ViewProject />} />
-      <Route path={"/projects/:id/edit"} element={<EditProject />} />
+      <Route
+        path={"/projects/:id/edit"}
+        element={<CreateEditProject edit={true} />}
+      />
       {/* Project -> Collection */}
       <Route
         path={"/projects/:projectId/createCollection"}
-        element={<CreateCollection />}
+        element={<CreateEditCollection edit={false} />}
       />
       <Route path={"/collections/:id"} element={<ViewCollection />} />
-      <Route path={"/collections/:id/edit"} element={<EditCollection />} />
+      <Route
+        path={"/collections/:id/edit"}
+        element={<CreateEditCollection edit={true} />}
+      />
       {/* Project -> Collection -> Point */}
       <Route
         path={"/collections/:collectionId/createPoint"}
-        element={<CreatePoint />}
+        element={<CreateEditPoint edit={false} />}
       />
       <Route path={"/points/:id"} element={<ViewPoint />} />
-      <Route path={"/points/:id/edit"} element={<EditPoint />} />
+      <Route
+        path={"/points/:id/edit"}
+        element={<CreateEditPoint edit={true} />}
+      />
       {/* Project -> Collection -> Task */}
       <Route
         path={"/collections/:collectionId/createTask"}
-        element={<CreateTask />}
+        element={<CreateEditTask edit={false} />}
       />
       <Route path={"/tasks/:id"} element={<ViewTask />} />
-      <Route path={"/tasks/:id/edit"} element={<EditTask />} />
+      <Route
+        path={"/tasks/:id/edit"}
+        element={<CreateEditTask edit={true} />}
+      />
       {/* Parameter */}
       <Route path={"/parameters"} element={<ParametersList />} />
-      <Route path={"/parameters/create"} element={<CreateParameter />} />
+      <Route
+        path={"/parameters/create"}
+        element={<CreateEditParameter edit={false} />}
+      />
       <Route path={"/parameters/:id"} element={<ViewParameter />} />
-      <Route path={"/parameters/:id/edit"} element={<EditParameter />} />
+      <Route
+        path={"/parameters/:id/edit"}
+        element={<CreateEditParameter edit={true} />}
+      />
       {/* Equipment */}
       <Route path={"/equipment"} element={<EquipmentList />} />
-      <Route path={"/equipment/create"} element={<CreateEquipment />} />
+      <Route
+        path={"/equipment/create"}
+        element={<CreateEditEquipment edit={false} />}
+      />
       <Route path={"/equipment/:id"} element={<ViewEquipment />} />
-      <Route path={"/equipment/:id/edit"} element={<EditEquipment />} />
+      <Route
+        path={"/equipment/:id/edit"}
+        element={<CreateEditEquipment edit={true} />}
+      />
       {/* Supply */}
       <Route path={"/supplies"} element={<SuppliesList />} />
       <Route path={"/supplies/create"} element={<CreateSupply />} />
