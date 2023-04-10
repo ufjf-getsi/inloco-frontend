@@ -13,16 +13,23 @@ export interface GenericReturnMessageAlertProps {
 export default function GenericReturnMessageAlert(
   props: GenericReturnMessageAlertProps
 ) {
-  const alertText =
-    props.alertType === "success"
-      ? `${toUpperCase(props.recordGenderArticle)} ${
-          props.recordCategorySingular
-        } foi ${props.edit ? "editad" : "criad"}${
-          props.recordGenderArticle
-        } com sucesso!`
-      : `Não foi possível ${props.edit ? "editar" : "criar"} ${
-          props.recordGenderArticle
-        } ${props.recordCategorySingular}! Tente novamente.`;
+  let alertText = "";
+  if (props.alertType === "success")
+    alertText = `${toUpperCase(props.recordGenderArticle)} ${
+      props.recordCategorySingular
+    } foi ${props.edit ? "editad" : "criad"}${
+      props.recordGenderArticle
+    } com sucesso!`;
+  else if (props.alertType === "error")
+    alertText = `Não foi possível ${props.edit ? "editar" : "criar"} ${
+      props.recordGenderArticle
+    } ${props.recordCategorySingular}! Tente novamente.`;
+  else if (props.alertType === "warning")
+    alertText = `Não foi possível ${props.edit ? "editar" : "criar"} ${
+      props.recordGenderArticle
+    } ${
+      props.recordCategorySingular
+    }! Os dados foram preenchidos incorretamente.`;
 
   if (props.alertVisible) {
     return (

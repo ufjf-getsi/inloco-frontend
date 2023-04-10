@@ -6,18 +6,15 @@ import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPa
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 import {
   breadcrumpGroupItems,
+  formatTitle,
   notLoadedRecord,
 } from "../../components/Task/GenericTask";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
 
-interface TaskWithProjectId extends Task {
-  projectId: string;
-}
-
 export default function ViewTask() {
   const { id } = useParams();
 
-  const [task, setTask] = useState<TaskWithProjectId>({
+  const [task, setTask] = useState<Task>({
     projectId: "",
     ...notLoadedRecord,
   });
@@ -29,17 +26,17 @@ export default function ViewTask() {
     recordCategorySingular: "tarefa",
     recordCategoryPlural: "tarefas",
     recordGenderFeminine: true,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/tasks/${id}`,
+    serverDeleteLink: `/tasks/${id}`,
     afterDeleteRedirectLink: `/collections/${task.collectionId}`,
   };
 
   return (
     <GenericViewPage
-      title={task.title}
-      description={task.url}
+      title={formatTitle(task)}
+      description={task.isPending ? "Tarefa pendente" : "Tarefa concluída"}
       navbarActiveLink={`/projects`}
       setRecord={setTask}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/tasks/${id}`}
+      fetchRecordLink={`/tasks/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({

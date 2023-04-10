@@ -1,4 +1,6 @@
+import { useHref } from "react-router-dom";
 import { useState } from "react";
+
 import { useCollection } from "@cloudscape-design/collection-hooks";
 import {
   Box,
@@ -83,10 +85,7 @@ export default function GenericTable({
               <Button
                 iconName="add-plus"
                 variant="normal"
-                href={
-                  import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-                  addRecordLink
-                }
+                href={useHref(addRecordLink)}
               >
                 Adicionar {recordCategorySingular}
               </Button>
@@ -142,10 +141,7 @@ export default function GenericTable({
                 <Button
                   iconName="add-plus"
                   variant="primary"
-                  href={
-                    import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) +
-                    addRecordLink
-                  }
+                  href={useHref(addRecordLink)}
                 >
                   Novo
                 </Button>

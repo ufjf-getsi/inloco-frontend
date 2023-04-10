@@ -20,7 +20,7 @@ export default function ProjectsList() {
       navbarActiveLink={`/projects`}
       allRecords={projects}
       setRecords={setProjects}
-      fetchRecordsLink={`${import.meta.env.VITE_SERVER_URL}/projects`}
+      fetchRecordsLink={`/projects`}
       columnDefinitions={columnDefinitions}
       recordCategorySingular={`projeto`}
       recordCategoryPlural={`projetos`}

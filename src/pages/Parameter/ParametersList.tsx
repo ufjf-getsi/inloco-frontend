@@ -21,7 +21,7 @@ export default function ParametersList() {
       navbarActiveLink={`/parameters`}
       allRecords={parameters}
       setRecords={setParameters}
-      fetchRecordsLink={`${import.meta.env.VITE_SERVER_URL}/parameters`}
+      fetchRecordsLink={`/parameters`}
       columnDefinitions={columnDefinitions}
       recordCategorySingular={`parâmetro`}
       recordCategoryPlural={`parâmetros`}

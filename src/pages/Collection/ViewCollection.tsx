@@ -1,15 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Collection, Task } from "../../types";
+import { Collection } from "../../types";
 
-import {
-  BreadcrumbGroup,
-  Button,
-  Container,
-} from "@cloudscape-design/components";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import {
   breadcrumpGroupItems,
+  fetchTableData,
   notLoadedRecord,
 } from "../../components/Collection/GenericCollection";
 import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
@@ -21,20 +17,30 @@ import {
   visibleContent,
 } from "../../components/Point/TableConfig";
 import {
+  Item,
   columnDefinitions as columnDefinitionsTasks,
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
 import PlanningModal from "../../components/PlanningModal";
-import axios from "axios";
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 
 export default function ViewCollection() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [collection, setCollection] = useState<Collection>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [planningModalVisible, setPlanningModalVisible] = useState(false);
   const [selectedPoints, setSelectedPoints] = useState([]);
+  const [tasksAsItems, setTasksAsItems] = useState<Item[]>([]);
+
+  useEffect(() => {
+    fetchTableData({
+      navigate: navigate,
+      setTasksAsItems: setTasksAsItems,
+      collectionId: id ?? ``,
+    });
+  }, []);
 
   const tableConfig: GenericTableProps = {
     allRecords: collection.points,
@@ -47,22 +53,8 @@ export default function ViewCollection() {
     setSelectedRecords: setSelectedPoints,
   };
 
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  useEffect(() => {
-    fetchTableData();
-  }, []);
-
-  function fetchTableData() {
-    axios(`${import.meta.env.VITE_SERVER_URL}/collections/${id}/tasks`).then(
-      (response) => {
-        setTasks(response.data);
-      }
-    );
-  }
-
   const tableConfigTasks: GenericTableProps = {
-    allRecords: tasks,
+    allRecords: tasksAsItems,
     columnDefinitions: columnDefinitionsTasks,
     recordCategorySingular: `tarefa`,
     recordCategoryPlural: `tarefas`,
@@ -78,7 +70,7 @@ export default function ViewCollection() {
     recordCategorySingular: "coleta",
     recordCategoryPlural: "coletas",
     recordGenderFeminine: true,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/collections/${id}`,
+    serverDeleteLink: `/collections/${id}`,
     afterDeleteRedirectLink: `/projects/${collection.projectId}`,
     alertText: `Proceder com esta ação deletará a coleta com todo o seu conteúdo,
     incluindo todos os pontos e registros associados a si.`,
@@ -90,7 +82,7 @@ export default function ViewCollection() {
       description={""}
       navbarActiveLink={`/projects`}
       setRecord={setCollection}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/collections/${id}`}
+      fetchRecordLink={`/collections/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({
@@ -100,21 +92,9 @@ export default function ViewCollection() {
         />
       }
       editRecordLink={`/collections/${collection.id}/edit`}
-      previousPageLink={`${import.meta.env.VITE_BASE_URL_HASH}projects`}
+      previousPageLink={`/projects`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
-      otherHeaderActions={[
-        <Button
-          key={`generatePlanningButton`}
-          onClick={() => {
-            setPlanningModalVisible(true);
-          }}
-          iconName="file"
-          variant="primary"
-        >
-          Gerar planejamento
-        </Button>,
-      ]}
     >
       <div style={{ marginTop: "15vh" }}>
         <GenericTable {...tableConfigTasks} />

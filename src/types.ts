@@ -22,11 +22,15 @@ export interface Collection {
 export interface Point {
   id: string;
   collectionId: string;
+  collection?: Collection;
   name: string;
   plannedCoordinates: string;
   actualCoordinates: string;
   measurements: Measurement[];
 }
+export type PointWithProjectId = Point & {
+  projectId: string;
+};
 
 // Medição (leitura)
 export interface Measurement {
@@ -68,10 +72,25 @@ export interface Note {
 }
 
 // Tarefa
-export interface Task {
+export enum TaskType {
+  commonTask = "commonTask",
+  equipmentTask = "equipmentTask",
+}
+export type Task = CommonTask | EquipmentTask;
+interface BaseTask {
   id: string;
-  title: string;
-  url: string;
   isPending: boolean;
   collectionId: string;
+  collection?: Collection;
+  projectId?: string;
+}
+export interface CommonTask extends BaseTask {
+  type: TaskType.commonTask;
+  title: string;
+}
+export interface EquipmentTask extends BaseTask {
+  type: TaskType.equipmentTask;
+  equipmentId: string;
+  equipment?: Equipment;
+  isBringingBack: boolean;
 }
