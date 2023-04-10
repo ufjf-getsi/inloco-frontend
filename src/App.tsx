@@ -3,12 +3,8 @@ import ProjectsList from "./pages/Project/ProjectsList";
 import ViewProject from "./pages/Project/ViewProject";
 import ViewCollection from "./pages/Collection/ViewCollection";
 import ParametersList from "./pages/Parameter/ParametersList";
-import CreateParameter from "./pages/Parameter/CreateParameter";
-import EditParameter from "./pages/Parameter/EditParameter";
 import ViewParameter from "./pages/Parameter/ViewParameter";
 import EquipmentList from "./pages/Equipment/EquipmentList";
-import CreateEquipment from "./pages/Equipment/CreateEquipment";
-import EditEquipment from "./pages/Equipment/EditEquipment";
 import ViewEquipment from "./pages/Equipment/ViewEquipment";
 import ViewTask from "./pages/Task/ViewTask";
 import ViewPoint from "./pages/Point/ViewPoint";
@@ -20,6 +16,8 @@ import CreateEditTask from "./pages/Task/CreateEditTask";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
+import CreateEditParameter from "./pages/Parameter/CreateEditParameter";
+import CreateEditEquipment from "./pages/Equipment/CreateEditEquipment";
 
 function App() {
   return (
@@ -68,14 +66,26 @@ function App() {
       />
       {/* Parameter */}
       <Route path={"/parameters"} element={<ParametersList />} />
-      <Route path={"/parameters/create"} element={<CreateParameter />} />
+      <Route
+        path={"/parameters/create"}
+        element={<CreateEditParameter edit={false} />}
+      />
       <Route path={"/parameters/:id"} element={<ViewParameter />} />
-      <Route path={"/parameters/:id/edit"} element={<EditParameter />} />
+      <Route
+        path={"/parameters/:id/edit"}
+        element={<CreateEditParameter edit={true} />}
+      />
       {/* Equipment */}
       <Route path={"/equipment"} element={<EquipmentList />} />
-      <Route path={"/equipment/create"} element={<CreateEquipment />} />
+      <Route
+        path={"/equipment/create"}
+        element={<CreateEditEquipment edit={false} />}
+      />
       <Route path={"/equipment/:id"} element={<ViewEquipment />} />
-      <Route path={"/equipment/:id/edit"} element={<EditEquipment />} />
+      <Route
+        path={"/equipment/:id/edit"}
+        element={<CreateEditEquipment edit={true} />}
+      />
       {/* Page Not Found */}
       <Route path="*" element={<PageNotFound />} />
     </Routes>

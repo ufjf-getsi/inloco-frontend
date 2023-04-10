@@ -58,7 +58,6 @@ type GenericCreateAndEditPageProps = GenericRecordProps &
 export default function GenericCreateAndEditPage(
   props: PropsWithChildren<GenericCreateAndEditPageProps>
 ) {
-  console.log(props);
   if (props.edit || props.hasParent) {
     const navigate = useNavigate();
     useEffect(() => {
