@@ -21,7 +21,7 @@ export default function SuppliesList() {
       navbarActiveLink={`/supplies`}
       allRecords={suppliesArray}
       setRecords={setSuppliesArray}
-      fetchRecordsLink={`${import.meta.env.VITE_SERVER_URL}/supplies`}
+      fetchRecordsLink={`/supplies`}
       columnDefinitions={columnDefinitions}
       recordCategorySingular={`suprimento`}
       recordCategoryPlural={`suprimentos`}

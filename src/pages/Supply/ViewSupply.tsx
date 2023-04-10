@@ -23,8 +23,8 @@ export default function ViewSupply() {
     recordCategoryPlural: "suprimentos",
     recordName: supply.name,
     recordGenderFeminine: false,
-    serverDeleteLink: `${import.meta.env.VITE_SERVER_URL}/supplies/${id}`,
-    afterDeleteRedirectLink: `${import.meta.env.VITE_BASE_URL_HASH}supplies`,
+    serverDeleteLink: `/supplies/${id}`,
+    afterDeleteRedirectLink: `/supplies`,
   };
 
   return (
@@ -33,7 +33,7 @@ export default function ViewSupply() {
       description={""}
       navbarActiveLink={`/supplies`}
       setRecord={setSupply}
-      fetchRecordLink={`${import.meta.env.VITE_SERVER_URL}/supplies/${id}`}
+      fetchRecordLink={`/supplies/${id}`}
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({ pageType: "view" })}
