@@ -1,4 +1,4 @@
-import axios from "axios";
+import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
 import { Equipment, Parameter } from "../../types";
 
@@ -20,9 +20,12 @@ import {
 } from "../Generic/GenericInterfaces";
 import {
   cancelLoadAndRedirectBackwards,
+  fetchRecordData,
   localizedPageTypeName,
   searchLabelByValue,
 } from "../Generic/GenericFunctions";
+import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
+import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;
@@ -37,11 +40,10 @@ interface FormFieldsProps {
   allEquipmentOptionsList: SelectProps.Options;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-    FormFieldsProps {
-  cancelRedirectLink: string;
-}
+type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+  };
 
 const dataTypeOptions: Array<Option> = [
   {
@@ -101,6 +103,10 @@ export const breadcrumpGroupItems = ({
   return breadcrumbsItemsList;
 };
 
+export function formatDataType(dataType: string): string {
+  return searchLabelByValue(dataTypeOptions, dataType);
+}
+
 export function fetchAllEquipmentOptionsList({
   navigate,
   setAllEquipmentOptionsList,
@@ -108,27 +114,18 @@ export function fetchAllEquipmentOptionsList({
   navigate: NavigateFunction;
   setAllEquipmentOptionsList: Function;
 }) {
-  axios
-    .get<Equipment[]>(`${import.meta.env.VITE_SERVER_URL}/equipment`)
-    .then((response) => {
+  fetchRecordData(
+    `/equipment`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
       setAllEquipmentOptionsList(
         response.data.map((item: Equipment) => ({
           value: item.id,
           label: item.name,
         }))
       );
-    })
-    .catch((error) =>
-      cancelLoadAndRedirectBackwards({
-        navigate: navigate,
-        error: error,
-        previousPageLink: `/parameters`,
-      })
-    );
-}
-
-export function formatDataType(dataType: string): string {
-  return searchLabelByValue(dataTypeOptions, dataType);
+    }
+  );
 }
 
 export function validateFields(inputValues: Fields): boolean {
@@ -141,30 +138,56 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
-export function RecordForm(props: ImplementedRecordFormProps) {
-  return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`parâmetro`}
-      recordCategoryPlural={`parâmetros`}
-      recordGenderFeminine={false}
-      description={`Um parâmetro é a característica que se pretende aferir de determinado ponto.`}
-      navbarActiveLink={`/parameters`}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={breadcrumpGroupItems({
-            pageType: props.edit ? "edit" : "create",
-          })}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
+export function getSendableData(inputValues: Fields): Parameter {
+  return {
+    id: ``,
+    name: inputValues.name,
+    unit: inputValues.unit === `` ? `N/A` : inputValues.unit,
+    dataType: inputValues.dataType.value,
+    equipmentList: inputValues.equipmentList.map(
+      (equipmentOption: OptionDefinition) => {
+        return { id: equipmentOption.value ?? ``, name: `` };
       }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
+    ),
+  };
+}
+
+export function RecordForm(props: ImplementedRecordFormProps) {
+  const commonAttributes: any = {
+    recordCategorySingular: `parâmetro`,
+    recordCategoryPlural: `parâmetros`,
+    recordGenderFeminine: false,
+    description: `Um parâmetro é a característica que se pretende aferir de determinado ponto.`,
+    navbarActiveLink: `/parameters`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          pageType: props.edit ? "edit" : "create",
+        })}
+        expandAriaLabel="Mostrar caminho"
+        ariaLabel="Breadcrumbs"
+      />
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+  };
+  if (props.edit) {
+    commonAttributes.edit = true;
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
+  }
+  return (
+    <GenericCreateAndEditPage {...commonAttributes}>
       <FormFields
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
