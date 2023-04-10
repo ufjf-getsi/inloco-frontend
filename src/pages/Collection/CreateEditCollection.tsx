@@ -14,13 +14,7 @@ import {
 import { notLoadedRecord as notLoadedParent } from "../../components/Project/GenericProject";
 import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
 
-interface CreateEditCollectionProps {
-  edit: boolean;
-}
-
-export default function CreateEditCollection({
-  edit,
-}: CreateEditCollectionProps) {
+export default function CreateEditCollection({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
   const [collection, setCollection] = useState<Collection>(notLoadedRecord);
@@ -30,17 +24,19 @@ export default function CreateEditCollection({
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   let commonProjectId = ``;
-  let commonWebLink = ``;
-  let commonServerLink = ``;
+  let previousPageWebLink = ``;
+  let fetchRecordServerLink = ``;
+  let pushRecordServerLink = ``;
   let sendableDataFunction = () => getSendableData({ inputValues });
 
   if (edit) {
-    commonProjectId = collection.projectId;
-    // Fetch the collection data based on the id in the url
     const { id } = useParams();
-    commonWebLink = commonServerLink = `/collections/${id}`;
+    commonProjectId = collection.projectId;
+    previousPageWebLink =
+      pushRecordServerLink =
+      fetchRecordServerLink =
+        `/collections/${id}`;
     function handleFetchResponse() {
-      // setCommonProjectId(collection.projectId);
       setInputValues({
         title: collection.title,
         startDate: collection.startDate,
@@ -51,16 +47,15 @@ export default function CreateEditCollection({
       handleFetchResponse();
     }, [collection]);
   } else {
-    // Set the fetch link based on the project id in the url
     const { projectId } = useParams();
-    commonWebLink = `/projects/${projectId}`;
-    commonServerLink = `/collections`;
+    previousPageWebLink = fetchRecordServerLink = `/projects/${projectId}`;
+    pushRecordServerLink = `/collections`;
+    commonProjectId = projectId ?? ``;
     sendableDataFunction = () =>
       getSendableData({
         inputValues,
         ...(projectId ? { parentId: projectId } : {}),
       });
-    commonProjectId = projectId ?? ``;
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -68,12 +63,12 @@ export default function CreateEditCollection({
       event: event,
       edit: edit,
       validFields: validateFields(inputValues),
-      relativeServerUrl: commonServerLink,
+      relativeServerUrl: pushRecordServerLink,
       sendableData: sendableDataFunction(),
       setAlertType: setAlertType,
       setAlertVisible: setAlertVisible,
       navigate: navigate,
-      successRedirectLink: commonWebLink,
+      successRedirectLink: previousPageWebLink,
     });
   }
 
@@ -84,8 +79,10 @@ export default function CreateEditCollection({
     setAlertVisible: setAlertVisible,
     inputValues: inputValues,
     setInputValues: setInputValues,
-    cancelRedirectLink: commonWebLink,
+    cancelRedirectLink: previousPageWebLink,
     projectId: commonProjectId,
+    hasParent: true,
+    fetchRecordLink: fetchRecordServerLink,
   };
   if (edit) {
     commonAttributes.edit = true;
@@ -94,6 +91,5 @@ export default function CreateEditCollection({
     commonAttributes.edit = false;
     commonAttributes.setRecord = setProject;
   }
-  commonAttributes.fetchRecordLink = commonServerLink;
   return <RecordForm {...commonAttributes} />;
 }

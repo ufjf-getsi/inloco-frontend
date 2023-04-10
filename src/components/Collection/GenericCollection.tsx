@@ -124,12 +124,18 @@ export function RecordForm(props: ImplementedRecordFormProps) {
     alertVisible: props.alertVisible,
     setAlertVisible: props.setAlertVisible,
     alertType: props.alertType,
-    edit: props.edit,
-    hasParent: props.hasParent,
   };
-  if (props.edit || props.hasParent) {
+  if (props.edit) {
+    commonAttributes.edit = true;
     commonAttributes.fetchRecordLink = props.fetchRecordLink;
     commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
   }
   return (
     <GenericCreateAndEditPage {...commonAttributes}>

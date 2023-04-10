@@ -70,6 +70,7 @@ interface BaseTask {
   id: string;
   isPending: boolean;
   collectionId: string;
+  collection?: Collection;
   projectId?: string;
 }
 export interface CommonTask extends BaseTask {

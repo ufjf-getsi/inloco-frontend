@@ -10,17 +10,16 @@ import EquipmentList from "./pages/Equipment/EquipmentList";
 import CreateEquipment from "./pages/Equipment/CreateEquipment";
 import EditEquipment from "./pages/Equipment/EditEquipment";
 import ViewEquipment from "./pages/Equipment/ViewEquipment";
-import CreateTask from "./pages/Task/CreateTask";
-import EditTask from "./pages/Task/EditTask";
 import ViewTask from "./pages/Task/ViewTask";
 import ViewPoint from "./pages/Point/ViewPoint";
 import PageNotFound from "./pages/PageNotFound";
-
-import "@cloudscape-design/global-styles/index.css";
-import "./styles/main.css";
 import CreateEditProject from "./pages/Project/CreateEditProject";
 import CreateEditCollection from "./pages/Collection/CreateEditCollection";
 import CreateEditPoint from "./pages/Point/CreateEditPoint";
+import CreateEditTask from "./pages/Task/CreateEditTask";
+
+import "@cloudscape-design/global-styles/index.css";
+import "./styles/main.css";
 
 function App() {
   return (
@@ -60,10 +59,13 @@ function App() {
       {/* Project -> Collection -> Task */}
       <Route
         path={"/collections/:collectionId/createTask"}
-        element={<CreateTask />}
+        element={<CreateEditTask edit={false} />}
       />
       <Route path={"/tasks/:id"} element={<ViewTask />} />
-      <Route path={"/tasks/:id/edit"} element={<EditTask />} />
+      <Route
+        path={"/tasks/:id/edit"}
+        element={<CreateEditTask edit={true} />}
+      />
       {/* Parameter */}
       <Route path={"/parameters"} element={<ParametersList />} />
       <Route path={"/parameters/create"} element={<CreateParameter />} />
