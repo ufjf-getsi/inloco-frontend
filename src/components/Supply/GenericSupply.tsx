@@ -1,3 +1,4 @@
+import { useHref, useParams } from "react-router-dom";
 import { Supply } from "../../types";
 
 import {
@@ -11,7 +12,7 @@ import GenericCreateAndEditPage, {
 } from "../Generic/GenericPages/GenericCreateAndEditPage";
 import { localizedPageTypeName } from "../Generic/GenericFunctions";
 import { PageType } from "../Generic/GenericInterfaces";
-import { useParams } from "react-router-dom";
+import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;
@@ -23,11 +24,10 @@ interface FormFieldsProps {
   setInputValues: Function;
 }
 
-interface ImplementedRecordFormProps
-  extends GenericRecordFormProps,
-    FormFieldsProps {
-  cancelRedirectLink: string;
-}
+type ImplementedRecordFormProps = GenericRecordFormProps &
+  FormFieldsProps & {
+    cancelRedirectLink: string;
+  };
 
 export const emptyFields: Fields = {
   name: "",
@@ -50,14 +50,14 @@ export const breadcrumpGroupItems = ({
   const breadcrumbsItemsList = [
     {
       text: "Suprimentos",
-      href: `${import.meta.env.VITE_BASE_URL_HASH}supplies`,
+      href: useHref(`/supplies`),
     },
   ];
   if (pageType !== "list") {
     if (pageType === "edit") {
       breadcrumbsItemsList.push({
         text: `Suprimento`,
-        href: `${import.meta.env.VITE_BASE_URL_HASH}supplies/${id}`,
+        href: useHref(`/supplies/${id}`),
       });
     }
     breadcrumbsItemsList.push({
@@ -74,35 +74,50 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
+export function getSendableData(inputValues: Fields): Supply {
+  return {
+    id: "",
+    name: inputValues.name,
+    quantity: inputValues.quantity,
+  };
+}
+
 export function RecordForm(props: ImplementedRecordFormProps) {
-  return (
-    <GenericCreateAndEditPage
-      edit={props.edit}
-      recordCategorySingular={`suprimento`}
-      recordCategoryPlural={`suprimentos`}
-      recordGenderFeminine={false}
-      description={`Um suprimento é um item utilizado para medições em experimentos e coletas de dados.`}
-      navbarActiveLink={`/supplies`}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={breadcrumpGroupItems({
-            pageType: props.edit ? "edit" : "create",
-          })}
-          expandAriaLabel="Mostrar caminho"
-          ariaLabel="Breadcrumbs"
-        />
-      }
-      cancelRedirectLink={props.cancelRedirectLink}
-      handleSubmit={props.handleSubmit}
-      alertVisible={props.alertVisible}
-      setAlertVisible={props.setAlertVisible}
-      alertType={props.alertType}
-    >
-      <FormFields
-        inputValues={props.inputValues}
-        setInputValues={props.setInputValues}
+  const commonAttributes: any = {
+    recordCategorySingular: `suprimento`,
+    recordCategoryPlural: `suprimentos`,
+    recordGenderFeminine: false,
+    description: `Um suprimento é um item utilizado para medições em experimentos e coletas de dados.`,
+    navbarActiveLink: `/supplies`,
+    breadcrumbs: (
+      <GenericBreadcrumbGroup
+        items={breadcrumpGroupItems({
+          pageType: props.edit ? "edit" : "create",
+        })}
+        expandAriaLabel="Mostrar caminho"
+        ariaLabel="Breadcrumbs"
       />
-    </GenericCreateAndEditPage>
+    ),
+    cancelRedirectLink: props.cancelRedirectLink,
+    handleSubmit: props.handleSubmit,
+    alertVisible: props.alertVisible,
+    setAlertVisible: props.setAlertVisible,
+    alertType: props.alertType,
+  };
+  if (props.edit) {
+    commonAttributes.edit = true;
+    commonAttributes.fetchRecordLink = props.fetchRecordLink;
+    commonAttributes.setRecord = props.setRecord;
+  } else {
+    commonAttributes.edit = false;
+    if (props.hasParent) {
+      commonAttributes.hasParent = true;
+      commonAttributes.fetchRecordLink = props.fetchRecordLink;
+      commonAttributes.setRecord = props.setRecord;
+    }
+  }
+  return (
+    <GenericCreateAndEditPage {...commonAttributes}></GenericCreateAndEditPage>
   );
 }
 
@@ -112,6 +127,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Suprimento">
         <Input
           value={inputValues.name}
+          placeholder={`Nome do suprimento`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
@@ -123,6 +139,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
       <FormField label="Quantidade">
         <Input
           value={inputValues.quantity}
+          placeholder={`Quantidade do suprimento`}
           onChange={(event) =>
             setInputValues((prevState: Fields) => ({
               ...prevState,
