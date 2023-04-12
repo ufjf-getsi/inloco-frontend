@@ -50,7 +50,7 @@ export const breadcrumpGroupItems = ({
   const breadcrumbsItemsList = [
     {
       text: "Suprimentos",
-      href: useHref(`/supplies`),
+      href: useHref(`/equipment/supplies`),
     },
   ];
   if (pageType !== "list") {
@@ -74,7 +74,11 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
-export function getSendableData(inputValues: Fields): Supply {
+export function getSendableData({
+  inputValues,
+}: {
+  inputValues: Fields;
+}): Supply {
   return {
     id: "",
     name: inputValues.name,
@@ -94,8 +98,6 @@ export function RecordForm(props: ImplementedRecordFormProps) {
         items={breadcrumpGroupItems({
           pageType: props.edit ? "edit" : "create",
         })}
-        expandAriaLabel="Mostrar caminho"
-        ariaLabel="Breadcrumbs"
       />
     ),
     cancelRedirectLink: props.cancelRedirectLink,
@@ -117,7 +119,12 @@ export function RecordForm(props: ImplementedRecordFormProps) {
     }
   }
   return (
-    <GenericCreateAndEditPage {...commonAttributes}></GenericCreateAndEditPage>
+    <GenericCreateAndEditPage {...commonAttributes}>
+      <FormFields
+        inputValues={props.inputValues}
+        setInputValues={props.setInputValues}
+      />
+    </GenericCreateAndEditPage>
   );
 }
 

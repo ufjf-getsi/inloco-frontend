@@ -1,20 +1,19 @@
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-
-import { AlertProps } from "@cloudscape-design/components";
-import {
-  emptyFields,
-  Fields,
-  getSendableData,
-  notLoadedRecord,
-  RecordForm,
-  validateFields,
-} from "../../components/Supply/GenericSupply";
 import { Supply } from "../../types";
+
+import { AlertProps, SelectProps } from "@cloudscape-design/components";
+import {
+  Fields,
+  emptyFields,
+  validateFields,
+  RecordForm,
+  notLoadedRecord,
+  getSendableData,
+} from "../../components/Supply/GenericSupply";
 import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
 
-export default function EditSupply({ edit }: { edit: boolean }) {
+export default function CreateEditSupply({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -23,8 +22,8 @@ export default function EditSupply({ edit }: { edit: boolean }) {
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
-  let previousPageWebLink = `/supplies`;
-  let pushRecordServerLink = `/supplies`;
+  let previousPageWebLink = `/equipment`;
+  let pushRecordServerLink = `/equipment`;
   let fetchRecordServerLink = ``;
 
   if (edit) {

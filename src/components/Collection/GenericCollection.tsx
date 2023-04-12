@@ -196,37 +196,39 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
         />
       </FormField>
 
-      <FormField label="Data de início">
-        <DatePicker
-          onChange={(event) =>
-            setInputValues((prevState: Fields) => ({
-              ...prevState,
-              startDate: event.detail.value,
-            }))
-          }
-          value={inputValues.startDate}
-          nextMonthAriaLabel="Next month"
-          placeholder="YYYY/MM/DD"
-          previousMonthAriaLabel="Previous month"
-          todayAriaLabel="Today"
-        />
-      </FormField>
+      <SpaceBetween direction="horizontal" size="xl">
+        <FormField label="Data de início">
+          <DatePicker
+            onChange={(event) =>
+              setInputValues((prevState: Fields) => ({
+                ...prevState,
+                startDate: event.detail.value,
+              }))
+            }
+            value={inputValues.startDate}
+            nextMonthAriaLabel="Next month"
+            placeholder="YYYY/MM/DD"
+            previousMonthAriaLabel="Previous month"
+            todayAriaLabel="Today"
+          />
+        </FormField>
 
-      <FormField label="Data de fim">
-        <DatePicker
-          onChange={(event) =>
-            setInputValues((prevState: Fields) => ({
-              ...prevState,
-              endDate: event.detail.value,
-            }))
-          }
-          value={inputValues.endDate}
-          nextMonthAriaLabel="Next month"
-          placeholder="YYYY/MM/DD"
-          previousMonthAriaLabel="Previous month"
-          todayAriaLabel="Today"
-        />
-      </FormField>
+        <FormField label="Data de fim">
+          <DatePicker
+            onChange={(event) =>
+              setInputValues((prevState: Fields) => ({
+                ...prevState,
+                endDate: event.detail.value,
+              }))
+            }
+            value={inputValues.endDate}
+            nextMonthAriaLabel="Next month"
+            placeholder="YYYY/MM/DD"
+            previousMonthAriaLabel="Previous month"
+            todayAriaLabel="Today"
+          />
+        </FormField>
+      </SpaceBetween>
     </SpaceBetween>
   );
 }

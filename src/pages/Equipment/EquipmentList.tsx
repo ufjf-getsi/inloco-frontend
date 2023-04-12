@@ -22,6 +22,7 @@ export default function EquipmentList() {
   const [selectedEquipmentList, setSelectedEquipmentList] = useState([]);
 
   const [supplies, setSupplies] = useState<Supply[]>([]);
+  const [selectedSupplies, setSelectedSupplies] = useState([]);
 
   useEffect(() => {
     fetchTableData();
@@ -39,9 +40,9 @@ export default function EquipmentList() {
     recordCategorySingular: `suprimento`,
     recordCategoryPlural: `suprimentos`,
     recordGenderFeminine: false,
-    addRecordLink: `/supplies/createSupplies`,
+    addRecordLink: `/equipment/createSupply`,
     visibleContent: visibleContentSupplies,
-    setSelectedRecords: setSelectedEquipmentList,
+    setSelectedRecords: setSelectedSupplies,
   };
 
   return (

@@ -15,10 +15,8 @@ import CreateEditPoint from "./pages/Point/CreateEditPoint";
 import CreateEditTask from "./pages/Task/CreateEditTask";
 import CreateEditParameter from "./pages/Parameter/CreateEditParameter";
 import CreateEditEquipment from "./pages/Equipment/CreateEditEquipment";
-import SuppliesList from "./pages/Supply/SuppliesList";
-import CreateSupply from "./pages/Supply/CreateSupply";
+import CreateEditSupply from "./pages/Supply/CreateEditSupply";
 import ViewSupply from "./pages/Supply/ViewSupply";
-import EditSupply from "./pages/Supply/EditSupply";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
@@ -91,10 +89,15 @@ function App() {
         element={<CreateEditEquipment edit={true} />}
       />
       {/* Supply */}
-      <Route path={"/supplies"} element={<SuppliesList />} />
-      <Route path={"/supplies/create"} element={<CreateSupply />} />
+      <Route
+        path={"/equipment/createSupply"}
+        element={<CreateEditSupply edit={false} />}
+      />
       <Route path={"/supplies/:id"} element={<ViewSupply />} />
-      <Route path={"/supplies/:id/edit"} element={<EditSupply />} />
+      <Route
+        path={"/supplies/:id/edit"}
+        element={<CreateEditSupply edit={true} />}
+      />
 
       {/* Page Not Found */}
       <Route path="*" element={<PageNotFound />} />
