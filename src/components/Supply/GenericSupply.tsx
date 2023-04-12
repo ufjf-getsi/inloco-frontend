@@ -74,11 +74,7 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
-export function getSendableData({
-  inputValues,
-}: {
-  inputValues: Fields;
-}): Supply {
+export function getSendableData(inputValues: Fields): Supply {
   return {
     id: "",
     name: inputValues.name,
