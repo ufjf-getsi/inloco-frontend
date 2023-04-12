@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Equipment, Supply } from "../../types";
 
 import {
-  columnDefinitions,
-  visibleContent,
+  columnDefinitions as columnDefinitionsEquipment,
+  visibleContent as visibleContentEquipment,
 } from "../../components/Equipment/TableConfig";
 import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
 import { breadcrumpGroupItems } from "../../components/Equipment/GenericEquipment";
@@ -14,7 +14,7 @@ import GenericTable, {
 import {
   columnDefinitions as columnDefinitionsSupplies,
   visibleContent as visibleContentSupplies,
-} from "../../components/Task/TableConfig";
+} from "../../components/Supply/TableConfig";
 import axios from "axios";
 
 export default function EquipmentList() {
@@ -53,12 +53,12 @@ export default function EquipmentList() {
       allRecords={equipmentArray}
       setRecords={setEquipmentArray}
       fetchRecordsLink={`/equipment`}
-      columnDefinitions={columnDefinitions}
+      columnDefinitions={columnDefinitionsEquipment}
       recordCategorySingular={`equipamento`}
       recordCategoryPlural={`equipamentos`}
       recordGenderFeminine={false}
       addRecordLink={`/equipment/create`}
-      visibleContent={visibleContent}
+      visibleContent={visibleContentEquipment}
       setSelectedRecords={setSelectedEquipmentList}
       breadcrumbs={
         <GenericBreadcrumbGroup

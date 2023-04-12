@@ -2,11 +2,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { Supply } from "../../types";
 
-import { AlertProps, SelectProps } from "@cloudscape-design/components";
+import { AlertProps } from "@cloudscape-design/components";
 import {
-  Fields,
-  emptyFields,
   validateFields,
+  emptyFields,
+  Fields,
   RecordForm,
   notLoadedRecord,
   getSendableData,

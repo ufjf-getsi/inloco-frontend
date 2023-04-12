@@ -195,7 +195,6 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
           }
         />
       </FormField>
-
       <SpaceBetween direction="horizontal" size="xl">
         <FormField label="Data de início">
           <DatePicker
