@@ -34,13 +34,8 @@ export default function Navbar(props: NavbarProps) {
         },
         {
           type: "link",
-          text: "Equipamentos",
+          text: "Inventário",
           href: useHref(`/equipment`),
-        },
-        {
-          type: "link",
-          text: "Estoque",
-          href: useHref(`/supplies`),
         },
         { type: "divider" },
       ]}

@@ -53,7 +53,7 @@ export interface Parameter {
 export interface Equipment {
   id: string;
   name: string;
-  availability: boolean;
+  //availability: boolean;
 }
 
 // Suprimento
