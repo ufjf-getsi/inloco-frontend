@@ -113,6 +113,24 @@ export function fetchTableData({
   );
 }
 
+export function fetchAllRequiredEquipment({
+  navigate,
+  collectionId,
+  setAllRequiredEquipment,
+}: {
+  navigate: NavigateFunction;
+  collectionId: string;
+  setAllRequiredEquipment: Function;
+}) {
+  fetchRecordData(
+    `/collections/${collectionId}/required-equipment`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
+      setAllRequiredEquipment(response.data);
+    }
+  );
+}
+
 export function validateFields(inputValues: Fields): boolean {
   if (inputValues.title) {
     return true;

@@ -5,6 +5,7 @@ import { Collection } from "../../types";
 import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
 import {
   breadcrumpGroupItems,
+  fetchAllRequiredEquipment,
   fetchTableData,
   notLoadedRecord,
 } from "../../components/Collection/GenericCollection";
@@ -13,16 +14,18 @@ import GenericTable, {
   GenericTableProps,
 } from "../../components/Generic/GenericTable/GenericTable";
 import {
+  Item,
   columnDefinitions,
   visibleContent,
 } from "../../components/Point/TableConfig";
 import {
-  Item,
+  Item as TaskItem,
   columnDefinitions as columnDefinitionsTasks,
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
-import PlanningModal from "../../components/PlanningModal";
+import EquipmentRequired from "../../components/EquipmentRequired";
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import Button from "@cloudscape-design/components/button";
 
 export default function ViewCollection() {
   const { id } = useParams();
@@ -30,9 +33,11 @@ export default function ViewCollection() {
 
   const [collection, setCollection] = useState<Collection>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [planningModalVisible, setPlanningModalVisible] = useState(false);
+  const [equipmentRequiredVisible, setEquipmentRequiredVisible] =
+    useState(false);
   const [selectedPoints, setSelectedPoints] = useState([]);
-  const [tasksAsItems, setTasksAsItems] = useState<Item[]>([]);
+  const [tasksAsItems, setTasksAsItems] = useState<TaskItem[]>([]);
+  const [requiredEquipment, setRequiredEquipment] = useState([]);
 
   useEffect(() => {
     fetchTableData({
@@ -40,10 +45,21 @@ export default function ViewCollection() {
       setTasksAsItems: setTasksAsItems,
       collectionId: id ?? ``,
     });
+    fetchAllRequiredEquipment({
+      navigate: navigate,
+      collectionId: id ?? ``,
+      setAllRequiredEquipment: setRequiredEquipment,
+    });
   }, []);
 
   const tableConfig: GenericTableProps = {
-    allRecords: collection.points,
+    allRecords: collection.points.map((point): Item => {
+      return {
+        id: point.id,
+        name: point.name,
+        coordinates: point.plannedCoordinates,
+      };
+    }),
     columnDefinitions: columnDefinitions,
     recordCategorySingular: `ponto`,
     recordCategoryPlural: `pontos`,
@@ -95,16 +111,25 @@ export default function ViewCollection() {
       previousPageLink={`/projects`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
+      otherHeaderActions={[
+        <Button
+          iconName="key"
+          key={`equipmentRequiredButton`}
+          onClick={() => setEquipmentRequiredVisible(true)}
+        >
+          Equipamentos
+        </Button>,
+      ]}
     >
       <div style={{ marginTop: "15vh" }}>
         <GenericTable {...tableConfigTasks} />
       </div>
-      <PlanningModal
-        key={`planningModal`}
+      <EquipmentRequired
+        key={`equipmentRequired`}
         collectionId={collection.id}
-        points={collection.points}
-        modalVisible={planningModalVisible}
-        setModalVisible={setPlanningModalVisible}
+        modalVisible={equipmentRequiredVisible}
+        setModalVisible={setEquipmentRequiredVisible}
+        equipmentList={requiredEquipment}
       />
     </GenericViewPage>
   );

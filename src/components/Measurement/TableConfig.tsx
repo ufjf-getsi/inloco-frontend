@@ -1,8 +1,10 @@
+import { useHref } from "react-router-dom";
 import { Link } from "@cloudscape-design/components";
 import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunctions";
 
 export interface Item {
   id: string;
+  parameterId: string;
   parameterName: string;
   isPending: boolean;
   result: string;
@@ -11,12 +13,15 @@ export interface Item {
 
 export const visibleContent = ["parameterName", "isPending", "result"];
 
+const recordViewPageLink = (item: Item) =>
+  useHref(`/parameters/${item.parameterId}`);
+
 export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
     cell: (item: Item) => (
-      <Link href={`#`}>
+      <Link href={recordViewPageLink(item)}>
         <span className="font-bold">{item.id}</span>
       </Link>
     ),
@@ -27,7 +32,7 @@ export const columnDefinitions = [
     id: "parameterName",
     header: "Nome",
     cell: (item: Item) => (
-      <Link href={`#`}>
+      <Link href={recordViewPageLink(item)}>
         <span className="font-bold">
           {item.parameterName + ` (${item.unit})`}
         </span>

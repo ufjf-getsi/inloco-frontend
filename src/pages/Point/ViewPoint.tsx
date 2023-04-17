@@ -30,6 +30,7 @@ export default function ViewPoint() {
     allRecords: point.measurements.map((measurement): Item => {
       return {
         id: measurement.id,
+        parameterId: measurement.parameter.id,
         parameterName: measurement.parameter.name,
         isPending: measurement.isPending,
         result: measurement.result,
