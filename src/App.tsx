@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import "@cloudscape-design/global-styles/index.css";
+import "./styles/main.css";
 import ProjectsList from "./pages/Project/ProjectsList";
 import ViewProject from "./pages/Project/ViewProject";
 import ViewCollection from "./pages/Collection/ViewCollection";
@@ -13,11 +15,9 @@ import CreateEditProject from "./pages/Project/CreateEditProject";
 import CreateEditCollection from "./pages/Collection/CreateEditCollection";
 import CreateEditPoint from "./pages/Point/CreateEditPoint";
 import CreateEditTask from "./pages/Task/CreateEditTask";
-
-import "@cloudscape-design/global-styles/index.css";
-import "./styles/main.css";
 import CreateEditParameter from "./pages/Parameter/CreateEditParameter";
 import CreateEditEquipment from "./pages/Equipment/CreateEditEquipment";
+import ReorderPoints from "./pages/Point/ReorderPoints";
 
 function App() {
   return (
@@ -55,8 +55,8 @@ function App() {
         element={<CreateEditPoint edit={true} />}
       />
       <Route
-        path={"/collections/:collectionId/reorder-point"}
-        element={<CreateEditPoint edit={false} />}
+        path={"/collections/:collectionId/reorder-points"}
+        element={<ReorderPoints edit={false} />}
       />
       {/* Project -> Collection -> Task */}
       <Route
