@@ -12,4 +12,4 @@ export interface OptionStringString {
   value: string;
 }
 
-export type PageType = "list" | "view" | "create" | "edit";
+export type PageType = "list" | "view" | "create" | "edit" | "reorder";

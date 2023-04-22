@@ -56,7 +56,7 @@ function App() {
       />
       <Route
         path={"/collections/:collectionId/reorder-points"}
-        element={<ReorderPoints edit={false} />}
+        element={<ReorderPoints />}
       />
       {/* Project -> Collection -> Task */}
       <Route
