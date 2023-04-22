@@ -1,6 +1,6 @@
 import { useHref } from "react-router-dom";
 import { Link } from "@cloudscape-design/components";
-import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunctions";
+import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunctions";
 import { formatDataType } from "./GenericParameter";
 
 interface Item {

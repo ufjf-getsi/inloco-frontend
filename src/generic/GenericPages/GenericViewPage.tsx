@@ -10,7 +10,7 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import Navbar from "../../Navbar";
+import Navbar from "../../components/Navbar";
 import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
 import GenericDeleteModal, {
   GenericDeleteModalProps,

@@ -6,9 +6,9 @@ import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Equipment/TableConfig";
-import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
+import GenericListPage from "../../generic/GenericPages/GenericListPage";
 import { breadcrumpGroupItems } from "../../components/Equipment/GenericEquipment";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function EquipmentList() {
   const [equipmentArray, setEquipmentArray] = useState<Equipment[]>([]);

@@ -13,9 +13,7 @@ import {
   notLoadedRecord,
   getSendableData,
 } from "../../components/Parameter/GenericParameter";
-import {
-  handleFormSubmit,
-} from "../../components/Generic/GenericFunctions";
+import { handleFormSubmit } from "../../generic/GenericFunctions";
 
 export default function CreateEditParameter({ edit }: { edit: boolean }) {
   const navigate = useNavigate();

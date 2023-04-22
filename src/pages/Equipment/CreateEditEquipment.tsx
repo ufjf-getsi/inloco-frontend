@@ -12,7 +12,7 @@ import {
   validateFields,
 } from "../../components/Equipment/GenericEquipment";
 import { Equipment } from "../../types";
-import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
+import { handleFormSubmit } from "../../generic/GenericFunctions";
 
 export default function EditEquipment({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
