@@ -1,3 +1,5 @@
+// Interfaces and Types used multiple times, but only on the Front-end should be on this file
+
 export interface GenericRecordProps {
   recordName?: string;
   recordCategorySingular: string;

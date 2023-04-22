@@ -2,18 +2,18 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Project } from "../../types";
 
-import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
+import { GenericTableProps } from "../../generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Collection/TableConfig";
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import {
   breadcrumpGroupItems,
   notLoadedRecord,
 } from "../../components/Project/GenericProject";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function ViewProject() {
   const { id } = useParams();

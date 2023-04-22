@@ -11,7 +11,7 @@ import {
   Button,
   AlertProps,
 } from "@cloudscape-design/components";
-import Navbar from "../../Navbar";
+import Navbar from "../../components/Navbar";
 import { GenericRecordProps } from "../GenericInterfaces";
 import GenericReturnMessageAlert from "../GenericReturnMessageAlert";
 import { fetchRecordData } from "../GenericFunctions";

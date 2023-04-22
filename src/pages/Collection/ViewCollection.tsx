@@ -2,17 +2,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Collection } from "../../types";
 
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
 import {
   breadcrumpGroupItems,
   fetchAllRequiredEquipment,
   fetchTableData,
   notLoadedRecord,
 } from "../../components/Collection/GenericCollection";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import GenericTable, {
   GenericTableProps,
-} from "../../components/Generic/GenericTable/GenericTable";
+} from "../../generic/GenericTable/GenericTable";
 import {
   Item,
   columnDefinitions,
@@ -24,7 +24,7 @@ import {
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
 import RequiredEquipment from "../../components/RequiredEquipment";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 import Button from "@cloudscape-design/components/button";
 
 export default function ViewCollection() {

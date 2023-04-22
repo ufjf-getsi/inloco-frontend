@@ -12,7 +12,7 @@ import {
   validateFields,
 } from "../../components/Collection/GenericCollection";
 import { notLoadedRecord as notLoadedParent } from "../../components/Project/GenericProject";
-import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
+import { handleFormSubmit } from "../../generic/GenericFunctions";
 
 export default function CreateEditCollection({ edit }: { edit: boolean }) {
   const navigate = useNavigate();

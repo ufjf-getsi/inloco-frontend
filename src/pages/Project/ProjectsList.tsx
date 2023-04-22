@@ -5,9 +5,9 @@ import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Project/TableConfig";
-import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
+import GenericListPage from "../../generic/GenericPages/GenericListPage";
 import { breadcrumpGroupItems } from "../../components/Project/GenericProject";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function ProjectsList() {
   const [projects, setProjects] = useState<Project[]>([]);
