@@ -28,7 +28,7 @@ export default function ViewProject() {
     recordCategorySingular: `coleta`,
     recordCategoryPlural: `coletas`,
     recordGenderFeminine: true,
-    addRecordLink: `/projects/${project.id}/createCollection`,
+    addRecordLink: `/projects/${project.id}/create-collection`,
     visibleContent: visibleContent,
     setSelectedRecords: setSelectedCollections,
   };

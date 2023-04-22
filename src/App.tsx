@@ -36,7 +36,7 @@ function App() {
       />
       {/* Project -> Collection */}
       <Route
-        path={"/projects/:projectId/createCollection"}
+        path={"/projects/:projectId/create-collection"}
         element={<CreateEditCollection edit={false} />}
       />
       <Route path={"/collections/:id"} element={<ViewCollection />} />
@@ -46,7 +46,7 @@ function App() {
       />
       {/* Project -> Collection -> Point */}
       <Route
-        path={"/collections/:collectionId/createPoint"}
+        path={"/collections/:collectionId/create-point"}
         element={<CreateEditPoint edit={false} />}
       />
       <Route path={"/points/:id"} element={<ViewPoint />} />
@@ -54,9 +54,13 @@ function App() {
         path={"/points/:id/edit"}
         element={<CreateEditPoint edit={true} />}
       />
+      <Route
+        path={"/collections/:collectionId/reorder-point"}
+        element={<CreateEditPoint edit={false} />}
+      />
       {/* Project -> Collection -> Task */}
       <Route
-        path={"/collections/:collectionId/createTask"}
+        path={"/collections/:collectionId/create-task"}
         element={<CreateEditTask edit={false} />}
       />
       <Route path={"/tasks/:id"} element={<ViewTask />} />
