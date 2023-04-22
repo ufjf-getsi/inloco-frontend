@@ -64,7 +64,7 @@ export default function ViewCollection() {
     recordCategorySingular: `ponto`,
     recordCategoryPlural: `pontos`,
     recordGenderFeminine: false,
-    addRecordLink: `/collections/${collection.id}/createPoint`,
+    addRecordLink: `/collections/${collection.id}/create-point`,
     visibleContent: visibleContentPoints,
     setSelectedRecords: setSelectedPoints,
     otherHeaderActions: [
@@ -85,7 +85,7 @@ export default function ViewCollection() {
     recordCategorySingular: `tarefa`,
     recordCategoryPlural: `tarefas`,
     recordGenderFeminine: true,
-    addRecordLink: `/collections/${id}/createTask`,
+    addRecordLink: `/collections/${id}/create-task`,
     visibleContent: visibleContentTasks,
     setSelectedRecords: setSelectedPoints,
   };
