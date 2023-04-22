@@ -14,7 +14,7 @@ import {
 import { Equipment } from "../../types";
 import { handleFormSubmit } from "../../generic/GenericFunctions";
 
-export default function EditEquipment({ edit }: { edit: boolean }) {
+export default function CreateEditEquipment({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
   const { id } = useParams();
 

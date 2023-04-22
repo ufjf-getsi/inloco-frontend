@@ -13,7 +13,7 @@ import {
 } from "../../components/Project/GenericProject";
 import { handleFormSubmit } from "../../generic/GenericFunctions";
 
-export default function EditProject({ edit }: { edit: boolean }) {
+export default function CreateEditProject({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
   const { id } = useParams();
 
