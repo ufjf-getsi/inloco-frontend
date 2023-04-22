@@ -86,6 +86,8 @@ export default function GenericViewPage(
                 addRecordLink={props.table.addRecordLink}
                 visibleContent={props.table.visibleContent}
                 setSelectedRecords={props.table.setSelectedRecords}
+                selectionType={props.table.selectionType}
+                otherHeaderActions={props.table.otherHeaderActions}
               />
             )}
             {props.children}

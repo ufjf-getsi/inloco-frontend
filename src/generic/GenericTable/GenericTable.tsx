@@ -1,5 +1,5 @@
 import { useHref } from "react-router-dom";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 import { useCollection } from "@cloudscape-design/collection-hooks";
 import {
@@ -29,6 +29,7 @@ export interface GenericTableProps extends GenericRecordProps {
   visibleContent: Array<string>;
   setSelectedRecords: Function;
   selectionType?: TableProps.SelectionType;
+  otherHeaderActions?: Array<ReactNode>;
 }
 
 function EmptyState({
@@ -62,6 +63,7 @@ export default function GenericTable({
   visibleContent,
   setSelectedRecords,
   selectionType,
+  otherHeaderActions,
 }: GenericTableProps) {
   const [preferences, setPreferences] = useState({
     pageSize: 10,
@@ -78,7 +80,7 @@ export default function GenericTable({
     filtering: {
       empty: (
         <EmptyState
-          title={`Nenhum ${recordCategorySingular}`}
+          title={`Nenhum(a) ${recordCategorySingular}`}
           subtitle={`Não há ${recordCategoryPlural} para mostrar.`}
           action={
             addRecordLink ? (
@@ -111,6 +113,18 @@ export default function GenericTable({
   });
   const { selectedItems } = collectionProps;
 
+  const addRecordButton = addRecordLink && (
+    <Button iconName="add-plus" variant="primary" href={useHref(addRecordLink)}>
+      Novo
+    </Button>
+  );
+  const formattedActions = (otherHeaderActions || addRecordLink) && (
+    <SpaceBetween direction="horizontal" size="xs">
+      {otherHeaderActions}
+      {addRecordButton}
+    </SpaceBetween>
+  );
+
   return (
     <Table
       {...collectionProps}
@@ -135,19 +149,7 @@ export default function GenericTable({
               ? `(${selectedItems.length}/${allRecords.length})`
               : `(${allRecords.length})`
           }
-          actions={
-            addRecordLink && (
-              <SpaceBetween direction="horizontal" size="xs">
-                <Button
-                  iconName="add-plus"
-                  variant="primary"
-                  href={useHref(addRecordLink)}
-                >
-                  Novo
-                </Button>
-              </SpaceBetween>
-            )
-          }
+          actions={formattedActions}
         >
           {toUpperCase(recordCategoryPlural)}
         </Header>

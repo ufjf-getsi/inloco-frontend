@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useHref, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Collection } from "../../types";
 
@@ -15,8 +15,8 @@ import GenericTable, {
 } from "../../generic/GenericTable/GenericTable";
 import {
   Item,
-  columnDefinitions,
-  visibleContent,
+  columnDefinitions as columnDefinitionsPoints,
+  visibleContent as visibleContentPoints,
 } from "../../components/Point/TableConfig";
 import {
   Item as TaskItem,
@@ -52,7 +52,7 @@ export default function ViewCollection() {
     });
   }, []);
 
-  const tableConfig: GenericTableProps = {
+  const tableConfigPoints: GenericTableProps = {
     allRecords: collection.points.map((point): Item => {
       return {
         id: point.id,
@@ -60,13 +60,23 @@ export default function ViewCollection() {
         coordinates: point.plannedCoordinates,
       };
     }),
-    columnDefinitions: columnDefinitions,
+    columnDefinitions: columnDefinitionsPoints,
     recordCategorySingular: `ponto`,
     recordCategoryPlural: `pontos`,
     recordGenderFeminine: false,
     addRecordLink: `/collections/${collection.id}/createPoint`,
-    visibleContent: visibleContent,
+    visibleContent: visibleContentPoints,
     setSelectedRecords: setSelectedPoints,
+    otherHeaderActions: [
+      <Button
+        iconName="upload-download"
+        variant="normal"
+        key={`reorderPointsButton`}
+        href={useHref(`/collections/${id}/reorder-points`)}
+      >
+        Reordenar
+      </Button>,
+    ],
   };
 
   const tableConfigTasks: GenericTableProps = {
@@ -109,7 +119,7 @@ export default function ViewCollection() {
       }
       editRecordLink={`/collections/${collection.id}/edit`}
       previousPageLink={`/projects`}
-      table={tableConfig}
+      table={tableConfigPoints}
       deleteModal={deleteModalConfig}
       otherHeaderActions={[
         <Button
