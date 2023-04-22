@@ -5,14 +5,14 @@ import Button from "@cloudscape-design/components/button";
 import { TextContent } from "@cloudscape-design/components";
 import { Equipment } from "../types";
 
-interface EquipmentRequiredProps {
+interface RequiredEquipmentProps {
   collectionId: string;
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   equipmentList: Equipment[];
 }
 
-export default function EquipmentRequired(props: EquipmentRequiredProps) {
+export default function RequiredEquipment(props: RequiredEquipmentProps) {
   return (
     <Modal
       onDismiss={() => props.setModalVisible(false)}

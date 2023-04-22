@@ -23,7 +23,7 @@ import {
   columnDefinitions as columnDefinitionsTasks,
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
-import EquipmentRequired from "../../components/EquipmentRequired";
+import RequiredEquipment from "../../components/RequiredEquipment";
 import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
 import Button from "@cloudscape-design/components/button";
 
@@ -33,7 +33,7 @@ export default function ViewCollection() {
 
   const [collection, setCollection] = useState<Collection>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [equipmentRequiredVisible, setEquipmentRequiredVisible] =
+  const [requiredEquipmentVisible, setRequiredEquipmentVisible] =
     useState(false);
   const [selectedPoints, setSelectedPoints] = useState([]);
   const [tasksAsItems, setTasksAsItems] = useState<TaskItem[]>([]);
@@ -114,8 +114,8 @@ export default function ViewCollection() {
       otherHeaderActions={[
         <Button
           iconName="key"
-          key={`equipmentRequiredButton`}
-          onClick={() => setEquipmentRequiredVisible(true)}
+          key={`requiredEquipmentButton`}
+          onClick={() => setRequiredEquipmentVisible(true)}
         >
           Equipamentos
         </Button>,
@@ -124,11 +124,11 @@ export default function ViewCollection() {
       <div style={{ marginTop: "15vh" }}>
         <GenericTable {...tableConfigTasks} />
       </div>
-      <EquipmentRequired
-        key={`equipmentRequired`}
+      <RequiredEquipment
+        key={`requiredEquipmentModal`}
         collectionId={collection.id}
-        modalVisible={equipmentRequiredVisible}
-        setModalVisible={setEquipmentRequiredVisible}
+        modalVisible={requiredEquipmentVisible}
+        setModalVisible={setRequiredEquipmentVisible}
         equipmentList={requiredEquipment}
       />
     </GenericViewPage>
