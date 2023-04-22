@@ -94,7 +94,9 @@ export const breadcrumpGroupItems = ({
       });
     }
     breadcrumbsItemsList.push({
-      text: `${localizedPageTypeName(pageType)} ponto`,
+      text: `${localizedPageTypeName(pageType)} ponto${
+        pageType === "reorder" ? "s" : ""
+      }`,
       href: "#",
     });
   }

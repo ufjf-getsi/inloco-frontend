@@ -23,53 +23,30 @@ interface GenericBaseRecordFormProps {
   setAlertVisible: Function;
   alertType: AlertProps.Type;
 }
-interface GenericCreateRecordWithoutParentFormProps
-  extends GenericBaseRecordFormProps {
-  edit: false;
-  hasParent: false;
-}
-interface GenericCreateRecordWithParentFormProps
-  extends GenericBaseRecordFormProps {
-  edit: false;
-  hasParent: true;
-  fetchRecordLink: string;
-  setRecord: Function;
-}
-type GenericCreateRecordFormProps =
-  | GenericCreateRecordWithoutParentFormProps
-  | GenericCreateRecordWithParentFormProps;
-type GenericEditRecordFormProps = GenericBaseRecordFormProps & {
-  edit: true;
-  fetchRecordLink: string;
-  setRecord: Function;
-};
-export type GenericRecordFormProps =
-  | GenericCreateRecordFormProps
-  | GenericEditRecordFormProps;
 
-type GenericCreateAndEditPageProps = GenericRecordProps &
-  GenericRecordFormProps & {
+export type GenericReorderPageProps = GenericRecordProps &
+  GenericBaseRecordFormProps & {
     description: string;
     navbarActiveLink: string;
     breadcrumbs: ReactNode;
     cancelRedirectLink: string;
+    fetchParentLink: string;
+    setParent: Function;
   };
 
-export default function GenericCreateAndEditPage(
-  props: PropsWithChildren<GenericCreateAndEditPageProps>
+export default function GenericReorderPage(
+  props: PropsWithChildren<GenericReorderPageProps>
 ) {
-  if (props.edit || props.hasParent) {
-    const navigate = useNavigate();
-    useEffect(() => {
-      fetchRecordData(
-        props.fetchRecordLink,
-        navigate,
-        function (response: AxiosResponse<any, any>) {
-          props.setRecord(response.data);
-        }
-      );
-    }, []);
-  }
+  const navigate = useNavigate();
+  useEffect(() => {
+    fetchRecordData(
+      props.fetchParentLink,
+      navigate,
+      function (response: AxiosResponse<any, any>) {
+        props.setParent(response.data);
+      }
+    );
+  }, []);
 
   return (
     <AppLayout
@@ -80,7 +57,7 @@ export default function GenericCreateAndEditPage(
         <ContentLayout
           header={
             <Header variant="h2" description={props.description}>
-              {props.edit ? `Editar` : `Criar`} {props.recordCategorySingular}
+              Reordenar {props.recordCategorySingular}
             </Header>
           }
         >
@@ -96,10 +73,7 @@ export default function GenericCreateAndEditPage(
                     >
                       Cancelar
                     </Button>
-                    <Button variant="primary">
-                      {props.edit ? `Editar` : `Criar`}{" "}
-                      {props.recordCategorySingular}
-                    </Button>
+                    <Button variant="primary">Confirmar</Button>
                   </SpaceBetween>
                 }
                 errorIconAriaLabel="Erro"
@@ -115,7 +89,7 @@ export default function GenericCreateAndEditPage(
             recordGenderFeminine={props.recordGenderFeminine}
             recordCategorySingular={props.recordCategorySingular}
             recordCategoryPlural={props.recordCategoryPlural}
-            pageType={props.edit ? "edit" : "create"}
+            pageType={`reorder`}
           />
         </ContentLayout>
       }
