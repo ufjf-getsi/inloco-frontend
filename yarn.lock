@@ -247,6 +247,16 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@cloudscape-design/board-components@^3.0.10":
+  version "3.0.10"
+  resolved "https://registry.npmjs.org/@cloudscape-design/board-components/-/board-components-3.0.10.tgz"
+  integrity sha512-XHSz5kcND9UusijscJC2RnNoA13GaoajEWr45Mq6uhsCBls76Eoee6yTjflqyE+Ui86JfB5xVkH31ZGnPYgj5w==
+  dependencies:
+    "@cloudscape-design/component-toolkit" "^1.0.0-beta"
+    "@cloudscape-design/test-utils-core" "^1.0.0"
+    "@dnd-kit/utilities" "^3.2.1"
+    clsx "^1.2.1"
+
 "@cloudscape-design/collection-hooks@^1.0.0", "@cloudscape-design/collection-hooks@^1.0.20":
   version "1.0.20"
   resolved "https://registry.npmjs.org/@cloudscape-design/collection-hooks/-/collection-hooks-1.0.20.tgz"
@@ -259,7 +269,7 @@
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
 
-"@cloudscape-design/components@^3.0.259":
+"@cloudscape-design/components@^3", "@cloudscape-design/components@^3.0.259":
   version "3.0.259"
   resolved "https://registry.npmjs.org/@cloudscape-design/components/-/components-3.0.259.tgz"
   integrity sha512-ABbmECgDkSPujma8pahb/VkvEY2g1t8QskPt0a611GhW+5W/O/X7tz+sy8OHGWPyuow/T1LOcV7VSs5T9BZ2Jg==
@@ -283,6 +293,11 @@
     tslib "^2.4.0"
     weekstart "^1.1.0"
 
+"@cloudscape-design/design-tokens@^3":
+  version "3.0.11"
+  resolved "https://registry.npmjs.org/@cloudscape-design/design-tokens/-/design-tokens-3.0.11.tgz"
+  integrity sha512-AmKFpZwm9qR4+6CPppZwqLpajuyIjBakGhTQ39sgw9OhB2aKeOKA9tGabikayPb4Pc4OiMDpGAGYEw+L5iR66g==
+
 "@cloudscape-design/global-styles@^1.0.8":
   version "1.0.8"
   resolved "https://registry.npmjs.org/@cloudscape-design/global-styles/-/global-styles-1.0.8.tgz"
@@ -302,6 +317,13 @@
   integrity sha512-2MF2NT6hCDXMPash5ZtGI1DZmGXOYx42Xd1T4V14P/+goG1cqe0CZLVLSR6FTQxb4S7KPUDmGfJKzpmLWOuD1g==
   dependencies:
     tslib "^2.4.0"
+
+"@dnd-kit/utilities@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.npmjs.org/@dnd-kit/utilities/-/utilities-3.2.1.tgz"
+  integrity sha512-OOXqISfvBw/1REtkSK2N3Fi2EQiLMlWUlqnOK/UpOISqBZPWpE6TqL+jcPtMOkE8TqYGiURvRdPSI9hltNUjEA==
+  dependencies:
+    tslib "^2.0.0"
 
 "@formatjs/ecma402-abstract@1.14.3":
   version "1.14.3"
@@ -800,7 +822,7 @@ chokidar@^3.5.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
-clsx@^1.1.0:
+clsx@^1.1.0, clsx@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/clsx/-/clsx-1.2.1.tgz"
   integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
@@ -1639,7 +1661,7 @@ react-virtual@^2.8.2:
   dependencies:
     "@reach/observe-rect" "^1.1.0"
 
-"react@^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.6.3 || ^17.0.0", "react@^16.8 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18.0.0", react@^18.2.0, react@>=15.0.0, react@>=16.6.0, react@>=16.8:
+"react@^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.6.3 || ^17.0.0", "react@^16.8 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18.0.0", react@^18.2.0, react@>=15.0.0, react@>=16.6.0, react@>=16.8, react@>=16.8.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

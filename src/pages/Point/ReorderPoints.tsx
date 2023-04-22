@@ -1,24 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Measurement, PointWithProjectId } from "../../types";
 
-import { AlertProps, SelectProps } from "@cloudscape-design/components";
-import {
-  breadcrumpGroupItems,
-  emptyFields,
-  fetchAllParameterOptionsList,
-  Fields,
-  getSendableData,
-  notLoadedRecord,
-  RecordForm,
-  validateFields,
-} from "../../components/Point/GenericPoint";
+import { AlertProps } from "@cloudscape-design/components";
+import { breadcrumpGroupItems } from "../../components/Point/GenericPoint";
 import { notLoadedRecord as notLoadedParent } from "../../components/Collection/GenericCollection";
 import { handleFormSubmit } from "../../generic/GenericFunctions";
 import GenericReorderPage, {
   GenericReorderPageProps,
 } from "../../generic/GenericPages/GenericReorderPage";
 import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+import { BoardProps } from "@cloudscape-design/board-components";
 
 export default function ReorderPoints() {
   const navigate = useNavigate();
@@ -26,60 +17,51 @@ export default function ReorderPoints() {
   const [collection, setCollection] = useState(notLoadedParent);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
-  // const [inputValues, setInputValues] = useState<Fields>(emptyFields);
-
-  let commonCollectionId = ``;
-  let commonProjectId = ``;
-  let previousPageWebLink = ``;
-  let fetchRecordServerLink = ``;
-  let pushRecordServerLink = ``;
-  // let sendableDataFunction = () => getSendableData({ inputValues });
+  const [items, setItems] = useState<
+    BoardProps.Item<{ title: string; content: string }>[]
+  >([]);
 
   const { collectionId } = useParams();
-  previousPageWebLink =
-    fetchRecordServerLink =
-    pushRecordServerLink =
-      `/collections/${collectionId}`;
-  commonCollectionId = collection.id ?? ``;
-  commonProjectId = collection.projectId ?? ``;
+  const previousPageWebLink = `/collections/${collectionId}`;
+  const fetchRecordServerLink = `/collections/${collectionId}`;
+  const pushRecordServerLink = `/collections/${collectionId}/reorder-points`;
+  const commonCollectionId = collection.id ?? ``;
+  const commonProjectId = collection.projectId ?? ``;
+
   function handleFetchResponse() {
-    // setInputValues({
-    //   name: point.name,
-    //   plannedCoordinates: point.plannedCoordinates ?? ``,
-    //   parameters: point.measurements.map((measurement: Measurement) => {
-    //     return {
-    //       value: measurement.parameter.id,
-    //       label: measurement.parameter.name,
-    //     };
-    //   }),
-    // });
+    const startingItems = collection.points.map((point, index) => {
+      return {
+        id: point.id,
+        columnSpan: 12,
+        rowSpan: 1,
+        data: { title: point.name, content: point.plannedCoordinates },
+      };
+    });
+    setItems(startingItems);
   }
   useEffect(() => {
     handleFetchResponse();
   }, [collection]);
 
-  // sendableDataFunction = () =>
-  //   getSendableData({
-  //     inputValues,
-  //     ...(collectionId ? { parentId: collectionId } : {}),
-  //   });
-
   async function handleSubmit(event: FormEvent) {
-    // handleFormSubmit({
-    //   event: event,
-    //   edit: edit,
-    //   validFields: validateFields(inputValues),
-    //   relativeServerUrl: pushRecordServerLink,
-    //   sendableData: sendableDataFunction(),
-    //   setAlertType: setAlertType,
-    //   setAlertVisible: setAlertVisible,
-    //   navigate: navigate,
-    //   successRedirectLink: previousPageWebLink,
-    // });
+    const sendableData = items.map((item) => {
+      return { id: item.id };
+    });
+    handleFormSubmit({
+      event: event,
+      edit: true,
+      validFields: true,
+      relativeServerUrl: pushRecordServerLink,
+      sendableData: sendableData,
+      setAlertType: setAlertType,
+      setAlertVisible: setAlertVisible,
+      navigate: navigate,
+      successRedirectLink: previousPageWebLink,
+    });
   }
 
   const commonAttributes: GenericReorderPageProps = {
-    description: `Reordenar pontos`,
+    description: ``,
     navbarActiveLink: `/projects`,
     breadcrumbs: (
       <GenericBreadcrumbGroup
@@ -100,7 +82,9 @@ export default function ReorderPoints() {
     cancelRedirectLink: previousPageWebLink,
     fetchParentLink: fetchRecordServerLink,
     setParent: setCollection,
+    items: items,
+    setItems: setItems,
   };
 
-  return <GenericReorderPage {...commonAttributes} />;
+  return <GenericReorderPage {...commonAttributes}></GenericReorderPage>;
 }
