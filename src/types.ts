@@ -27,6 +27,7 @@ export interface Point {
   plannedCoordinates: string;
   actualCoordinates: string;
   measurements: Measurement[];
+  orderOnRoute: number;
 }
 export type PointWithProjectId = Point & {
   projectId: string;

@@ -56,6 +56,7 @@ export default function ViewCollection() {
     allRecords: collection.points.map((point): Item => {
       return {
         id: point.id,
+        orderOnRoute: point.orderOnRoute,
         name: point.name,
         coordinates: point.plannedCoordinates,
       };
@@ -77,6 +78,7 @@ export default function ViewCollection() {
         Reordenar
       </Button>,
     ],
+    orderBy: 1,
   };
 
   const tableConfigTasks: GenericTableProps = {

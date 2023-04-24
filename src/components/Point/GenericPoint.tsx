@@ -48,6 +48,7 @@ export const emptyFields: Fields = {
 export const notLoadedRecord: Point = {
   id: "",
   collectionId: "",
+  orderOnRoute: 0,
   name: "Carregando...",
   plannedCoordinates: "",
   actualCoordinates: "",
@@ -144,6 +145,7 @@ export function getSendableData({
   return {
     id: "",
     collectionId: parentId ?? "",
+    orderOnRoute: 0,
     name: inputValues.name,
     plannedCoordinates: inputValues.plannedCoordinates,
     actualCoordinates: "",

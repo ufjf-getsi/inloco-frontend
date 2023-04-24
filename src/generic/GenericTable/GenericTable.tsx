@@ -30,6 +30,7 @@ export interface GenericTableProps extends GenericRecordProps {
   setSelectedRecords: Function;
   selectionType?: TableProps.SelectionType;
   otherHeaderActions?: Array<ReactNode>;
+  orderBy?: number;
 }
 
 function EmptyState({
@@ -64,6 +65,7 @@ export default function GenericTable({
   setSelectedRecords,
   selectionType,
   otherHeaderActions,
+  orderBy,
 }: GenericTableProps) {
   const [preferences, setPreferences] = useState({
     pageSize: 10,
@@ -108,7 +110,11 @@ export default function GenericTable({
       ),
     },
     pagination: { pageSize: preferences.pageSize },
-    sorting: { defaultState: { sortingColumn: columnDefinitions[1] } },
+    sorting: {
+      defaultState: {
+        sortingColumn: columnDefinitions[orderBy && orderBy >= 0 ? orderBy : 1],
+      },
+    },
     selection: { trackBy: "id", keepSelection: true },
   });
   const { selectedItems } = collectionProps;
