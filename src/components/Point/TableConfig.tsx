@@ -1,9 +1,10 @@
 import { useHref } from "react-router-dom";
 import { Link } from "@cloudscape-design/components";
-import { createLabelFunction } from "../Generic/GenericTable/CommonTableFunctions";
+import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunctions";
 
-interface Item {
+export interface Item {
   id: string;
+  orderOnRoute: number;
   name: string;
   coordinates: string;
 }
@@ -25,6 +26,13 @@ export const columnDefinitions = [
     sortingField: "id",
   },
   {
+    id: "orderOnRoute",
+    header: "Ordem",
+    cell: (item: Item) => <span>{item.orderOnRoute}</span>,
+    ariaLabel: createLabelFunction("Ordem"),
+    sortingField: "orderOnRoute",
+  },
+  {
     id: "name",
     header: "Nome",
     cell: (item: Item) => (
@@ -38,7 +46,7 @@ export const columnDefinitions = [
   {
     id: "coordinates",
     header: "Coordenadas",
-    cell: (item: Item) => item.coordinates,
+    cell: (item: Item) => <span>{item.coordinates}</span>,
     ariaLabel: createLabelFunction("Coordenadas"),
     sortingField: "coordinates",
   },

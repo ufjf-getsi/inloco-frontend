@@ -17,7 +17,7 @@ import { notLoadedRecord as notLoadedParent } from "../../components/Collection/
 import {
   handleErrorRedirect,
   handleFormSubmit,
-} from "../../components/Generic/GenericFunctions";
+} from "../../generic/GenericFunctions";
 
 export default function CreateEditTask({ edit }: { edit: boolean }) {
   const navigate = useNavigate();

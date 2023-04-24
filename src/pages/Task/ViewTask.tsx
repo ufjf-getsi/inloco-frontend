@@ -2,14 +2,14 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { Task } from "../../types";
 
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 import {
   breadcrumpGroupItems,
   formatTitle,
   notLoadedRecord,
 } from "../../components/Task/GenericTask";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 
 export default function ViewTask() {
   const { id } = useParams();

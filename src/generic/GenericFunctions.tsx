@@ -59,6 +59,8 @@ export function localizedPageTypeName(pageType: PageType) {
       return "Criar";
     case "edit":
       return "Editar";
+    case "reorder":
+      return "Reordenar";
   }
 }
 

@@ -1,28 +1,31 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useHref, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Collection } from "../../types";
 
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
 import {
   breadcrumpGroupItems,
+  fetchAllRequiredEquipment,
   fetchTableData,
   notLoadedRecord,
 } from "../../components/Collection/GenericCollection";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import GenericTable, {
   GenericTableProps,
-} from "../../components/Generic/GenericTable/GenericTable";
-import {
-  columnDefinitions,
-  visibleContent,
-} from "../../components/Point/TableConfig";
+} from "../../generic/GenericTable/GenericTable";
 import {
   Item,
+  columnDefinitions as columnDefinitionsPoints,
+  visibleContent as visibleContentPoints,
+} from "../../components/Point/TableConfig";
+import {
+  Item as TaskItem,
   columnDefinitions as columnDefinitionsTasks,
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
-import PlanningModal from "../../components/PlanningModal";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import RequiredEquipment from "../../components/RequiredEquipment";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+import Button from "@cloudscape-design/components/button";
 
 export default function ViewCollection() {
   const { id } = useParams();
@@ -30,9 +33,11 @@ export default function ViewCollection() {
 
   const [collection, setCollection] = useState<Collection>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [planningModalVisible, setPlanningModalVisible] = useState(false);
+  const [requiredEquipmentVisible, setRequiredEquipmentVisible] =
+    useState(false);
   const [selectedPoints, setSelectedPoints] = useState([]);
-  const [tasksAsItems, setTasksAsItems] = useState<Item[]>([]);
+  const [tasksAsItems, setTasksAsItems] = useState<TaskItem[]>([]);
+  const [requiredEquipment, setRequiredEquipment] = useState([]);
 
   useEffect(() => {
     fetchTableData({
@@ -40,17 +45,40 @@ export default function ViewCollection() {
       setTasksAsItems: setTasksAsItems,
       collectionId: id ?? ``,
     });
+    fetchAllRequiredEquipment({
+      navigate: navigate,
+      collectionId: id ?? ``,
+      setAllRequiredEquipment: setRequiredEquipment,
+    });
   }, []);
 
-  const tableConfig: GenericTableProps = {
-    allRecords: collection.points,
-    columnDefinitions: columnDefinitions,
+  const tableConfigPoints: GenericTableProps = {
+    allRecords: collection.points.map((point): Item => {
+      return {
+        id: point.id,
+        orderOnRoute: point.orderOnRoute,
+        name: point.name,
+        coordinates: point.plannedCoordinates,
+      };
+    }),
+    columnDefinitions: columnDefinitionsPoints,
     recordCategorySingular: `ponto`,
     recordCategoryPlural: `pontos`,
     recordGenderFeminine: false,
-    addRecordLink: `/collections/${collection.id}/createPoint`,
-    visibleContent: visibleContent,
+    addRecordLink: `/collections/${collection.id}/create-point`,
+    visibleContent: visibleContentPoints,
     setSelectedRecords: setSelectedPoints,
+    otherHeaderActions: [
+      <Button
+        iconName="upload-download"
+        variant="normal"
+        key={`reorderPointsButton`}
+        href={useHref(`/collections/${id}/reorder-points`)}
+      >
+        Reordenar
+      </Button>,
+    ],
+    orderBy: 1,
   };
 
   const tableConfigTasks: GenericTableProps = {
@@ -59,7 +87,7 @@ export default function ViewCollection() {
     recordCategorySingular: `tarefa`,
     recordCategoryPlural: `tarefas`,
     recordGenderFeminine: true,
-    addRecordLink: `/collections/${id}/createTask`,
+    addRecordLink: `/collections/${id}/create-task`,
     visibleContent: visibleContentTasks,
     setSelectedRecords: setSelectedPoints,
   };
@@ -93,18 +121,27 @@ export default function ViewCollection() {
       }
       editRecordLink={`/collections/${collection.id}/edit`}
       previousPageLink={`/projects`}
-      table={tableConfig}
+      table={tableConfigPoints}
       deleteModal={deleteModalConfig}
+      otherHeaderActions={[
+        <Button
+          iconName="key"
+          key={`requiredEquipmentButton`}
+          onClick={() => setRequiredEquipmentVisible(true)}
+        >
+          Equipamentos
+        </Button>,
+      ]}
     >
       <div style={{ marginTop: "15vh" }}>
         <GenericTable {...tableConfigTasks} />
       </div>
-      <PlanningModal
-        key={`planningModal`}
+      <RequiredEquipment
+        key={`requiredEquipmentModal`}
         collectionId={collection.id}
-        points={collection.points}
-        modalVisible={planningModalVisible}
-        setModalVisible={setPlanningModalVisible}
+        modalVisible={requiredEquipmentVisible}
+        setModalVisible={setRequiredEquipmentVisible}
+        equipmentList={requiredEquipment}
       />
     </GenericViewPage>
   );

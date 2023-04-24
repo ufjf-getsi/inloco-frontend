@@ -6,9 +6,9 @@ import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Parameter/TableConfig";
-import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
+import GenericListPage from "../../generic/GenericPages/GenericListPage";
 import { breadcrumpGroupItems } from "../../components/Parameter/GenericParameter";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function ParametersList() {
   const [parameters, setParameters] = useState<Parameter[]>([]);

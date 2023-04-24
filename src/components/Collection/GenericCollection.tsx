@@ -9,13 +9,13 @@ import {
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
-} from "../Generic/GenericPages/GenericCreateAndEditPage";
+} from "../../generic/GenericPages/GenericCreateAndEditPage";
 import {
   fetchRecordData,
   localizedPageTypeName,
-} from "../Generic/GenericFunctions";
-import { PageType } from "../Generic/GenericInterfaces";
-import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+} from "../../generic/GenericFunctions";
+import { PageType } from "../../generic/GenericInterfaces";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 import { AxiosResponse } from "axios";
 import { Item } from "../Task/TableConfig";
 
@@ -109,6 +109,24 @@ export function fetchTableData({
         }
       });
       setTasksAsItems(items);
+    }
+  );
+}
+
+export function fetchAllRequiredEquipment({
+  navigate,
+  collectionId,
+  setAllRequiredEquipment,
+}: {
+  navigate: NavigateFunction;
+  collectionId: string;
+  setAllRequiredEquipment: Function;
+}) {
+  fetchRecordData(
+    `/collections/${collectionId}/required-equipment`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
+      setAllRequiredEquipment(response.data);
     }
   );
 }

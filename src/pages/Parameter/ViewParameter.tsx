@@ -3,20 +3,20 @@ import { useParams } from "react-router-dom";
 import { Equipment, Parameter } from "../../types";
 
 import { BreadcrumbGroup } from "@cloudscape-design/components";
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import {
   breadcrumpGroupItems,
   formatDataType,
   notLoadedRecord,
 } from "../../components/Parameter/GenericParameter";
-import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
+import { GenericTableProps } from "../../generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   Item,
   visibleContent,
 } from "../../components/Equipment/TableConfig";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function ViewParameter() {
   const { id } = useParams();

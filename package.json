@@ -12,9 +12,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cloudscape-design/collection-hooks": "^1.0.19",
-    "@cloudscape-design/components": "^3.0.112",
-    "@cloudscape-design/global-styles": "^1.0.1",
+    "@cloudscape-design/board-components": "^3.0.10",
+    "@cloudscape-design/collection-hooks": "^1.0.20",
+    "@cloudscape-design/components": "^3.0.259",
+    "@cloudscape-design/global-styles": "^1.0.8",
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.1",
     "axios": "^1.1.3",

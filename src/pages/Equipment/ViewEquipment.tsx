@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Equipment } from "../../types";
 
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import {
   breadcrumpGroupItems,
   notLoadedRecord,
 } from "../../components/Equipment/GenericEquipment";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function ViewEquipment() {
   const { id } = useParams();
