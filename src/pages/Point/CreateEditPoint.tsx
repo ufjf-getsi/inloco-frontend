@@ -13,9 +13,9 @@ import {
   validateFields,
 } from "../../components/Point/GenericPoint";
 import { notLoadedRecord as notLoadedParent } from "../../components/Collection/GenericCollection";
-import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
+import { handleFormSubmit } from "../../generic/GenericFunctions";
 
-export default function CreateEditCollection({ edit }: { edit: boolean }) {
+export default function CreateEditPoint({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
   const [point, setPoint] = useState<PointWithProjectId>({

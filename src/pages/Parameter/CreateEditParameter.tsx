@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { Equipment, Parameter } from "../../types";
@@ -14,11 +13,7 @@ import {
   notLoadedRecord,
   getSendableData,
 } from "../../components/Parameter/GenericParameter";
-import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
-import {
-  fetchRecordData,
-  handleFormSubmit,
-} from "../../components/Generic/GenericFunctions";
+import { handleFormSubmit } from "../../generic/GenericFunctions";
 
 export default function CreateEditParameter({ edit }: { edit: boolean }) {
   const navigate = useNavigate();

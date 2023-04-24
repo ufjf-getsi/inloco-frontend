@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import "@cloudscape-design/global-styles/index.css";
+import "./styles/main.css";
 import ProjectsList from "./pages/Project/ProjectsList";
 import ViewProject from "./pages/Project/ViewProject";
 import ViewCollection from "./pages/Collection/ViewCollection";
@@ -20,6 +22,7 @@ import ViewSupply from "./pages/Supply/ViewSupply";
 
 import "@cloudscape-design/global-styles/index.css";
 import "./styles/main.css";
+import ReorderPoints from "./pages/Point/ReorderPoints";
 
 function App() {
   return (
@@ -38,7 +41,7 @@ function App() {
       />
       {/* Project -> Collection */}
       <Route
-        path={"/projects/:projectId/createCollection"}
+        path={"/projects/:projectId/create-collection"}
         element={<CreateEditCollection edit={false} />}
       />
       <Route path={"/collections/:id"} element={<ViewCollection />} />
@@ -48,7 +51,7 @@ function App() {
       />
       {/* Project -> Collection -> Point */}
       <Route
-        path={"/collections/:collectionId/createPoint"}
+        path={"/collections/:collectionId/create-point"}
         element={<CreateEditPoint edit={false} />}
       />
       <Route path={"/points/:id"} element={<ViewPoint />} />
@@ -56,9 +59,13 @@ function App() {
         path={"/points/:id/edit"}
         element={<CreateEditPoint edit={true} />}
       />
+      <Route
+        path={"/collections/:collectionId/reorder-points"}
+        element={<ReorderPoints />}
+      />
       {/* Project -> Collection -> Task */}
       <Route
-        path={"/collections/:collectionId/createTask"}
+        path={"/collections/:collectionId/create-task"}
         element={<CreateEditTask edit={false} />}
       />
       <Route path={"/tasks/:id"} element={<ViewTask />} />

@@ -11,13 +11,13 @@ import {
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
-} from "../Generic/GenericPages/GenericCreateAndEditPage";
+} from "../../generic/GenericPages/GenericCreateAndEditPage";
 import {
   fetchRecordData,
   localizedPageTypeName,
-} from "../Generic/GenericFunctions";
-import { PageType } from "../Generic/GenericInterfaces";
-import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+} from "../../generic/GenericFunctions";
+import { PageType } from "../../generic/GenericInterfaces";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
 export interface Fields {
@@ -48,6 +48,7 @@ export const emptyFields: Fields = {
 export const notLoadedRecord: Point = {
   id: "",
   collectionId: "",
+  orderOnRoute: 0,
   name: "Carregando...",
   plannedCoordinates: "",
   actualCoordinates: "",
@@ -94,7 +95,9 @@ export const breadcrumpGroupItems = ({
       });
     }
     breadcrumbsItemsList.push({
-      text: `${localizedPageTypeName(pageType)} ponto`,
+      text: `${localizedPageTypeName(pageType)} ponto${
+        pageType === "reorder" ? "s" : ""
+      }`,
       href: "#",
     });
   }
@@ -142,6 +145,7 @@ export function getSendableData({
   return {
     id: "",
     collectionId: parentId ?? "",
+    orderOnRoute: 0,
     name: inputValues.name,
     plannedCoordinates: inputValues.plannedCoordinates,
     actualCoordinates: "",

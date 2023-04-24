@@ -5,12 +5,12 @@ import {
   columnDefinitions as columnDefinitionsEquipment,
   visibleContent as visibleContentEquipment,
 } from "../../components/Equipment/TableConfig";
-import GenericListPage from "../../components/Generic/GenericPages/GenericListPage";
+import GenericListPage from "../../generic/GenericPages/GenericListPage";
 import { breadcrumpGroupItems } from "../../components/Equipment/GenericEquipment";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 import GenericTable, {
   GenericTableProps,
-} from "../../components/Generic/GenericTable/GenericTable";
+} from "../../generic/GenericTable/GenericTable";
 import {
   columnDefinitions as columnDefinitionsSupplies,
   visibleContent as visibleContentSupplies,

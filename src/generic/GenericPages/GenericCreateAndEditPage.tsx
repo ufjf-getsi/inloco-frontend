@@ -11,7 +11,7 @@ import {
   Button,
   AlertProps,
 } from "@cloudscape-design/components";
-import Navbar from "../../Navbar";
+import Navbar from "../../components/Navbar";
 import { GenericRecordProps } from "../GenericInterfaces";
 import GenericReturnMessageAlert from "../GenericReturnMessageAlert";
 import { fetchRecordData } from "../GenericFunctions";
@@ -71,7 +71,6 @@ export default function GenericCreateAndEditPage(
     }, []);
   }
 
-  const recordGenderArticle = props.recordGenderFeminine ? "a" : "o";
   return (
     <AppLayout
       navigation={<Navbar activeLink={props.navbarActiveLink} />}
@@ -113,9 +112,10 @@ export default function GenericCreateAndEditPage(
             alertVisible={props.alertVisible}
             setAlertVisible={props.setAlertVisible}
             alertType={props.alertType}
-            recordGenderArticle={recordGenderArticle}
+            recordGenderFeminine={props.recordGenderFeminine}
             recordCategorySingular={props.recordCategorySingular}
-            edit={props.edit}
+            recordCategoryPlural={props.recordCategoryPlural}
+            pageType={props.edit ? "edit" : "create"}
           />
         </ContentLayout>
       }

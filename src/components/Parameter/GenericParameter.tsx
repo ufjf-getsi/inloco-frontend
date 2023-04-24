@@ -13,19 +13,19 @@ import {
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
-} from "../Generic/GenericPages/GenericCreateAndEditPage";
+} from "../../generic/GenericPages/GenericCreateAndEditPage";
 import {
   OptionStringString as Option,
   PageType,
-} from "../Generic/GenericInterfaces";
+} from "../../generic/GenericInterfaces";
 import {
   cancelLoadAndRedirectBackwards,
   fetchRecordData,
   localizedPageTypeName,
   searchLabelByValue,
-} from "../Generic/GenericFunctions";
+} from "../../generic/GenericFunctions";
 import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
-import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;

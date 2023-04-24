@@ -2,19 +2,19 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PointWithProjectId } from "../../types";
 
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import {
   breadcrumpGroupItems,
   notLoadedRecord,
 } from "../../components/Point/GenericPoint";
-import { GenericTableProps } from "../../components/Generic/GenericTable/GenericTable";
+import { GenericTableProps } from "../../generic/GenericTable/GenericTable";
 import {
   columnDefinitions,
   Item,
   visibleContent,
 } from "../../components/Measurement/TableConfig";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function ViewPoint() {
   const { id } = useParams();
@@ -30,6 +30,7 @@ export default function ViewPoint() {
     allRecords: point.measurements.map((measurement): Item => {
       return {
         id: measurement.id,
+        parameterId: measurement.parameter.id,
         parameterName: measurement.parameter.name,
         isPending: measurement.isPending,
         result: measurement.result,

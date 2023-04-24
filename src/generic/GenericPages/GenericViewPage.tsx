@@ -10,7 +10,7 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import Navbar from "../../Navbar";
+import Navbar from "../../components/Navbar";
 import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
 import GenericDeleteModal, {
   GenericDeleteModalProps,
@@ -86,6 +86,8 @@ export default function GenericViewPage(
                 addRecordLink={props.table.addRecordLink}
                 visibleContent={props.table.visibleContent}
                 setSelectedRecords={props.table.setSelectedRecords}
+                selectionType={props.table.selectionType}
+                otherHeaderActions={props.table.otherHeaderActions}
               />
             )}
             {props.children}
