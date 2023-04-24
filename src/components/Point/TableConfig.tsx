@@ -4,6 +4,7 @@ import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunct
 
 export interface Item {
   id: string;
+  orderOnRoute: number;
   name: string;
   coordinates: string;
 }
@@ -25,6 +26,13 @@ export const columnDefinitions = [
     sortingField: "id",
   },
   {
+    id: "orderOnRoute",
+    header: "Ordem",
+    cell: (item: Item) => <span>{item.orderOnRoute}</span>,
+    ariaLabel: createLabelFunction("Ordem"),
+    sortingField: "orderOnRoute",
+  },
+  {
     id: "name",
     header: "Nome",
     cell: (item: Item) => (
@@ -38,7 +46,7 @@ export const columnDefinitions = [
   {
     id: "coordinates",
     header: "Coordenadas",
-    cell: (item: Item) => item.coordinates,
+    cell: (item: Item) => <span>{item.coordinates}</span>,
     ariaLabel: createLabelFunction("Coordenadas"),
     sortingField: "coordinates",
   },
