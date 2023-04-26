@@ -41,7 +41,9 @@ export const columnDefinitions = [
     header: "Data de início",
     cell: (item: Item) => (
       <Link href={recordViewPageLink(item)}>
-        <span className="font-bold">{item.startDate}</span>
+        <span className="font-bold">
+          {new Date(item.startDate).toLocaleDateString()}
+        </span>
       </Link>
     ),
     ariaLabel: createLabelFunction("Data de início"),

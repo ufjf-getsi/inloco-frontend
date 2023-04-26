@@ -11,7 +11,7 @@ import {
   notLoadedRecord,
   getSendableData,
 } from "../../components/Supply/GenericSupply";
-import { handleFormSubmit } from "../../components/Generic/GenericFunctions";
+import { handleFormSubmit } from "../../generic/GenericFunctions";
 
 export default function CreateEditSupply({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function CreateEditSupply({ edit }: { edit: boolean }) {
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
 
   let previousPageWebLink = `/equipment`;
-  let pushRecordServerLink = `/equipment`;
+  let pushRecordServerLink = `/supplies`;
   let fetchRecordServerLink = ``;
 
   if (edit) {

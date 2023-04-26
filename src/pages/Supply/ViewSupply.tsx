@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Supply } from "../../types";
 
-import GenericViewPage from "../../components/Generic/GenericPages/GenericViewPage";
-import { GenericDeleteModalProps } from "../../components/Generic/GenericDeleteModal";
+import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import {
   breadcrumpGroupItems,
   notLoadedRecord,
 } from "../../components/Supply/GenericSupply";
-import GenericBreadcrumbGroup from "../../components/Generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export default function ViewSupply() {
   const { id } = useParams();
@@ -24,7 +24,7 @@ export default function ViewSupply() {
     recordName: supply.name,
     recordGenderFeminine: false,
     serverDeleteLink: `/supplies/${id}`,
-    afterDeleteRedirectLink: `/supplies`,
+    afterDeleteRedirectLink: `/equipment`,
   };
 
   return (
@@ -40,7 +40,7 @@ export default function ViewSupply() {
         />
       }
       editRecordLink={`/supplies/${supply.id}/edit`}
-      previousPageLink={`/supplies`}
+      previousPageLink={`/equipment`}
       deleteModal={deleteModalConfig}
     />
   );

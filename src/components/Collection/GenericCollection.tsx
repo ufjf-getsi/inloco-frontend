@@ -222,6 +222,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
                 startDate: event.detail.value,
               }))
             }
+            locale="pt-BR"
             value={inputValues.startDate}
             nextMonthAriaLabel="Next month"
             placeholder="YYYY/MM/DD"
@@ -238,6 +239,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
                 endDate: event.detail.value,
               }))
             }
+            locale="pt-BR"
             value={inputValues.endDate}
             nextMonthAriaLabel="Next month"
             placeholder="YYYY/MM/DD"

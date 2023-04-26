@@ -1,18 +1,13 @@
 import { useHref, useParams } from "react-router-dom";
 import { Supply } from "../../types";
 
-import {
-  SpaceBetween,
-  FormField,
-  Input,
-  BreadcrumbGroup,
-} from "@cloudscape-design/components";
+import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
-} from "../Generic/GenericPages/GenericCreateAndEditPage";
-import { localizedPageTypeName } from "../Generic/GenericFunctions";
-import { PageType } from "../Generic/GenericInterfaces";
-import GenericBreadcrumbGroup from "../Generic/GerenicBreadcrumbGroup";
+} from "../../generic/GenericPages/GenericCreateAndEditPage";
+import { localizedPageTypeName } from "../../generic/GenericFunctions";
+import { PageType } from "../../generic/GenericInterfaces";
+import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;
@@ -50,7 +45,7 @@ export const breadcrumpGroupItems = ({
   const breadcrumbsItemsList = [
     {
       text: "Suprimentos",
-      href: useHref(`/equipment/supplies`),
+      href: useHref(`/equipment`),
     },
   ];
   if (pageType !== "list") {
