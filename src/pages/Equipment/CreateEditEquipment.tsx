@@ -35,6 +35,7 @@ export default function CreateEditEquipment({ edit }: { edit: boolean }) {
     function handleFetchResponse() {
       setInputValues({
         name: equipment.name,
+        type: equipment.type,
       });
     }
     useEffect(() => {

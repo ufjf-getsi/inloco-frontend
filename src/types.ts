@@ -54,6 +54,7 @@ export interface Parameter {
 export interface Equipment {
   id: string;
   name: string;
+  type: string;
   //availability: boolean;
 }
 

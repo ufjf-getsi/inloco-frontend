@@ -30,6 +30,7 @@ export default function ViewParameter() {
       return {
         id: equipment.id,
         name: equipment.name,
+        type: equipment.type,
       };
     }),
     columnDefinitions: columnDefinitions,
