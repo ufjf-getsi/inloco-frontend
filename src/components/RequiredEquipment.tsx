@@ -36,13 +36,13 @@ export default function RequiredEquipment(props: RequiredEquipmentProps) {
     >
       <TextContent>
         <strong>
-          Os seguintes equipamentos são necessários para realizar a coleta:
+          Para essa coleta serão necessários equipamentos dos tipos:
         </strong>
         <ul>
           {props.equipmentList.map((equipment) => {
             return (
               <li key={equipment.id} className={`list-disc`}>
-                {equipment.name}
+                {equipment.type}
               </li>
             );
           })}

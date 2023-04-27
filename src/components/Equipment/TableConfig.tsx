@@ -5,9 +5,10 @@ import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunct
 export interface Item {
   id: string;
   name: string;
+  type: string;
 }
 
-export const visibleContent = ["name"];
+export const visibleContent = ["name", "type"];
 
 const recordViewPageLink = (item: Item) => useHref(`/equipment/${item.id}`);
 
@@ -33,5 +34,16 @@ export const columnDefinitions = [
     ),
     ariaLabel: createLabelFunction("Nome"),
     sortingField: "name",
+  },
+  {
+    id: "type",
+    header: "Tipo",
+    cell: (item: Item) => (
+      <Link href={recordViewPageLink(item)}>
+        <span className="font-bold">{item.type}</span>
+      </Link>
+    ),
+    ariaLabel: createLabelFunction("Tipo"),
+    sortingField: "type",
   },
 ];

@@ -121,7 +121,7 @@ export function fetchAllEquipmentOptionsList({
       setAllEquipmentOptionsList(
         response.data.map((item: Equipment) => ({
           value: item.id,
-          label: item.name,
+          label: item.type,
         }))
       );
     }
@@ -146,7 +146,7 @@ export function getSendableData(inputValues: Fields): Parameter {
     dataType: inputValues.dataType.value,
     equipmentList: inputValues.equipmentList.map(
       (equipmentOption: OptionDefinition) => {
-        return { id: equipmentOption.value ?? ``, name: `` };
+        return { id: equipmentOption.value ?? ``, name: ``, type: `` };
       }
     ),
   };
@@ -253,7 +253,7 @@ function FormFields({
           deselectAriaLabel={(e) => `Remove ${e.label}`}
           options={allEquipmentOptionsList}
           loadingText="Carregando equipamentos"
-          placeholder="Selecione os equipamentos requeridos"
+          placeholder="Selecione os tipos de equipamentos requeridos"
           selectedAriaLabel="Selecionado"
           statusType={
             allEquipmentOptionsList

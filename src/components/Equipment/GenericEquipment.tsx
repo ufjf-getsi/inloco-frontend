@@ -11,6 +11,7 @@ import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;
+  type: string;
 }
 
 interface FormFieldsProps {
@@ -25,11 +26,13 @@ type ImplementedRecordFormProps = GenericRecordFormProps &
 
 export const emptyFields: Fields = {
   name: "",
+  type: "",
 };
 
 export const notLoadedRecord: Equipment = {
   id: "",
   name: "Carregando...",
+  type: "",
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -61,7 +64,7 @@ export const breadcrumpGroupItems = ({
 };
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.name) {
+  if (inputValues.name && inputValues.type) {
     return true;
   } else return false;
 }
@@ -70,6 +73,7 @@ export function getSendableData(inputValues: Fields): Equipment {
   return {
     id: "",
     name: inputValues.name,
+    type: inputValues.type,
   };
 }
 
@@ -128,6 +132,18 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
             setInputValues((prevState: Fields) => ({
               ...prevState,
               name: event.detail.value,
+            }))
+          }
+        />
+      </FormField>
+      <FormField label="Tipo">
+        <Input
+          value={inputValues.type}
+          placeholder={`Tipo do equipamento`}
+          onChange={(event) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              type: event.detail.value,
             }))
           }
         />
