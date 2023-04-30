@@ -4,6 +4,7 @@ import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunct
 
 export interface Item {
   id: string;
+  orderOnCollection: number;
   title: string;
   status: string;
 }
@@ -23,6 +24,13 @@ export const columnDefinitions = [
     ),
     ariaLabel: createLabelFunction("id"),
     sortingField: "id",
+  },
+  {
+    id: "orderOnCollection",
+    header: "Ordem",
+    cell: (item: Item) => <span>{item.orderOnCollection}</span>,
+    ariaLabel: createLabelFunction("Ordem"),
+    sortingField: "orderOnCollection",
   },
   {
     id: "title",

@@ -18,6 +18,7 @@ import CreateEditTask from "./pages/Task/CreateEditTask";
 import CreateEditParameter from "./pages/Parameter/CreateEditParameter";
 import CreateEditEquipment from "./pages/Equipment/CreateEditEquipment";
 import ReorderPoints from "./pages/Point/ReorderPoints";
+import ReorderTasks from "./pages/Task/ReorderTasks";
 
 function App() {
   return (
@@ -67,6 +68,10 @@ function App() {
       <Route
         path={"/tasks/:id/edit"}
         element={<CreateEditTask edit={true} />}
+      />
+      <Route
+        path={"/collections/:collectionId/reorder-tasks"}
+        element={<ReorderTasks />}
       />
       {/* Parameter */}
       <Route path={"/parameters"} element={<ParametersList />} />

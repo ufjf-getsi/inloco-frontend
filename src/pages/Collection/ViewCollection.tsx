@@ -90,6 +90,17 @@ export default function ViewCollection() {
     addRecordLink: `/collections/${id}/create-task`,
     visibleContent: visibleContentTasks,
     setSelectedRecords: setSelectedPoints,
+    otherHeaderActions: [
+      <Button
+        iconName="upload-download"
+        variant="normal"
+        key={`reorderTasksButton`}
+        href={useHref(`/collections/${id}/reorder-tasks`)}
+      >
+        Reordenar
+      </Button>,
+    ],
+    orderBy: 1,
   };
 
   const deleteModalConfig: GenericDeleteModalProps = {
