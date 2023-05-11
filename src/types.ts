@@ -48,6 +48,7 @@ export interface Parameter {
   unit: string;
   dataType: string;
   equipmentList: Equipment[];
+  supplyList: Supply[];
 }
 
 // Equipamento

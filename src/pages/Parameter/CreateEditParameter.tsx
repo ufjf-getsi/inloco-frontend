@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Equipment, Parameter } from "../../types";
+import { Equipment, Parameter, Supply } from "../../types";
 
 import { AlertProps, SelectProps } from "@cloudscape-design/components";
 import {
@@ -10,6 +10,7 @@ import {
   RecordForm,
   formatDataType,
   fetchAllEquipmentOptionsList,
+  fetchAllSupplyOptionsList,
   notLoadedRecord,
   getSendableData,
 } from "../../components/Parameter/GenericParameter";
@@ -24,6 +25,8 @@ export default function CreateEditParameter({ edit }: { edit: boolean }) {
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
   const [allEquipmentOptionsList, setAllEquipmentOptionsList] =
+    useState<SelectProps.Options>([]);
+  const [allSupplyOptionsList, setAllSupplyOptionsList] =
     useState<SelectProps.Options>([]);
 
   let previousPageWebLink = `/parameters`;
@@ -47,6 +50,12 @@ export default function CreateEditParameter({ edit }: { edit: boolean }) {
           return {
             value: equipment.id,
             label: equipment.name,
+          };
+        }),
+        supplyList: parameter.supplyList.map((supply: Supply) => {
+          return {
+            value: supply.id,
+            label: supply.name,
           };
         }),
       });
@@ -77,6 +86,13 @@ export default function CreateEditParameter({ edit }: { edit: boolean }) {
     });
   }, []);
 
+  useEffect(() => {
+    fetchAllSupplyOptionsList({
+      navigate: navigate,
+      setAllSupplyOptionsList: setAllSupplyOptionsList,
+    });
+  }, []);
+
   const commonAttributes: any = {
     handleSubmit: handleSubmit,
     alertType: alertType,
@@ -86,6 +102,7 @@ export default function CreateEditParameter({ edit }: { edit: boolean }) {
     setInputValues: setInputValues,
     cancelRedirectLink: previousPageWebLink,
     allEquipmentOptionsList: allEquipmentOptionsList,
+    allSupplyOptionsList: allSupplyOptionsList,
     hasParent: false,
   };
   if (edit) {
