@@ -1,12 +1,11 @@
 import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
-import { Equipment, Parameter } from "../../types";
+import { Equipment, Parameter, Supply } from "../../types";
 
 import {
   SpaceBetween,
   FormField,
   Input,
-  BreadcrumbGroup,
   Select,
   Multiselect,
   SelectProps,
@@ -32,12 +31,14 @@ export interface Fields {
   unit: string;
   dataType: Option;
   equipmentList: SelectProps.Options;
+  supplyList: SelectProps.Options;
 }
 
 interface FormFieldsProps {
   inputValues: Fields;
   setInputValues: Function;
   allEquipmentOptionsList: SelectProps.Options;
+  allSupplyOptionsList: SelectProps.Options;
 }
 
 type ImplementedRecordFormProps = GenericRecordFormProps &
@@ -65,6 +66,7 @@ export const emptyFields: Fields = {
   unit: "",
   dataType: dataTypeOptions[0],
   equipmentList: [],
+  supplyList: [],
 };
 
 export const notLoadedRecord: Parameter = {
@@ -73,6 +75,7 @@ export const notLoadedRecord: Parameter = {
   unit: "",
   dataType: "",
   equipmentList: [],
+  supplyList: [],
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -121,7 +124,28 @@ export function fetchAllEquipmentOptionsList({
       setAllEquipmentOptionsList(
         response.data.map((item: Equipment) => ({
           value: item.id,
-          label: item.type,
+          label: item.name,
+        }))
+      );
+    }
+  );
+}
+
+export function fetchAllSupplyOptionsList({
+  navigate,
+  setAllSupplyOptionsList,
+}: {
+  navigate: NavigateFunction;
+  setAllSupplyOptionsList: Function;
+}) {
+  fetchRecordData(
+    `/supplies`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
+      setAllSupplyOptionsList(
+        response.data.map((item: Supply) => ({
+          value: item.id,
+          label: item.name,
         }))
       );
     }
@@ -132,7 +156,8 @@ export function validateFields(inputValues: Fields): boolean {
   if (
     inputValues.name &&
     inputValues.dataType.value &&
-    inputValues.equipmentList.length > 0
+    inputValues.equipmentList.length > 0 &&
+    inputValues.supplyList.length > 0
   ) {
     return true;
   } else return false;
@@ -149,6 +174,9 @@ export function getSendableData(inputValues: Fields): Parameter {
         return { id: equipmentOption.value ?? ``, name: ``, type: `` };
       }
     ),
+    supplyList: inputValues.supplyList.map((supplyOption: OptionDefinition) => {
+      return { id: supplyOption.value ?? ``, name: ``, quantity: `` };
+    }),
   };
 }
 
@@ -192,6 +220,7 @@ export function RecordForm(props: ImplementedRecordFormProps) {
         inputValues={props.inputValues}
         setInputValues={props.setInputValues}
         allEquipmentOptionsList={props.allEquipmentOptionsList}
+        allSupplyOptionsList={props.allSupplyOptionsList}
       />
     </GenericCreateAndEditPage>
   );
@@ -201,6 +230,7 @@ function FormFields({
   inputValues,
   setInputValues,
   allEquipmentOptionsList,
+  allSupplyOptionsList,
 }: FormFieldsProps) {
   return (
     <SpaceBetween size="l">
@@ -258,6 +288,29 @@ function FormFields({
           statusType={
             allEquipmentOptionsList
               ? allEquipmentOptionsList.length > 0
+                ? "finished"
+                : "loading"
+              : "error"
+          }
+        />
+      </FormField>
+      <FormField label="Suprimentos">
+        <Multiselect
+          selectedOptions={inputValues.supplyList}
+          onChange={({ detail }) => {
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              supplyList: detail.selectedOptions,
+            }));
+          }}
+          deselectAriaLabel={(e) => `Remove ${e.label}`}
+          options={allSupplyOptionsList}
+          loadingText="Carregando suprimentos"
+          placeholder="Selecione os suprimentos requeridos"
+          selectedAriaLabel="Selecionado"
+          statusType={
+            allSupplyOptionsList
+              ? allSupplyOptionsList.length > 0
                 ? "finished"
                 : "loading"
               : "error"
