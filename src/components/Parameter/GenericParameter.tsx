@@ -124,7 +124,7 @@ export function fetchAllEquipmentOptionsList({
       setAllEquipmentOptionsList(
         response.data.map((item: Equipment) => ({
           value: item.id,
-          label: item.name,
+          label: item.type,
         }))
       );
     }
@@ -153,12 +153,7 @@ export function fetchAllSupplyOptionsList({
 }
 
 export function validateFields(inputValues: Fields): boolean {
-  if (
-    inputValues.name &&
-    inputValues.dataType.value &&
-    inputValues.equipmentList.length > 0 &&
-    inputValues.supplyList.length > 0
-  ) {
+  if (inputValues.name && inputValues.dataType.value) {
     return true;
   } else return false;
 }
