@@ -80,6 +80,7 @@ interface BaseTask {
 export interface CommonTask extends BaseTask {
   type: TaskType.commonTask;
   title: string;
+  orderOnCollection: number;
 }
 export interface EquipmentTask extends BaseTask {
   type: TaskType.equipmentTask;
