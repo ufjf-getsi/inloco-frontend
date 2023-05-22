@@ -105,6 +105,7 @@ export function fetchTableData({
             id: task.id,
             status: task.isPending ? "Pendente" : "Concluída",
             title: task.title,
+            orderOnCollection: task.orderOnCollection,
           });
         }
       });

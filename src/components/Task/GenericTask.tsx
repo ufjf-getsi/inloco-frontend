@@ -59,6 +59,7 @@ export const notLoadedRecord: Task = {
   collectionId: "",
   title: "Carregando...",
   isPending: true,
+  orderOnCollection: 0,
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -143,6 +144,7 @@ export function getSendableData({
     collectionId: parentId ?? "",
     title: inputValues.title,
     isPending: inputValues.status.value === "completed" ? false : true,
+    orderOnCollection: 0,
   };
 }
 
