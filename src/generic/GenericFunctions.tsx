@@ -69,13 +69,18 @@ export function fetchRecordData(
   navigate: NavigateFunction,
   handleFetchResponse: Function
 ) {
-  axios(import.meta.env.VITE_SERVER_URL + relativeUrl, {
-    validateStatus: function (status) {
-      return status === 200;
-    },
-  })
-    .then((response) => handleFetchResponse(response))
-    .catch((error) => handleErrorRedirect(navigate, error));
+  try {
+    axios(import.meta.env.VITE_SERVER_URL + relativeUrl, {
+      validateStatus: function (status) {
+        return status === 200;
+      },
+    })
+      .then((response) => handleFetchResponse(response))
+      .catch((error) => handleErrorRedirect(navigate, error));
+  } catch (error) {
+    console.log(error);
+    handleErrorRedirect(navigate, error);
+  }
 }
 
 export async function handleFormSubmit({
