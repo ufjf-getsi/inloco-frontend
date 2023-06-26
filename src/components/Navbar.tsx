@@ -37,11 +37,6 @@ export default function Navbar(props: NavbarProps) {
           text: "Equipamentos",
           href: useHref(`/equipment`),
         },
-        {
-          type: "link",
-          text: "Tarefas",
-          href: useHref(`/tasks`),
-        },
         { type: "divider" },
       ]}
     />

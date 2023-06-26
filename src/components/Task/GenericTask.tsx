@@ -19,6 +19,7 @@ import {
   OptionStringString as Option,
 } from "../../generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+import { notLoadedRecord as notLoadedCollection } from "../Collection/GenericCollection";
 
 export interface Fields {
   title: string;
@@ -56,10 +57,10 @@ export const emptyFields: Fields = {
 export const notLoadedRecord: Task = {
   id: "",
   type: TaskType.commonTask,
-  collectionId: "",
   title: "Carregando...",
   isPending: true,
   orderOnCollection: 0,
+  collection: notLoadedCollection,
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -115,7 +116,7 @@ export function formatTitle(task: Task) {
     formattedTitle = task.title;
   } else if (task.type === TaskType.equipmentTask) {
     formattedTitle = `${task.isBringingBack ? "Trazer" : "Levar"} ${
-      task.equipment?.name ?? task.equipmentId
+      task.equipment.name ?? task.equipment.id
     }`;
   }
   return formattedTitle;
@@ -131,6 +132,16 @@ export function validateFields(inputValues: Fields): boolean {
   } else return false;
 }
 
+export function formattedFields(record: Task): Fields {
+  return {
+    title: formatTitle(record),
+    status: {
+      label: formatStatus(record.isPending ? "pending" : "completed"),
+      value: record.isPending ? "pending" : "completed",
+    },
+  };
+}
+
 export function getSendableData({
   parentId,
   inputValues,
@@ -141,10 +152,10 @@ export function getSendableData({
   return {
     type: TaskType.commonTask,
     id: "",
-    collectionId: parentId ?? "",
     title: inputValues.title,
     isPending: inputValues.status.value === "completed" ? false : true,
     orderOnCollection: 0,
+    collection: { ...notLoadedCollection, id: parentId ?? "" },
   };
 }
 
