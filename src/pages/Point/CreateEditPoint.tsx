@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Measurement, PointWithProjectId } from "../../types";
+import { Point } from "../../types";
 
-import { AlertProps, SelectProps } from "@cloudscape-design/components";
+import { AlertProps } from "@cloudscape-design/components";
 import {
   emptyFields,
   fetchAllParameterOptionsList,
   Fields,
+  formattedFields,
   getSendableData,
   notLoadedRecord,
   RecordForm,
@@ -18,16 +19,11 @@ import { handleFormSubmit } from "../../generic/GenericFunctions";
 export default function CreateEditPoint({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
-  const [point, setPoint] = useState<PointWithProjectId>({
-    projectId: "",
-    ...notLoadedRecord,
-  });
+  const [point, setPoint] = useState<Point>(notLoadedRecord);
   const [collection, setCollection] = useState(notLoadedParent);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
-  const [allParameterOptionsList, setAllParameterOptionsList] =
-    useState<SelectProps.Options>([]);
 
   let commonCollectionId = ``;
   let commonProjectId = ``;
@@ -42,43 +38,24 @@ export default function CreateEditPoint({ edit }: { edit: boolean }) {
       fetchRecordServerLink =
       pushRecordServerLink =
         `/points/${id}`;
-    commonCollectionId = point.collectionId ?? ``;
-    commonProjectId = point.projectId ?? ``;
+    commonProjectId = point.project?.id ?? ``;
     function handleFetchResponse() {
-      setInputValues({
-        name: point.name,
-        plannedCoordinates: point.plannedCoordinates ?? ``,
-        parameters: point.measurements.map((measurement: Measurement) => {
-          return {
-            value: measurement.parameter.id,
-            label: measurement.parameter.name,
-          };
-        }),
-      });
+      setInputValues(formattedFields(point));
     }
     useEffect(() => {
       handleFetchResponse();
     }, [point]);
   } else {
-    const { collectionId } = useParams();
-    previousPageWebLink =
-      fetchRecordServerLink = `/collections/${collectionId}`;
+    const { projectId } = useParams();
+    previousPageWebLink = fetchRecordServerLink = `/projects/${projectId}`;
     pushRecordServerLink = `/points`;
-    commonCollectionId = collectionId ?? ``;
-    commonProjectId = collection?.projectId ?? ``;
+    commonProjectId = projectId ?? ``;
     sendableDataFunction = () =>
       getSendableData({
         inputValues,
-        ...(collectionId ? { parentId: collectionId } : {}),
+        ...(projectId ? { parentId: projectId } : {}),
       });
   }
-
-  useEffect(() => {
-    fetchAllParameterOptionsList({
-      navigate: navigate,
-      setAllParameterOptionsList: setAllParameterOptionsList,
-    });
-  }, []);
 
   async function handleSubmit(event: FormEvent) {
     handleFormSubmit({
@@ -102,7 +79,6 @@ export default function CreateEditPoint({ edit }: { edit: boolean }) {
     inputValues: inputValues,
     setInputValues: setInputValues,
     cancelRedirectLink: previousPageWebLink,
-    allParameterOptionsList: allParameterOptionsList,
     collectionId: commonCollectionId,
     projectId: commonProjectId,
     hasParent: true,

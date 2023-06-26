@@ -1,13 +1,12 @@
 import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
-import { Measurement, Parameter, Point } from "../../types";
+import { Parameter, Point } from "../../types";
 
 import {
   SpaceBetween,
   FormField,
   Input,
   SelectProps,
-  Multiselect,
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
@@ -18,12 +17,11 @@ import {
 } from "../../generic/GenericFunctions";
 import { PageType } from "../../generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
-import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
+import { notLoadedRecord as notLoadedProject } from "../Project/GenericProject";
 
 export interface Fields {
   name: string;
   plannedCoordinates: string;
-  parameters: SelectProps.Options;
 }
 
 interface FormFieldsProps {
@@ -36,55 +34,36 @@ export type ImplementedRecordFormProps = GenericRecordFormProps &
   FormFieldsProps & {
     cancelRedirectLink: string;
     projectId?: string;
-    collectionId?: string;
   };
 
 export const emptyFields: Fields = {
   name: "",
   plannedCoordinates: "",
-  parameters: [],
 };
 
 export const notLoadedRecord: Point = {
   id: "",
-  collectionId: "",
-  orderOnRoute: 0,
+  project: notLoadedProject,
   name: "Carregando...",
   plannedCoordinates: "",
-  actualCoordinates: "",
-  measurements: [],
 };
 
 interface BreadcrumbGroupItemsProps {
   projectId?: string;
-  collectionId?: string;
   pageType: PageType;
 }
 export const breadcrumpGroupItems = ({
   projectId,
-  collectionId,
   pageType,
 }: BreadcrumbGroupItemsProps) => {
   const { id } = useParams();
-  const projectBreadcrumbLink = useHref(
-    `/projects${projectId && projectId !== "" ? "/" + projectId : ""}`
-  );
-  const collectionBreadcrumbLink = useHref(
-    `/${
-      collectionId && collectionId !== ""
-        ? `collections/${collectionId}`
-        : `projects`
-    }`
-  );
   const breadcrumbsItemsList = [
     { text: "Projetos", href: useHref(`/projects`) },
     {
       text: "Projeto",
-      href: projectBreadcrumbLink,
-    },
-    {
-      text: "Coleta",
-      href: collectionBreadcrumbLink,
+      href: useHref(
+        `/projects${projectId && projectId !== "" ? "/" + projectId : ""}`
+      ),
     },
   ];
   if (pageType !== "list") {
@@ -95,9 +74,7 @@ export const breadcrumpGroupItems = ({
       });
     }
     breadcrumbsItemsList.push({
-      text: `${localizedPageTypeName(pageType)} ponto${
-        pageType === "reorder" ? "s" : ""
-      }`,
+      text: `${localizedPageTypeName(pageType)} ponto`,
       href: "#",
     });
   }
@@ -126,13 +103,20 @@ export function fetchAllParameterOptionsList({
 }
 
 export function validateFields(inputValues: Fields): boolean {
-  if (
-    inputValues.name &&
-    inputValues.plannedCoordinates &&
-    inputValues.parameters.length > 0
-  ) {
-    return true;
-  } else return false;
+  // TODO: validate coordinates
+  const validName = inputValues.name ? inputValues.name !== "" : false;
+  const validPlannedCoordinates =
+    validName && inputValues.plannedCoordinates
+      ? inputValues.plannedCoordinates !== ""
+      : false;
+  return validName && validPlannedCoordinates;
+}
+
+export function formattedFields(record: Point): Fields {
+  return {
+    name: record.name,
+    plannedCoordinates: record.plannedCoordinates,
+  };
 }
 
 export function getSendableData({
@@ -142,29 +126,13 @@ export function getSendableData({
   parentId?: string;
   inputValues: Fields;
 }): Point {
+  const project = notLoadedProject;
+  if (parentId) project.id = parentId;
   return {
     id: "",
-    collectionId: parentId ?? "",
-    orderOnRoute: 0,
     name: inputValues.name,
     plannedCoordinates: inputValues.plannedCoordinates,
-    actualCoordinates: "",
-    measurements: inputValues.parameters.map(
-      (selectedOption: OptionDefinition): Measurement => {
-        return {
-          id: "",
-          isPending: true,
-          result: "",
-          parameter: {
-            id: selectedOption.value ?? "",
-            name: "",
-            unit: "",
-            dataType: "",
-            equipmentList: [],
-          },
-        };
-      }
-    ),
+    project: project,
   };
 }
 
@@ -179,7 +147,6 @@ export function RecordForm(props: ImplementedRecordFormProps) {
       <GenericBreadcrumbGroup
         items={breadcrumpGroupItems({
           projectId: props.projectId,
-          collectionId: props.collectionId,
           pageType: props.edit ? "edit" : "create",
         })}
       />
@@ -214,11 +181,7 @@ export function RecordForm(props: ImplementedRecordFormProps) {
   );
 }
 
-function FormFields({
-  inputValues,
-  setInputValues,
-  allParameterOptionsList,
-}: FormFieldsProps) {
+function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
   return (
     <SpaceBetween size="l">
       <FormField label="Nome">
@@ -233,6 +196,7 @@ function FormFields({
           }
         />
       </FormField>
+
       <FormField label="Coordenadas">
         <Input
           value={inputValues.plannedCoordinates}
@@ -242,29 +206,6 @@ function FormFields({
               ...prevState,
               plannedCoordinates: event.detail.value,
             }))
-          }
-        />
-      </FormField>
-      <FormField label="Parâmetros">
-        <Multiselect
-          selectedOptions={inputValues.parameters}
-          onChange={({ detail }) => {
-            setInputValues((prevState: Fields) => ({
-              ...prevState,
-              parameters: detail.selectedOptions,
-            }));
-          }}
-          deselectAriaLabel={(e) => `Remove ${e.label}`}
-          options={allParameterOptionsList}
-          loadingText="Carregando parâmetros"
-          placeholder="Selecione os parâmetros"
-          selectedAriaLabel="Selecionado"
-          statusType={
-            allParameterOptionsList
-              ? allParameterOptionsList.length > 0
-                ? "finished"
-                : "loading"
-              : "error"
           }
         />
       </FormField>

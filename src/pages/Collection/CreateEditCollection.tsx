@@ -6,6 +6,7 @@ import { AlertProps } from "@cloudscape-design/components";
 import {
   emptyFields,
   Fields,
+  formattedFields,
   getSendableData,
   notLoadedRecord,
   RecordForm,
@@ -37,11 +38,7 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
       fetchRecordServerLink =
         `/collections/${id}`;
     function handleFetchResponse() {
-      setInputValues({
-        title: collection.title,
-        startDate: collection.startDate.toString(),
-        endDate: collection.endDate.toString(),
-      });
+      setInputValues(formattedFields(collection));
     }
     useEffect(() => {
       handleFetchResponse();
