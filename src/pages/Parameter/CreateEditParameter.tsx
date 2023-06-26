@@ -8,10 +8,10 @@ import {
   emptyFields,
   validateFields,
   RecordForm,
-  formatDataType,
   fetchAllEquipmentOptionsList,
   notLoadedRecord,
   getSendableData,
+  formattedFields,
 } from "../../components/Parameter/GenericParameter";
 import { handleFormSubmit } from "../../generic/GenericFunctions";
 
@@ -36,20 +36,7 @@ export default function CreateEditParameter({ edit }: { edit: boolean }) {
       pushRecordServerLink =
         `/parameters/${id}`;
     function handleFetchResponse() {
-      setInputValues({
-        name: parameter.name,
-        unit: parameter.unit,
-        dataType: {
-          label: formatDataType(parameter.dataType),
-          value: parameter.dataType,
-        },
-        equipmentList: parameter.equipmentList.map((equipment: Equipment) => {
-          return {
-            value: equipment.id,
-            label: equipment.name,
-          };
-        }),
-      });
+      setInputValues(formattedFields(parameter));
     }
     useEffect(() => {
       handleFetchResponse();

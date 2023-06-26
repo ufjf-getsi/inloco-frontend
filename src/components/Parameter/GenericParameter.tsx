@@ -1,12 +1,11 @@
 import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
-import { Equipment, Parameter } from "../../types";
+import { DataType, Equipment, Parameter } from "../../types";
 
 import {
   SpaceBetween,
   FormField,
   Input,
-  BreadcrumbGroup,
   Select,
   Multiselect,
   SelectProps,
@@ -15,11 +14,10 @@ import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../../generic/GenericPages/GenericCreateAndEditPage";
 import {
-  OptionStringString as Option,
+  OptionStringDataType as Option,
   PageType,
 } from "../../generic/GenericInterfaces";
 import {
-  cancelLoadAndRedirectBackwards,
   fetchRecordData,
   localizedPageTypeName,
   searchLabelByValue,
@@ -48,15 +46,15 @@ type ImplementedRecordFormProps = GenericRecordFormProps &
 const dataTypeOptions: Array<Option> = [
   {
     label: "Real",
-    value: "real",
+    value: DataType.real,
   },
   {
     label: "Inteiro",
-    value: "integer",
+    value: DataType.integer,
   },
   {
     label: "Texto",
-    value: "text",
+    value: DataType.text,
   },
 ];
 
@@ -71,8 +69,9 @@ export const notLoadedRecord: Parameter = {
   id: "",
   name: "Carregando...",
   unit: "",
-  dataType: "",
+  dataType: DataType.real,
   equipmentList: [],
+  measurements: [],
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -129,26 +128,41 @@ export function fetchAllEquipmentOptionsList({
 }
 
 export function validateFields(inputValues: Fields): boolean {
-  if (
-    inputValues.name &&
-    inputValues.dataType.value &&
-    inputValues.equipmentList.length > 0
-  ) {
-    return true;
-  } else return false;
+  const validName = inputValues.name ? inputValues.name !== `` : false;
+  const validEquipmentList =
+    inputValues.equipmentList && inputValues.equipmentList.length > 0;
+  return validName && validEquipmentList;
+}
+
+export function formattedFields(record: Parameter): Fields {
+  return {
+    name: record.name,
+    unit: record.unit,
+    dataType: {
+      label: formatDataType(record.dataType),
+      value: record.dataType,
+    },
+    equipmentList: record.equipmentList.map((equipment: Equipment) => {
+      return {
+        value: equipment.id,
+        label: equipment.name,
+      };
+    }),
+  };
 }
 
 export function getSendableData(inputValues: Fields): Parameter {
   return {
     id: ``,
     name: inputValues.name,
-    unit: inputValues.unit === `` ? `N/A` : inputValues.unit,
+    unit: inputValues.unit,
     dataType: inputValues.dataType.value,
     equipmentList: inputValues.equipmentList.map(
       (equipmentOption: OptionDefinition) => {
         return { id: equipmentOption.value ?? ``, name: `` };
       }
     ),
+    measurements: [],
   };
 }
 
