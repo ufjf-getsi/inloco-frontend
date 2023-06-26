@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -6,6 +5,7 @@ import { AlertProps } from "@cloudscape-design/components";
 import {
   emptyFields,
   Fields,
+  formattedFields,
   getSendableData,
   notLoadedRecord,
   RecordForm,
@@ -33,9 +33,7 @@ export default function CreateEditEquipment({ edit }: { edit: boolean }) {
       pushRecordServerLink =
         `/equipment/${id}`;
     function handleFetchResponse() {
-      setInputValues({
-        name: equipment.name,
-      });
+      setInputValues(formattedFields(equipment));
     }
     useEffect(() => {
       handleFetchResponse();

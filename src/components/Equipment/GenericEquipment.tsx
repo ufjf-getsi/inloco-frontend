@@ -61,9 +61,14 @@ export const breadcrumpGroupItems = ({
 };
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.name) {
-    return true;
-  } else return false;
+  const validName = inputValues.name ? inputValues.name !== "" : false;
+  return validName;
+}
+
+export function formattedFields(record: Equipment): Fields {
+  return {
+    name: record.name,
+  };
 }
 
 export function getSendableData(inputValues: Fields): Equipment {
