@@ -31,7 +31,7 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
 
   if (edit) {
     const { id } = useParams();
-    commonProjectId = collection.projectId;
+    commonProjectId = collection.project?.id ?? ``;
     previousPageWebLink =
       pushRecordServerLink =
       fetchRecordServerLink =
@@ -39,8 +39,8 @@ export default function CreateEditCollection({ edit }: { edit: boolean }) {
     function handleFetchResponse() {
       setInputValues({
         title: collection.title,
-        startDate: collection.startDate,
-        endDate: collection.endDate,
+        startDate: collection.startDate.toString(),
+        endDate: collection.endDate.toString(),
       });
     }
     useEffect(() => {

@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
 import { Collection, Task, TaskType } from "../../types";
 
@@ -16,8 +17,8 @@ import {
 } from "../../generic/GenericFunctions";
 import { PageType } from "../../generic/GenericInterfaces";
 import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
-import { AxiosResponse } from "axios";
 import { Item } from "../Task/TableConfig";
+import { notLoadedRecord as notLoadedProject } from "../Project/GenericProject";
 
 export interface Fields {
   title: string;
@@ -44,12 +45,12 @@ export const emptyFields: Fields = {
 
 export const notLoadedRecord: Collection = {
   id: "",
-  projectId: "",
   title: "Carregando...",
-  startDate: "",
-  endDate: "",
-  points: [],
+  startDate: new Date(),
+  endDate: new Date(),
   tasks: [],
+  visitPointList: [],
+  project: notLoadedProject,
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -133,9 +134,17 @@ export function fetchAllRequiredEquipment({
 }
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.title) {
-    return true;
-  } else return false;
+  const validTitle = inputValues.title ? inputValues.title !== "" : false;
+  if (inputValues.startDate && inputValues.endDate) {
+    let validStartDate = inputValues.startDate !== "";
+    const startDate = new Date(inputValues.startDate);
+    validStartDate = startDate && startDate !== null;
+    let validEndDate = inputValues.endDate !== "";
+    const endDate = new Date(inputValues.endDate);
+    validEndDate = endDate && endDate !== null && endDate >= startDate;
+    return validTitle && validStartDate && validEndDate;
+  }
+  return false;
 }
 
 export function getSendableData({
@@ -145,13 +154,15 @@ export function getSendableData({
   parentId?: string;
   inputValues: Fields;
 }): Collection {
+  const project = notLoadedProject;
+  if (parentId) project.id = parentId;
   return {
     id: "",
-    projectId: parentId ?? "",
+    project: project,
     title: inputValues.title,
-    startDate: inputValues.startDate,
-    endDate: inputValues.endDate,
-    points: [],
+    startDate: new Date(inputValues.startDate),
+    endDate: new Date(inputValues.endDate),
+    visitPointList: [],
     tasks: [],
   };
 }

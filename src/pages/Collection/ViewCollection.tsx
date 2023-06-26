@@ -39,6 +39,8 @@ export default function ViewCollection() {
   const [tasksAsItems, setTasksAsItems] = useState<TaskItem[]>([]);
   const [requiredEquipment, setRequiredEquipment] = useState([]);
 
+  const projectId = collection.project?.id ?? ``;
+
   useEffect(() => {
     fetchTableData({
       navigate: navigate,
@@ -53,12 +55,12 @@ export default function ViewCollection() {
   }, []);
 
   const tableConfigPoints: GenericTableProps = {
-    allRecords: collection.points.map((point): Item => {
+    allRecords: collection.visitPointList.map((visitPoint): Item => {
       return {
-        id: point.id,
-        orderOnRoute: point.orderOnRoute,
-        name: point.name,
-        coordinates: point.plannedCoordinates,
+        id: visitPoint.point.id,
+        orderOnRoute: visitPoint.orderOnRoute,
+        name: visitPoint.point.name,
+        coordinates: visitPoint.point.plannedCoordinates,
       };
     }),
     columnDefinitions: columnDefinitionsPoints,
@@ -110,7 +112,7 @@ export default function ViewCollection() {
     recordCategoryPlural: "coletas",
     recordGenderFeminine: true,
     serverDeleteLink: `/collections/${id}`,
-    afterDeleteRedirectLink: `/projects/${collection.projectId}`,
+    afterDeleteRedirectLink: `/projects/${projectId}`,
     alertText: `Proceder com esta ação deletará a coleta com todo o seu conteúdo,
     incluindo todos os pontos e registros associados a si.`,
   };
@@ -126,7 +128,7 @@ export default function ViewCollection() {
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({
             pageType: "view",
-            projectId: collection.projectId,
+            projectId: projectId,
           })}
         />
       }
