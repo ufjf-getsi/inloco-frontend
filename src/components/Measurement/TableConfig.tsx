@@ -1,30 +1,23 @@
-import { useHref } from "react-router-dom";
-import { Link } from "@cloudscape-design/components";
 import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunctions";
+import { Parameter } from "../../types";
 
 export interface Item {
   id: string;
-  parameterId: string;
-  parameterName: string;
+  parameter: Parameter;
   isPending: boolean;
   result: string;
-  unit: string;
 }
 
 export const visibleContent = ["parameterName", "isPending", "result"];
 
-const recordViewPageLink = (item: Item) =>
-  useHref(`/parameters/${item.parameterId}`);
+const formattedUnit = (unit: string) => `${unit !== "" ? ` (${unit})` : ""}`;
+const formattedResult = (result: string, unit: string) => result + unit;
 
 export const columnDefinitions = [
   {
     id: "id",
     header: "ID",
-    cell: (item: Item) => (
-      <Link href={recordViewPageLink(item)}>
-        <span className="font-bold">{item.id}</span>
-      </Link>
-    ),
+    cell: (item: Item) => <span className="font-bold">{item.id}</span>,
     ariaLabel: createLabelFunction("id"),
     sortingField: "id",
   },
@@ -32,11 +25,9 @@ export const columnDefinitions = [
     id: "parameterName",
     header: "Nome",
     cell: (item: Item) => (
-      <Link href={recordViewPageLink(item)}>
-        <span className="font-bold">
-          {item.parameterName + ` (${item.unit})`}
-        </span>
-      </Link>
+      <span className="font-bold">
+        {item.parameter.name + formattedUnit(item.parameter.unit)}
+      </span>
     ),
     ariaLabel: createLabelFunction("Nome"),
     sortingField: "parameterName",
@@ -51,7 +42,10 @@ export const columnDefinitions = [
   {
     id: "result",
     header: "Resultado",
-    cell: (item: Item) => (item.result !== "" ? item.result : "---"),
+    cell: (item: Item) =>
+      item.result !== ""
+        ? formattedResult(item.result, item.parameter.unit)
+        : "---",
     ariaLabel: createLabelFunction("Resultado"),
     sortingField: "result",
   },

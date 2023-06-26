@@ -1,59 +1,74 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Point, Project } from "../../types";
+import { Collection, Point, VisitPoint } from "../../types";
 
-import { AlertProps } from "@cloudscape-design/components";
+import { AlertProps, SelectProps } from "@cloudscape-design/components";
 import {
   emptyFields,
+  fetchAllParameterOptionsList,
   Fields,
   formattedFields,
   getSendableData,
   notLoadedRecord,
   RecordForm,
   validateFields,
-} from "../../components/Point/GenericPoint";
-import { notLoadedRecord as notLoadedParent } from "../../components/Project/GenericProject";
+} from "../../components/VisitPoint/GenericVisitPoint";
+import { notLoadedRecord as notLoadedParent } from "../../components/Collection/GenericCollection";
 import { handleFormSubmit } from "../../generic/GenericFunctions";
 
-export default function CreateEditPoint({ edit }: { edit: boolean }) {
+export default function CreateEditVisitPoint({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
-  const [point, setPoint] = useState<Point>(notLoadedRecord);
-  const [project, setProject] = useState<Project>(notLoadedParent);
+  const [visitPoint, setVisitPoint] = useState<VisitPoint>(notLoadedRecord);
+  const [collection, setCollection] = useState<Collection>(notLoadedParent);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
+  const [allParameterOptionsList, setAllParameterOptionsList] =
+    useState<SelectProps.Options>([]);
 
+  let commonCollectionId = ``;
   let commonProjectId = ``;
   let previousPageWebLink = ``;
   let fetchRecordServerLink = ``;
   let pushRecordServerLink = ``;
   let sendableDataFunction = () => getSendableData({ inputValues });
 
+  console.log(collection);
+
   if (edit) {
     const { id } = useParams();
     previousPageWebLink =
       fetchRecordServerLink =
       pushRecordServerLink =
-        `/points/${id}`;
-    commonProjectId = point.project?.id ?? ``;
+        `/visit-point/${id}`;
+    commonCollectionId = visitPoint.collection?.id ?? ``;
+    commonProjectId = visitPoint.collection?.project?.id ?? ``;
     function handleFetchResponse() {
-      setInputValues(formattedFields(point));
+      setInputValues(formattedFields(visitPoint));
     }
     useEffect(() => {
       handleFetchResponse();
-    }, [point]);
+    }, [visitPoint]);
   } else {
-    const { projectId } = useParams();
-    previousPageWebLink = fetchRecordServerLink = `/projects/${projectId}`;
-    pushRecordServerLink = `/points`;
-    commonProjectId = projectId ?? ``;
+    const { collectionId } = useParams();
+    previousPageWebLink =
+      fetchRecordServerLink = `/collections/${collectionId}`;
+    pushRecordServerLink = `/visit-point`;
+    commonProjectId = collection.project?.id ?? ``;
     sendableDataFunction = () =>
       getSendableData({
         inputValues,
-        ...(projectId ? { parentId: projectId } : {}),
+        ...(collectionId ? { parentId: collectionId } : {}),
       });
   }
+
+  useEffect(() => {
+    fetchAllParameterOptionsList({
+      navigate: navigate,
+      setAllParameterOptionsList: setAllParameterOptionsList,
+    });
+  }, []);
 
   async function handleSubmit(event: FormEvent) {
     handleFormSubmit({
@@ -77,16 +92,18 @@ export default function CreateEditPoint({ edit }: { edit: boolean }) {
     inputValues: inputValues,
     setInputValues: setInputValues,
     cancelRedirectLink: previousPageWebLink,
+    allParameterOptionsList: allParameterOptionsList,
+    collectionId: commonCollectionId,
     projectId: commonProjectId,
     hasParent: true,
     fetchRecordLink: fetchRecordServerLink,
   };
   if (edit) {
     commonAttributes.edit = true;
-    commonAttributes.setRecord = setPoint;
+    commonAttributes.setRecord = setVisitPoint;
   } else {
     commonAttributes.edit = false;
-    commonAttributes.setRecord = setProject;
+    commonAttributes.setRecord = setCollection;
   }
   return <RecordForm {...commonAttributes} />;
 }
