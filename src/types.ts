@@ -95,7 +95,6 @@ export interface Point {
 
   name: string;
   plannedCoordinates: string;
-  actualCoordinates: string;
 
   project?: Project;
 }
@@ -119,6 +118,7 @@ export interface VisitPoint {
   id: string;
 
   orderOnRoute: number;
+  actualCoordinates: string;
 
   measurements: Measurement[];
   supply_VisitPointList: Supply_VisitPoint[];

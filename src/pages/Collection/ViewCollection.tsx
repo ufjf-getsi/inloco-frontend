@@ -13,11 +13,12 @@ import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import GenericTable, {
   GenericTableProps,
 } from "../../generic/GenericTable/GenericTable";
-import {
-  Item,
-  columnDefinitions as columnDefinitionsPoints,
-  visibleContent as visibleContentPoints,
-} from "../../components/Point/TableConfig";
+// TODO
+// import {
+//   Item,
+//   columnDefinitions as columnDefinitionsPoints,
+//   visibleContent as visibleContentPoints,
+// } from "../../components/VisitPoint/TableConfig";
 import {
   Item as TaskItem,
   columnDefinitions as columnDefinitionsTasks,
@@ -54,34 +55,35 @@ export default function ViewCollection() {
     });
   }, []);
 
-  const tableConfigPoints: GenericTableProps = {
-    allRecords: collection.visitPointList.map((visitPoint): Item => {
-      return {
-        id: visitPoint.point.id,
-        orderOnRoute: visitPoint.orderOnRoute,
-        name: visitPoint.point.name,
-        coordinates: visitPoint.point.plannedCoordinates,
-      };
-    }),
-    columnDefinitions: columnDefinitionsPoints,
-    recordCategorySingular: `ponto`,
-    recordCategoryPlural: `pontos`,
-    recordGenderFeminine: false,
-    addRecordLink: `/collections/${collection.id}/create-point`,
-    visibleContent: visibleContentPoints,
-    setSelectedRecords: setSelectedPoints,
-    otherHeaderActions: [
-      <Button
-        iconName="upload-download"
-        variant="normal"
-        key={`reorderPointsButton`}
-        href={useHref(`/collections/${id}/reorder-points`)}
-      >
-        Reordenar
-      </Button>,
-    ],
-    orderBy: 1,
-  };
+  // TODO
+  // const tableConfigPoints: GenericTableProps = {
+  //   allRecords: collection.visitPointList.map((visitPoint): Item => {
+  //     return {
+  //       id: visitPoint.point.id,
+  //       orderOnRoute: visitPoint.orderOnRoute,
+  //       name: visitPoint.point.name,
+  //       coordinates: visitPoint.point.plannedCoordinates,
+  //     };
+  //   }),
+  //   columnDefinitions: columnDefinitionsPoints,
+  //   recordCategorySingular: `ponto`,
+  //   recordCategoryPlural: `pontos`,
+  //   recordGenderFeminine: false,
+  //   addRecordLink: `/collections/${collection.id}/create-point`,
+  //   visibleContent: visibleContentPoints,
+  //   setSelectedRecords: setSelectedPoints,
+  //   otherHeaderActions: [
+  //     <Button
+  //       iconName="upload-download"
+  //       variant="normal"
+  //       key={`reorderPointsButton`}
+  //       href={useHref(`/collections/${id}/reorder-points`)}
+  //     >
+  //       Reordenar
+  //     </Button>,
+  //   ],
+  //   orderBy: 1,
+  // };
 
   const tableConfigTasks: GenericTableProps = {
     allRecords: tasksAsItems,
@@ -134,7 +136,7 @@ export default function ViewCollection() {
       }
       editRecordLink={`/collections/${collection.id}/edit`}
       previousPageLink={`/projects`}
-      table={tableConfigPoints}
+      // table={tableConfigPoints}
       deleteModal={deleteModalConfig}
       otherHeaderActions={[
         <Button

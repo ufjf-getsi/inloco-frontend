@@ -147,6 +147,14 @@ export function validateFields(inputValues: Fields): boolean {
   return false;
 }
 
+export function formattedFields(record: Collection): Fields {
+  return {
+    title: record.title,
+    startDate: record.startDate.toString(),
+    endDate: record.endDate.toString(),
+  };
+}
+
 export function getSendableData({
   parentId,
   inputValues,
