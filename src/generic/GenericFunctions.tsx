@@ -156,3 +156,11 @@ async function updateRecordOnServer(
     return false;
   }
 }
+
+export function convertStringToInteger(string: string): number {
+  try {
+    return parseInt(string);
+  } catch (error) {
+    return 0;
+  }
+}
