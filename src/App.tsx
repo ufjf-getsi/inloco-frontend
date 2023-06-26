@@ -4,6 +4,7 @@ import "./styles/main.css";
 import ProjectsList from "./pages/Project/ProjectsList";
 import ParametersList from "./pages/Parameter/ParametersList";
 import EquipmentList from "./pages/Equipment/EquipmentList";
+import SupplyList from "./pages/Supply/SupplyList";
 import ViewProject from "./pages/Project/ViewProject";
 import ViewPoint from "./pages/Point/ViewPoint";
 import ViewCollection from "./pages/Collection/ViewCollection";
@@ -11,6 +12,7 @@ import ViewVisitPoint from "./pages/VisitPoint/ViewVisitPoint";
 import ViewTask from "./pages/Task/ViewTask";
 import ViewParameter from "./pages/Parameter/ViewParameter";
 import ViewEquipment from "./pages/Equipment/ViewEquipment";
+import ViewSupply from "./pages/Supply/ViewSupply";
 import PageNotFound from "./pages/PageNotFound";
 import CreateEditProject from "./pages/Project/CreateEditProject";
 import CreateEditCollection from "./pages/Collection/CreateEditCollection";
@@ -19,6 +21,7 @@ import CreateEditVisitPoint from "./pages/VisitPoint/CreateEditVisitPoint";
 import CreateEditTask from "./pages/Task/CreateEditTask";
 import CreateEditParameter from "./pages/Parameter/CreateEditParameter";
 import CreateEditEquipment from "./pages/Equipment/CreateEditEquipment";
+import CreateEditSupply from "./pages/Supply/CreateEditSupply";
 import ReorderPoints from "./pages/Point/ReorderPoints";
 import ReorderTasks from "./pages/Task/ReorderTasks";
 
@@ -106,6 +109,17 @@ function App() {
       <Route
         path={"/equipment/:id/edit"}
         element={<CreateEditEquipment edit={true} />}
+      />
+      {/* Supply */}
+      <Route path={"/supplies"} element={<SupplyList />} />
+      <Route
+        path={"/supplies/create"}
+        element={<CreateEditSupply edit={false} />}
+      />
+      <Route path={"/supplies/:id"} element={<ViewSupply />} />
+      <Route
+        path={"/supplies/:id/edit"}
+        element={<CreateEditSupply edit={true} />}
       />
       {/* Page Not Found */}
       <Route path="*" element={<PageNotFound />} />
