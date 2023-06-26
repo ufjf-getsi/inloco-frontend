@@ -10,6 +10,7 @@ import {
   RecordForm,
   notLoadedRecord,
   getSendableData,
+  formattedFields,
 } from "../../components/Project/GenericProject";
 import { handleFormSubmit } from "../../generic/GenericFunctions";
 
@@ -32,10 +33,7 @@ export default function CreateEditProject({ edit }: { edit: boolean }) {
       pushRecordServerLink =
         `/projects/${id}`;
     function handleFetchResponse() {
-      setInputValues({
-        title: project.title,
-        description: project.description,
-      });
+      setInputValues(formattedFields(project));
     }
     useEffect(() => {
       handleFetchResponse();

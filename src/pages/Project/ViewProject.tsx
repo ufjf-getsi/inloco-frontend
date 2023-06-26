@@ -59,6 +59,8 @@ export default function ViewProject() {
       previousPageLink={`/projects`}
       table={tableConfig}
       deleteModal={deleteModalConfig}
-    />
+    >
+      {/* // TODO: Show start and end dates */}
+    </GenericViewPage>
   );
 }
