@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Equipment, Parameter } from "../../types";
 
-import { BreadcrumbGroup } from "@cloudscape-design/components";
 import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
 import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import {

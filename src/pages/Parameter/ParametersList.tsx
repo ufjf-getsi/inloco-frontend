@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Parameter } from "../../types";
 
-import { BreadcrumbGroup } from "@cloudscape-design/components";
 import {
   columnDefinitions,
   visibleContent,
