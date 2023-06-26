@@ -1,7 +1,12 @@
 import { useHref, useParams } from "react-router-dom";
 import { Project } from "../../types";
 
-import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
+import {
+  SpaceBetween,
+  FormField,
+  Input,
+  DatePicker,
+} from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
 } from "../../generic/GenericPages/GenericCreateAndEditPage";
@@ -12,6 +17,8 @@ import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 export interface Fields {
   title: string;
   description: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface FormFieldsProps {
@@ -27,6 +34,8 @@ type ImplementedRecordFormProps = GenericRecordFormProps &
 export const emptyFields: Fields = {
   title: "",
   description: "",
+  startDate: "",
+  endDate: "",
 };
 
 export const notLoadedRecord: Project = {
@@ -34,7 +43,10 @@ export const notLoadedRecord: Project = {
   title: "Carregando...",
   description: "Este projeto não está cadastrado no sistema.",
   collections: [],
-  notes: [],
+  startDate: new Date(),
+  endDate: new Date(),
+  points: [],
+  researcher_ProjectList: [],
 };
 
 interface BreadcrumbGroupItemsProps {
@@ -63,9 +75,30 @@ export const breadcrumpGroupItems = ({
 };
 
 export function validateFields(inputValues: Fields): boolean {
-  if (inputValues.title && inputValues.description) {
-    return true;
-  } else return false;
+  const validTitle = inputValues.title ? inputValues.title !== "" : false;
+  const validDescription =
+    validTitle && inputValues.description
+      ? inputValues.description !== ""
+      : false;
+  if (validDescription && inputValues.startDate && inputValues.endDate) {
+    let validStartDate = inputValues.startDate !== "";
+    const startDate = new Date(inputValues.startDate);
+    validStartDate = startDate && startDate !== null;
+    let validEndDate = inputValues.endDate !== "";
+    const endDate = new Date(inputValues.endDate);
+    validEndDate = endDate && endDate !== null && endDate >= startDate;
+    return validTitle && validDescription && validStartDate && validEndDate;
+  }
+  return false;
+}
+
+export function formattedFields(record: Project): Fields {
+  return {
+    title: record.title,
+    description: record.description,
+    startDate: record.startDate.toString(),
+    endDate: record.endDate.toString(),
+  };
 }
 
 export function getSendableData(inputValues: Fields): Project {
@@ -74,7 +107,10 @@ export function getSendableData(inputValues: Fields): Project {
     title: inputValues.title,
     description: inputValues.description,
     collections: [],
-    notes: [],
+    startDate: new Date(inputValues.startDate),
+    endDate: new Date(inputValues.endDate),
+    points: [],
+    researcher_ProjectList: [],
   };
 }
 
@@ -137,6 +173,7 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
           }
         />
       </FormField>
+
       <FormField label="Descrição">
         <Input
           value={inputValues.description}
@@ -147,6 +184,38 @@ function FormFields({ inputValues, setInputValues }: FormFieldsProps) {
               description: event.detail.value,
             }))
           }
+        />
+      </FormField>
+
+      <FormField label="Data de início">
+        <DatePicker
+          onChange={(event) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              startDate: event.detail.value,
+            }))
+          }
+          value={inputValues.startDate}
+          nextMonthAriaLabel="Next month"
+          placeholder="YYYY/MM/DD"
+          previousMonthAriaLabel="Previous month"
+          todayAriaLabel="Today"
+        />
+      </FormField>
+
+      <FormField label="Data de fim">
+        <DatePicker
+          onChange={(event) =>
+            setInputValues((prevState: Fields) => ({
+              ...prevState,
+              endDate: event.detail.value,
+            }))
+          }
+          value={inputValues.endDate}
+          nextMonthAriaLabel="Next month"
+          placeholder="YYYY/MM/DD"
+          previousMonthAriaLabel="Previous month"
+          todayAriaLabel="Today"
         />
       </FormField>
     </SpaceBetween>
