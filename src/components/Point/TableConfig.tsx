@@ -8,7 +8,7 @@ export interface Item {
   plannedCoordinates: string;
 }
 
-export const visibleContent = ["name", "coordinates"];
+export const visibleContent = ["name", "plannedCoordinates"];
 
 const recordViewPageLink = (item: Item) => useHref(`/points/${item.id}`);
 

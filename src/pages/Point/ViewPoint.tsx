@@ -31,7 +31,7 @@ export default function ViewPoint() {
   return (
     <GenericViewPage
       title={point.name}
-      description={""}
+      description={`Coordenadas planejadas : ${point.plannedCoordinates}`}
       navbarActiveLink={`/projects`}
       setRecord={setPoint}
       fetchRecordLink={`/points/${id}`}

@@ -6,9 +6,11 @@ interface Item {
   id: string;
   title: string;
   description: string;
+  startDate: Date;
+  endDate: Date;
 }
 
-export const visibleContent = ["title", "description"];
+export const visibleContent = ["title", "startDate", "description"];
 
 const recordViewPageLink = (item: Item) => useHref(`/projects/${item.id}`);
 
@@ -34,6 +36,24 @@ export const columnDefinitions = [
     ),
     ariaLabel: createLabelFunction("Título"),
     sortingField: "title",
+  },
+  {
+    id: "startDate",
+    header: "Data de início",
+    cell: (item: Item) => (
+      <span>{new Date(item.startDate).toLocaleDateString("pt-BR")}</span>
+    ),
+    ariaLabel: createLabelFunction("Data de início"),
+    sortingField: "startDate",
+  },
+  {
+    id: "endDate",
+    header: "Data de fim",
+    cell: (item: Item) => (
+      <span>{new Date(item.endDate).toLocaleDateString("pt-BR")}</span>
+    ),
+    ariaLabel: createLabelFunction("Data de fim"),
+    sortingField: "endDate",
   },
   {
     id: "description",

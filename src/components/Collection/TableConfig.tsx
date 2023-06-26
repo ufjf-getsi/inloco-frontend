@@ -5,11 +5,11 @@ import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunct
 interface Item {
   id: string;
   title: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 }
 
-export const visibleContent = ["title", "startDate"];
+export const visibleContent = ["title", "startDate", "endDate"];
 
 const recordViewPageLink = (item: Item) => useHref(`/collections/${item.id}`);
 
@@ -40,11 +40,18 @@ export const columnDefinitions = [
     id: "startDate",
     header: "Data de início",
     cell: (item: Item) => (
-      <Link href={recordViewPageLink(item)}>
-        <span className="font-bold">{item.startDate}</span>
-      </Link>
+      <span>{new Date(item.startDate).toLocaleDateString("pt-BR")}</span>
     ),
     ariaLabel: createLabelFunction("Data de início"),
     sortingField: "startDate",
+  },
+  {
+    id: "endDate",
+    header: "Data de fim",
+    cell: (item: Item) => (
+      <span>{new Date(item.endDate).toLocaleDateString("pt-BR")}</span>
+    ),
+    ariaLabel: createLabelFunction("Data de fim"),
+    sortingField: "endDate",
   },
 ];

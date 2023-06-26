@@ -13,14 +13,12 @@ import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 import GenericTable, {
   GenericTableProps,
 } from "../../generic/GenericTable/GenericTable";
-// TODO
-// import {
-//   Item,
-//   columnDefinitions as columnDefinitionsPoints,
-//   visibleContent as visibleContentPoints,
-// } from "../../components/VisitPoint/TableConfig";
 import {
-  Item as TaskItem,
+  columnDefinitions as columnDefinitionsVisitPointList,
+  visibleContent as visibleContentVisitPointList,
+} from "../../components/VisitPoint/TableConfig";
+import {
+  Item as ItemTasks,
   columnDefinitions as columnDefinitionsTasks,
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
@@ -37,7 +35,7 @@ export default function ViewCollection() {
   const [requiredEquipmentVisible, setRequiredEquipmentVisible] =
     useState(false);
   const [selectedPoints, setSelectedPoints] = useState([]);
-  const [tasksAsItems, setTasksAsItems] = useState<TaskItem[]>([]);
+  const [tasksAsItems, setTasksAsItems] = useState<ItemTasks[]>([]);
   const [requiredEquipment, setRequiredEquipment] = useState([]);
 
   const projectId = collection.project?.id ?? ``;
@@ -55,35 +53,27 @@ export default function ViewCollection() {
     });
   }, []);
 
-  // TODO
-  // const tableConfigPoints: GenericTableProps = {
-  //   allRecords: collection.visitPointList.map((visitPoint): Item => {
-  //     return {
-  //       id: visitPoint.point.id,
-  //       orderOnRoute: visitPoint.orderOnRoute,
-  //       name: visitPoint.point.name,
-  //       coordinates: visitPoint.point.plannedCoordinates,
-  //     };
-  //   }),
-  //   columnDefinitions: columnDefinitionsPoints,
-  //   recordCategorySingular: `ponto`,
-  //   recordCategoryPlural: `pontos`,
-  //   recordGenderFeminine: false,
-  //   addRecordLink: `/collections/${collection.id}/create-point`,
-  //   visibleContent: visibleContentPoints,
-  //   setSelectedRecords: setSelectedPoints,
-  //   otherHeaderActions: [
-  //     <Button
-  //       iconName="upload-download"
-  //       variant="normal"
-  //       key={`reorderPointsButton`}
-  //       href={useHref(`/collections/${id}/reorder-points`)}
-  //     >
-  //       Reordenar
-  //     </Button>,
-  //   ],
-  //   orderBy: 1,
-  // };
+  const tableConfigVisitPointList: GenericTableProps = {
+    allRecords: collection.visitPointList,
+    columnDefinitions: columnDefinitionsVisitPointList,
+    recordCategorySingular: `visita`,
+    recordCategoryPlural: `visitas`,
+    recordGenderFeminine: true,
+    addRecordLink: `/collections/${collection.id}/create-visit-point`,
+    visibleContent: visibleContentVisitPointList,
+    setSelectedRecords: setSelectedPoints,
+    otherHeaderActions: [
+      <Button
+        iconName="upload-download"
+        variant="normal"
+        key={`reorderPointsButton`}
+        href={useHref(`/collections/${id}/reorder-points`)}
+      >
+        Reordenar
+      </Button>,
+    ],
+    orderBy: 1,
+  };
 
   const tableConfigTasks: GenericTableProps = {
     allRecords: tasksAsItems,
@@ -136,7 +126,7 @@ export default function ViewCollection() {
       }
       editRecordLink={`/collections/${collection.id}/edit`}
       previousPageLink={`/projects`}
-      // table={tableConfigPoints}
+      table={tableConfigVisitPointList}
       deleteModal={deleteModalConfig}
       otherHeaderActions={[
         <Button
@@ -148,7 +138,7 @@ export default function ViewCollection() {
         </Button>,
       ]}
     >
-      <div style={{ marginTop: "15vh" }}>
+      <div style={{ marginTop: "4vh" }}>
         <GenericTable {...tableConfigTasks} />
       </div>
       <RequiredEquipment
