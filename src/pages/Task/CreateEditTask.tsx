@@ -7,6 +7,7 @@ import {
   emptyFields,
   Fields,
   formatStatus,
+  formattedFields,
   formatTitle,
   getSendableData,
   notLoadedRecord,
@@ -22,10 +23,7 @@ import {
 export default function CreateEditTask({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
 
-  const [task, setTask] = useState<Task>({
-    projectId: "",
-    ...notLoadedRecord,
-  });
+  const [task, setTask] = useState<Task>(notLoadedRecord);
   const [collection, setCollection] = useState(notLoadedParent);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
@@ -44,17 +42,11 @@ export default function CreateEditTask({ edit }: { edit: boolean }) {
       fetchRecordServerLink =
       pushRecordServerLink =
         `/tasks/${id}`;
-    commonCollectionId = task.collectionId ?? ``;
-    commonProjectId = task.projectId ?? ``;
+    commonCollectionId = task.collection?.id ?? ``;
+    commonProjectId = task.collection?.project?.id ?? ``;
     function handleFetchResponse() {
       if (task.type === TaskType.commonTask) {
-        setInputValues({
-          title: formatTitle(task),
-          status: {
-            label: formatStatus(task.isPending ? "pending" : "completed"),
-            value: task.isPending ? "pending" : "completed",
-          },
-        });
+        setInputValues(formattedFields(task));
       } else {
         handleErrorRedirect(
           navigate,
@@ -72,7 +64,7 @@ export default function CreateEditTask({ edit }: { edit: boolean }) {
       fetchRecordServerLink = `/collections/${collectionId}`;
     pushRecordServerLink = `/tasks`;
     commonCollectionId = collectionId ?? ``;
-    commonProjectId = collection?.projectId ?? ``;
+    commonProjectId = collection.project?.id ?? ``;
     sendableDataFunction = () =>
       getSendableData({
         inputValues,

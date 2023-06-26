@@ -144,7 +144,7 @@ export enum TaskType {
 }
 
 // Tarefa <<Abstract>>
-interface BaseTask {
+export interface BaseTask {
   id: string;
 
   isPending: boolean;

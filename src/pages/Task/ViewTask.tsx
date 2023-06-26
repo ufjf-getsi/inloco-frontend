@@ -14,11 +14,11 @@ import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
 export default function ViewTask() {
   const { id } = useParams();
 
-  const [task, setTask] = useState<Task>({
-    projectId: "",
-    ...notLoadedRecord,
-  });
+  const [task, setTask] = useState<Task>(notLoadedRecord);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
+  const collectionId = task.collection?.id ?? "";
+  const projectId = task.collection?.project?.id ?? ``;
 
   const deleteModalConfig: GenericDeleteModalProps = {
     visible: deleteModalVisible,
@@ -27,7 +27,7 @@ export default function ViewTask() {
     recordCategoryPlural: "tarefas",
     recordGenderFeminine: true,
     serverDeleteLink: `/tasks/${id}`,
-    afterDeleteRedirectLink: `/collections/${task.collectionId}`,
+    afterDeleteRedirectLink: `/collections/${collectionId}`,
   };
 
   return (
@@ -40,8 +40,8 @@ export default function ViewTask() {
       breadcrumbs={
         <GenericBreadcrumbGroup
           items={breadcrumpGroupItems({
-            projectId: task.projectId,
-            collectionId: task.collectionId,
+            projectId: projectId,
+            collectionId: collectionId,
             pageType: "view",
           })}
         />

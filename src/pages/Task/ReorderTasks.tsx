@@ -27,7 +27,7 @@ export default function ReorderTasks() {
   const fetchRecordServerLink = `/collections/${collectionId}`;
   const pushRecordServerLink = `/collections/${collectionId}/reorder-tasks`;
   const commonCollectionId = collection.id ?? ``;
-  const commonProjectId = collection.projectId ?? ``;
+  const commonProjectId = collection.project?.id ?? ``;
 
   function handleFetchResponse() {
     const startingItems: {
