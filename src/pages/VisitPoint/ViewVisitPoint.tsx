@@ -58,6 +58,12 @@ export default function ViewVisitPoint() {
       title={visitPoint.point.name}
       description={`Coordenadas aferidas : ${visitPoint.actualCoordinates}`}
       navbarActiveLink={`/projects`}
+      displayedInfo={
+        new Map([
+          [`Coordenadas planejadas`, visitPoint.point.plannedCoordinates],
+          [`Coordenadas aferidas`, visitPoint.actualCoordinates],
+        ])
+      }
       setRecord={setVisitPoint}
       fetchRecordLink={`/visit-point/${id}`}
       breadcrumbs={
@@ -73,8 +79,6 @@ export default function ViewVisitPoint() {
       previousPageLink={`/collections/${collectionId}`}
       table={tableConfigMeasurements}
       deleteModal={deleteModalConfig}
-    >
-      {/* // TODO: Show coordinates */}
-    </GenericViewPage>
+    />
   );
 }

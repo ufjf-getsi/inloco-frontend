@@ -31,8 +31,11 @@ export default function ViewPoint() {
   return (
     <GenericViewPage
       title={point.name}
-      description={`Coordenadas planejadas : ${point.plannedCoordinates}`}
+      description={``}
       navbarActiveLink={`/projects`}
+      displayedInfo={
+        new Map([[`Coordenadas planejadas`, point.plannedCoordinates]])
+      }
       setRecord={setPoint}
       fetchRecordLink={`/points/${id}`}
       breadcrumbs={
@@ -46,8 +49,6 @@ export default function ViewPoint() {
       editRecordLink={`/points/${point.id}/edit`}
       previousPageLink={`/project/${projectId}`}
       deleteModal={deleteModalConfig}
-    >
-      {/* // TODO: Show coordinates */}
-    </GenericViewPage>
+    />
   );
 }
