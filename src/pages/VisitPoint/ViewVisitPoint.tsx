@@ -54,17 +54,19 @@ export default function ViewVisitPoint() {
     afterDeleteRedirectLink: `/collections/${collectionId}`,
   };
 
+  const displayedInfo = {
+    data: new Map([
+      [`Coordenadas planejadas`, visitPoint.point.plannedCoordinates],
+      [`Coordenadas aferidas`, visitPoint.actualCoordinates],
+    ]),
+    gridDefinition: [{ colspan: { default: 12, xxs: 6 } }],
+  };
+
   return (
     <GenericViewPage
       title={visitPoint.point.name}
-      description={`Coordenadas aferidas : ${visitPoint.actualCoordinates}`}
+      displayedInfo={displayedInfo}
       navbarActiveLink={`/projects`}
-      displayedInfo={
-        new Map([
-          [`Coordenadas planejadas`, visitPoint.point.plannedCoordinates],
-          [`Coordenadas aferidas`, visitPoint.actualCoordinates],
-        ])
-      }
       setRecord={setVisitPoint}
       fetchRecordLink={`/visit-point/${id}`}
       breadcrumbs={

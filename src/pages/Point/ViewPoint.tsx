@@ -29,14 +29,16 @@ export default function ViewPoint() {
     afterDeleteRedirectLink: `/projects/${projectId}`,
   };
 
+  const displayedInfo = {
+    data: new Map([[`Coordenadas planejadas`, point.plannedCoordinates]]),
+  };
+
   return (
     <GenericViewPage
       title={point.name}
       description={``}
       navbarActiveLink={`/projects`}
-      displayedInfo={
-        new Map([[`Coordenadas planejadas`, point.plannedCoordinates]])
-      }
+      displayedInfo={displayedInfo}
       setRecord={setPoint}
       fetchRecordLink={`/points/${id}`}
       breadcrumbs={

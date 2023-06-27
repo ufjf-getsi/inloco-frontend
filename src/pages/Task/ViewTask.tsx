@@ -31,10 +31,16 @@ export default function ViewTask() {
     afterDeleteRedirectLink: `/collections/${collectionId}`,
   };
 
+  const displayedInfo = {
+    data: new Map([
+      [`Status`, task.isPending ? "Tarefa pendente" : "Tarefa concluída"],
+    ]),
+  };
+
   return (
     <GenericViewPage
       title={formatTitle(task)}
-      description={task.isPending ? "Tarefa pendente" : "Tarefa concluída"}
+      displayedInfo={displayedInfo}
       navbarActiveLink={`/projects`}
       setRecord={setTask}
       fetchRecordLink={`/tasks/${id}`}

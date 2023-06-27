@@ -5,7 +5,9 @@ import { PropsWithChildren, ReactNode, useEffect } from "react";
 import { fetchRecordData } from "../../functions/controller";
 
 import Navbar from "../../components/Navbar";
-import GenericInfoPanel from "../components/GenericInfoPanel";
+import GenericInfoPanel, {
+  GenericInfoPanelProps,
+} from "../components/GenericInfoPanel";
 import GenericTable, {
   GenericTableProps,
 } from "../components/table/GenericTable";
@@ -23,10 +25,10 @@ import {
 
 interface GenericViewPageProps {
   title: string;
-  description: string;
+  description?: string;
   navbarActiveLink: string;
   breadcrumbs: ReactNode;
-  displayedInfo?: Map<string, string>;
+  displayedInfo?: GenericInfoPanelProps;
   setRecord: Function;
   fetchRecordLink: string;
   editRecordLink: string;
@@ -60,7 +62,7 @@ export default function GenericViewPage(
           header={
             <Header
               variant="h2"
-              description={props.description}
+              description={props.description ?? ""}
               actions={
                 <SpaceBetween direction="horizontal" size="xs">
                   {props.otherHeaderActions}
@@ -83,7 +85,7 @@ export default function GenericViewPage(
           <Container>
             <SpaceBetween size="xl">
               {props.displayedInfo && (
-                <GenericInfoPanel displayedInfo={props.displayedInfo} />
+                <GenericInfoPanel {...props.displayedInfo} />
               )}
               {props.table && (
                 <GenericTable

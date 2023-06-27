@@ -1,5 +1,6 @@
-import { createLabelFunction } from "../../generic/components/table/tableFunctions";
 import { Parameter } from "../../types";
+import { createLabelFunction } from "../../generic/components/table/tableFunctions";
+import { formattedUnit } from "../Parameter/GenericParameter";
 
 export interface Item {
   id: string;
@@ -9,9 +10,6 @@ export interface Item {
 }
 
 export const visibleContent = ["parameterName", "isPending", "result"];
-
-const formattedUnit = (unit: string) => `${unit !== "" ? ` (${unit})` : ""}`;
-const formattedResult = (result: string, unit: string) => result + unit;
 
 export const columnDefinitions = [
   {
@@ -43,9 +41,7 @@ export const columnDefinitions = [
     id: "result",
     header: "Resultado",
     cell: (item: Item) =>
-      item.result !== ""
-        ? formattedResult(item.result, item.parameter.unit)
-        : "---",
+      item.result !== "" ? item.result + item.parameter.unit : "---",
     ariaLabel: createLabelFunction("Resultado"),
     sortingField: "result",
   },

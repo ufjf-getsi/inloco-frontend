@@ -28,10 +28,14 @@ export default function ViewSupply() {
     afterDeleteRedirectLink: `/supplies`,
   };
 
+  const displayedInfo = {
+    data: new Map([[`Estoque`, `${supply.stock.toString()} unidades`]]),
+  };
+
   return (
     <GenericViewPage
       title={supply.name}
-      description={`Estoque: ${supply.stock}`}
+      displayedInfo={displayedInfo}
       navbarActiveLink={`/supplies`}
       setRecord={setSupply}
       fetchRecordLink={`/supplies/${id}`}
