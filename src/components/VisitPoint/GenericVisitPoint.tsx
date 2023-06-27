@@ -1,9 +1,19 @@
 import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
 
-import { DataType, Measurement, Parameter, VisitPoint } from "../../types";
+import {
+  DataType,
+  Measurement,
+  Parameter,
+  Supply,
+  Supply_VisitPoint,
+  VisitPoint,
+} from "../../types";
 import { PageType } from "../../clientTypes";
-import { localizedPageTypeName } from "../../functions/util";
+import {
+  convertStringToInteger,
+  localizedPageTypeName,
+} from "../../functions/util";
 import { fetchRecordData } from "../../functions/controller";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
@@ -18,11 +28,26 @@ import {
   Input,
   SelectProps,
   Multiselect,
+  AttributeEditor,
+  Select,
+  Box,
+  Container,
+  Header,
 } from "@cloudscape-design/components";
+import { useState } from "react";
+
+interface AttributeSelectorSupply {
+  supplyId: string;
+  quantity: string;
+  invalid: boolean;
+  type: OptionDefinition;
+  stock: number;
+}
 
 export interface Fields {
   actualCoordinates: string;
   parameters: SelectProps.Options;
+  supplies: AttributeSelectorSupply[];
   // point: OptionDefinition;
 }
 
@@ -30,6 +55,7 @@ interface FormFieldsProps {
   inputValues: Fields;
   setInputValues: Function;
   allParameterOptionsList: SelectProps.Options;
+  allSupplyOptionsList: SelectProps.Options;
 }
 
 export type ImplementedRecordFormProps = GenericRecordFormProps &
@@ -42,6 +68,7 @@ export type ImplementedRecordFormProps = GenericRecordFormProps &
 export const emptyFields: Fields = {
   actualCoordinates: "",
   parameters: [],
+  supplies: [],
 };
 
 export const notLoadedRecord: VisitPoint = {
@@ -124,6 +151,27 @@ export function fetchAllParameterOptionsList({
   );
 }
 
+export function fetchAllSupplyOptionsList({
+  navigate,
+  setAllSupplyOptionsList,
+}: {
+  navigate: NavigateFunction;
+  setAllSupplyOptionsList: Function;
+}) {
+  fetchRecordData(
+    `/supplies`,
+    navigate,
+    function (response: AxiosResponse<any, any>) {
+      setAllSupplyOptionsList(
+        response.data.map((supply: Supply, index: number) => ({
+          value: index.toString(),
+          label: supply.name,
+        }))
+      );
+    }
+  );
+}
+
 export function validateFields(inputValues: Fields): boolean {
   // TODO: validate coordinates
   const validActualCoordinates = inputValues.actualCoordinates
@@ -144,6 +192,20 @@ export function formattedFields(record: VisitPoint): Fields {
         label: measurement.parameter.name,
       };
     }),
+    supplies: record.supply_VisitPointList.map(
+      (supply_VisitPoint: Supply_VisitPoint) => {
+        return {
+          supplyId: supply_VisitPoint.supply.id,
+          quantity: supply_VisitPoint.quantity.toString(),
+          invalid: false,
+          type: {
+            value: supply_VisitPoint.supply.id,
+            label: supply_VisitPoint.supply.name,
+          },
+          stock: supply_VisitPoint.supply.stock,
+        };
+      }
+    ),
   };
 }
 
@@ -235,7 +297,44 @@ function FormFields({
   inputValues,
   setInputValues,
   allParameterOptionsList,
+  allSupplyOptionsList,
 }: FormFieldsProps) {
+  const [supplies, setSupplies] = useState([
+    {
+      name: "Frasco",
+      id: "idFrasco",
+      stock: 56,
+    },
+    {
+      name: "Disco de Secchi",
+      id: "idDisco",
+      stock: 1,
+    },
+  ]);
+
+  const [items, setItems] = useState<AttributeSelectorSupply[]>([]);
+
+  const [selectOptions, setSelectOptions] =
+    useState<SelectProps.Options>(allSupplyOptionsList);
+  const [selectedOption, setSelectedOption] = useState<SelectProps.Option>(
+    selectOptions[0]
+  );
+
+  function allowedToInsertItem(): boolean {
+    let returnValue = true;
+    if (selectedOption && selectedOption.value !== "") {
+      const supplyIndexFromSelect = selectedOption.value;
+      items.forEach((supplyItem) => {
+        const supplyIndexFromFilledItem = supplyItem.type.value;
+        if (supplyIndexFromFilledItem && supplyIndexFromFilledItem !== "") {
+          if (supplyIndexFromFilledItem === supplyIndexFromSelect)
+            returnValue = false;
+        } else return false;
+      });
+    } else return false;
+    return returnValue;
+  }
+
   return (
     <SpaceBetween size="l">
       <FormField label="Coordenadas aferidas">
@@ -274,6 +373,99 @@ function FormFields({
           }
         />
       </FormField>
+
+      <Container header={<Header variant="h3">Suprimentos</Header>}>
+        <SpaceBetween size="xs">
+          <Select
+            selectedOption={selectedOption}
+            options={selectOptions}
+            onChange={({ detail }) => {
+              setSelectedOption(detail.selectedOption);
+            }}
+          />
+
+          <AttributeEditor
+            onAddButtonClick={() => {
+              if (allowedToInsertItem()) {
+                if (selectedOption.value) {
+                  const supply =
+                    supplies[convertStringToInteger(selectedOption.value)];
+                  console.log("SelectedOption", selectedOption);
+                  console.log("Supply", supply);
+                  if (supply)
+                    setItems([
+                      ...items,
+                      {
+                        supplyId: supply.id,
+                        quantity: "1",
+                        invalid: false,
+                        type: selectedOption,
+                        stock: supply.stock,
+                      },
+                    ]);
+                }
+              }
+            }}
+            onRemoveButtonClick={({ detail }) => {
+              const tmpItems = [...items];
+              tmpItems.splice(detail.itemIndex, 1);
+              setItems(tmpItems);
+            }}
+            items={items}
+            addButtonText="Incluir suprimento"
+            definition={[
+              {
+                label: "Suprimento",
+                control: (item) => (
+                  <Box>{`${item.type.label} (${item.stock})`}</Box>
+                ),
+              },
+              {
+                label: "Quantidade",
+                control: (item) => (
+                  <Input
+                    invalid={item.invalid}
+                    value={item.quantity}
+                    placeholder="Quantidade"
+                    inputMode="numeric"
+                    onChange={(event) => {
+                      console.log("Items", items);
+                      console.log("Texto", event.detail.value);
+                      const isNumeric = /^\d*$/.test(event.detail.value);
+                      console.log("É numérico", isNumeric);
+                      if (isNumeric)
+                        setItems((prevItems) => {
+                          console.log(prevItems);
+                          return prevItems.map((prevItem) => {
+                            if (prevItem.supplyId === item.supplyId) {
+                              const actualQuantity = convertStringToInteger(
+                                event.detail.value
+                              );
+                              const isInsideBounds =
+                                actualQuantity > 0 &&
+                                actualQuantity <= item.stock;
+                              console.log(
+                                "É menor que o limite",
+                                isInsideBounds
+                              );
+                              return {
+                                ...prevItem,
+                                invalid: !isInsideBounds,
+                                quantity: event.detail.value,
+                              };
+                            }
+                            return prevItem;
+                          });
+                        });
+                    }}
+                  />
+                ),
+              },
+            ]}
+            removeButtonText={"Excluir"}
+          />
+        </SpaceBetween>
+      </Container>
     </SpaceBetween>
   );
 }
