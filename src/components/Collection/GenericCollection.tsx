@@ -1,24 +1,22 @@
 import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
-import { Collection, Task, TaskType } from "../../types";
 
+import { Collection, Task, TaskType } from "../../types";
+import { PageType } from "../../clientTypes";
+import { localizedPageTypeName } from "../../functions/util";
+import { fetchRecordData } from "../../functions/controller";
+import GenericCreateAndEditPage, {
+  GenericRecordFormProps,
+} from "../../generic/pages/GenericCreateAndEditPage";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
+import { Item } from "../Task/TableConfig";
+import { notLoadedRecord as notLoadedProject } from "../Project/GenericProject";
 import {
   SpaceBetween,
   FormField,
   Input,
   DatePicker,
 } from "@cloudscape-design/components";
-import GenericCreateAndEditPage, {
-  GenericRecordFormProps,
-} from "../../generic/GenericPages/GenericCreateAndEditPage";
-import {
-  fetchRecordData,
-  localizedPageTypeName,
-} from "../../generic/GenericFunctions";
-import { PageType } from "../../generic/GenericInterfaces";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
-import { Item } from "../Task/TableConfig";
-import { notLoadedRecord as notLoadedProject } from "../Project/GenericProject";
 
 export interface Fields {
   title: string;

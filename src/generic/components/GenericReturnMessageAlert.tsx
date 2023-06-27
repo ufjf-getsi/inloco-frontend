@@ -1,6 +1,6 @@
+import { GenericRecordProps, PageType } from "../../clientTypes";
+import { toUpperCase } from "../../functions/util";
 import { Alert, AlertProps } from "@cloudscape-design/components";
-import { toUpperCase } from "./GenericFunctions";
-import { GenericRecordProps, PageType } from "./GenericInterfaces";
 
 export interface GenericReturnMessageAlertProps extends GenericRecordProps {
   alertVisible: boolean;

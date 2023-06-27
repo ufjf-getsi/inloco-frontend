@@ -7,8 +7,14 @@ interface GenericInfoPanelProps {
 
 export default function GenericInfoPanel(props: GenericInfoPanelProps) {
   let panels = Array<JSX.Element>();
+  let aux = 0;
   props.displayedInfo.forEach((value, key) => {
-    panels.push(<ValueWithLabel label={key}>{value}</ValueWithLabel>);
+    panels.push(
+      <ValueWithLabel label={key} key={key + aux}>
+        {value}
+      </ValueWithLabel>
+    );
+    aux++;
   });
   return (
     <ColumnLayout columns={3} variant="text-grid">

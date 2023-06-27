@@ -1,11 +1,6 @@
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { FormEvent } from "react";
-import { PageType, OptionStringString as Option } from "./GenericInterfaces";
-
-export function toUpperCase(text: String) {
-  return text.charAt(0).toLocaleUpperCase() + text.slice(1);
-}
 
 interface cancelLoadAndRedirectBackwardsProps {
   navigate: NavigateFunction;
@@ -36,32 +31,6 @@ export function handleErrorRedirect(
       replace: true,
     }
   );
-}
-
-export function searchLabelByValue(
-  optionsList: Option[],
-  searchedValue: string
-): string {
-  return (
-    optionsList.find((option) => {
-      return option.value === searchedValue;
-    })?.label ?? searchedValue
-  );
-}
-
-export function localizedPageTypeName(pageType: PageType) {
-  switch (pageType) {
-    case "list":
-      return "Lista de";
-    case "view":
-      return "Visualizar";
-    case "create":
-      return "Criar";
-    case "edit":
-      return "Editar";
-    case "reorder":
-      return "Reordenar";
-  }
 }
 
 export function fetchRecordData(
@@ -126,6 +95,7 @@ function decideOperation(edit: boolean) {
     return createRecordOnServer;
   }
 }
+
 async function createRecordOnServer(
   relativeServerUrl: string,
   sendableData: any
@@ -141,6 +111,7 @@ async function createRecordOnServer(
     return false;
   }
 }
+
 async function updateRecordOnServer(
   relativeServerUrl: string,
   sendableData: any
@@ -154,13 +125,5 @@ async function updateRecordOnServer(
   } catch (error) {
     console.error(error);
     return false;
-  }
-}
-
-export function convertStringToInteger(string: string): number {
-  try {
-    return parseInt(string);
-  } catch (error) {
-    return 0;
   }
 }

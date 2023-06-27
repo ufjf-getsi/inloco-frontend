@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+
 import { VisitPoint } from "../../types";
 
-import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
-import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
+import GenericViewPage from "../../generic/pages/GenericViewPage";
+import { GenericDeleteModalProps } from "../../generic/components/GenericDeleteModal";
 import {
   breadcrumpGroupItems,
   notLoadedRecord,
 } from "../../components/VisitPoint/GenericVisitPoint";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
-import { GenericTableProps } from "../../generic/GenericTable/GenericTable";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
+import { GenericTableProps } from "../../generic/components/table/GenericTable";
 import {
   Item as ItemMeasurements,
   columnDefinitions as columnDefinitionsMeasurements,

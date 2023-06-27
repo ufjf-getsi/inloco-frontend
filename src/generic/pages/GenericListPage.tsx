@@ -1,14 +1,19 @@
-import axios from "axios";
+import { AxiosResponse } from "axios";
+import { NavigateFunction } from "react-router-dom";
 import { PropsWithChildren, ReactNode, useEffect } from "react";
 
+import { fetchRecordData } from "../../functions/controller";
+
+import Navbar from "../../components/Navbar";
+import GenericTable, {
+  GenericTableProps,
+} from "../components/table/GenericTable";
 import {
   AppLayout,
   ContentLayout,
   Container,
   Header,
 } from "@cloudscape-design/components";
-import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
-import Navbar from "../../components/Navbar";
 
 interface GenericListPageProps extends GenericTableProps {
   title: string;
@@ -17,20 +22,20 @@ interface GenericListPageProps extends GenericTableProps {
   breadcrumbs: ReactNode;
   setRecords: Function;
   fetchRecordsLink: string;
+  navigate: NavigateFunction;
 }
 
 export default function GenericListPage(
   props: PropsWithChildren<GenericListPageProps>
 ) {
-  function fetchTableData() {
-    axios(import.meta.env.VITE_SERVER_URL + props.fetchRecordsLink).then(
-      (response) => {
+  useEffect(() => {
+    fetchRecordData(
+      props.fetchRecordsLink,
+      props.navigate,
+      (response: AxiosResponse) => {
         props.setRecords(response.data);
       }
     );
-  }
-  useEffect(() => {
-    fetchTableData();
   }, []);
 
   return (

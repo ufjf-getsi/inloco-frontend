@@ -1,13 +1,17 @@
 import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
-import {
-  DataType,
-  Measurement,
-  Parameter,
-  Point,
-  VisitPoint,
-} from "../../types";
 
+import { DataType, Measurement, Parameter, VisitPoint } from "../../types";
+import { PageType } from "../../clientTypes";
+import { localizedPageTypeName } from "../../functions/util";
+import { fetchRecordData } from "../../functions/controller";
+import GenericCreateAndEditPage, {
+  GenericRecordFormProps,
+} from "../../generic/pages/GenericCreateAndEditPage";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
+import { notLoadedRecord as notLoadedPoint } from "../Point/GenericPoint";
+import { notLoadedRecord as notLoadedCollection } from "../Collection/GenericCollection";
+import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 import {
   SpaceBetween,
   FormField,
@@ -15,18 +19,6 @@ import {
   SelectProps,
   Multiselect,
 } from "@cloudscape-design/components";
-import GenericCreateAndEditPage, {
-  GenericRecordFormProps,
-} from "../../generic/GenericPages/GenericCreateAndEditPage";
-import {
-  fetchRecordData,
-  localizedPageTypeName,
-} from "../../generic/GenericFunctions";
-import { PageType } from "../../generic/GenericInterfaces";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
-import { notLoadedRecord as notLoadedPoint } from "../Point/GenericPoint";
-import { notLoadedRecord as notLoadedCollection } from "../Collection/GenericCollection";
-import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
 
 export interface Fields {
   actualCoordinates: string;

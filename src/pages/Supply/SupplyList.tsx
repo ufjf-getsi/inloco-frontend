@@ -1,15 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+
 import { Supply } from "../../types";
 
 import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Supply/TableConfig";
-import GenericListPage from "../../generic/GenericPages/GenericListPage";
+import GenericListPage from "../../generic/pages/GenericListPage";
 import { breadcrumpGroupItems } from "../../components/Supply/GenericSupply";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
 
 export default function SupplyList() {
+  const navigate = useNavigate();
+
   const [supplies, setSupplies] = useState<Supply[]>([]);
   const [selectedSupplies, setSelectedSupplies] = useState([]);
 
@@ -21,6 +25,7 @@ export default function SupplyList() {
       allRecords={supplies}
       setRecords={setSupplies}
       fetchRecordsLink={`/supplies`}
+      navigate={navigate}
       columnDefinitions={columnDefinitions}
       recordCategorySingular={`suprimento`}
       recordCategoryPlural={`suprimentos`}

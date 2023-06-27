@@ -1,4 +1,4 @@
-import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunctions";
+import { createLabelFunction } from "../../generic/components/table/tableFunctions";
 import { Parameter } from "../../types";
 
 export interface Item {

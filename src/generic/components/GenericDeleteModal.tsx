@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useHref } from "react-router-dom";
+import { GenericRecordProps } from "../../clientTypes";
 
 import {
   SpaceBetween,
@@ -7,8 +9,6 @@ import {
   Box,
   Alert,
 } from "@cloudscape-design/components";
-import { GenericRecordProps } from "./GenericInterfaces";
-import { useHref } from "react-router-dom";
 
 export interface GenericDeleteModalProps extends GenericRecordProps {
   visible: boolean;

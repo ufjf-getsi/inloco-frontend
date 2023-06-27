@@ -1,15 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+
 import { Project } from "../../types";
 
 import {
   columnDefinitions,
   visibleContent,
 } from "../../components/Project/TableConfig";
-import GenericListPage from "../../generic/GenericPages/GenericListPage";
+import GenericListPage from "../../generic/pages/GenericListPage";
 import { breadcrumpGroupItems } from "../../components/Project/GenericProject";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
 
 export default function ProjectsList() {
+  const navigate = useNavigate();
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
 
@@ -21,6 +25,7 @@ export default function ProjectsList() {
       allRecords={projects}
       setRecords={setProjects}
       fetchRecordsLink={`/projects`}
+      navigate={navigate}
       columnDefinitions={columnDefinitions}
       recordCategorySingular={`projeto`}
       recordCategoryPlural={`projetos`}

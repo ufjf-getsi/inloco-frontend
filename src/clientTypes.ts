@@ -1,6 +1,6 @@
 // Interfaces and Types used multiple times, but only on the Front-end should be on this file
 
-import { DataType } from "../types";
+import { DataType } from "./types";
 
 export interface GenericRecordProps {
   recordName?: string;

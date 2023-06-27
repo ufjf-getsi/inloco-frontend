@@ -1,18 +1,19 @@
 import { useHref, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import { Collection } from "../../types";
 
-import GenericViewPage from "../../generic/GenericPages/GenericViewPage";
+import GenericViewPage from "../../generic/pages/GenericViewPage";
 import {
   breadcrumpGroupItems,
   fetchAllRequiredEquipment,
   fetchTableData,
   notLoadedRecord,
 } from "../../components/Collection/GenericCollection";
-import { GenericDeleteModalProps } from "../../generic/GenericDeleteModal";
+import { GenericDeleteModalProps } from "../../generic/components/GenericDeleteModal";
 import GenericTable, {
   GenericTableProps,
-} from "../../generic/GenericTable/GenericTable";
+} from "../../generic/components/table/GenericTable";
 import {
   columnDefinitions as columnDefinitionsVisitPointList,
   visibleContent as visibleContentVisitPointList,
@@ -23,7 +24,7 @@ import {
   visibleContent as visibleContentTasks,
 } from "../../components/Task/TableConfig";
 import RequiredEquipment from "../../components/RequiredEquipment";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
 import Button from "@cloudscape-design/components/button";
 
 export default function ViewCollection() {

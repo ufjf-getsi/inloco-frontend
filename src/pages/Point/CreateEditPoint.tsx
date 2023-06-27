@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Point, Project } from "../../types";
 
-import { AlertProps } from "@cloudscape-design/components";
+import { Point, Project } from "../../types";
+import { handleFormSubmit } from "../../functions/controller";
+
 import {
   emptyFields,
   Fields,
@@ -13,7 +14,7 @@ import {
   validateFields,
 } from "../../components/Point/GenericPoint";
 import { notLoadedRecord as notLoadedParent } from "../../components/Project/GenericProject";
-import { handleFormSubmit } from "../../generic/GenericFunctions";
+import { AlertProps } from "@cloudscape-design/components";
 
 export default function CreateEditPoint({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
