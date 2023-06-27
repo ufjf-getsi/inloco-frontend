@@ -35,8 +35,6 @@ export default function CreateEditVisitPoint({ edit }: { edit: boolean }) {
   let pushRecordServerLink = ``;
   let sendableDataFunction = () => getSendableData({ inputValues });
 
-  console.log(collection);
-
   if (edit) {
     const { id } = useParams();
     previousPageWebLink =
@@ -56,6 +54,7 @@ export default function CreateEditVisitPoint({ edit }: { edit: boolean }) {
     previousPageWebLink =
       fetchRecordServerLink = `/collections/${collectionId}`;
     pushRecordServerLink = `/visit-point`;
+    commonCollectionId = collection.id;
     commonProjectId = collection.project?.id ?? ``;
     sendableDataFunction = () =>
       getSendableData({

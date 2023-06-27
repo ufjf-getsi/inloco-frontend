@@ -28,7 +28,9 @@ export function localizedPageTypeName(pageType: PageType) {
 
 export function convertStringToInteger(string: string): number {
   try {
-    return parseInt(string);
+    const result = parseInt(string);
+    if (isNaN(result)) return 0;
+    else return result;
   } catch (error) {
     return 0;
   }
