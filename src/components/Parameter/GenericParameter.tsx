@@ -103,6 +103,9 @@ export function formatDataType(dataType: string): string {
   return searchLabelByValue(dataTypeOptions, dataType);
 }
 
+export const formattedUnit = (unit: string) => `${unit !== "" ? ` (${unit})` : ""}`;
+
+
 export function fetchAllEquipmentOptionsList({
   navigate,
   setAllEquipmentOptionsList,

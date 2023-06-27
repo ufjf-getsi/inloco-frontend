@@ -8,6 +8,7 @@ import { GenericDeleteModalProps } from "../../generic/components/GenericDeleteM
 import {
   breadcrumpGroupItems,
   formatDataType,
+  formattedUnit,
   notLoadedRecord,
 } from "../../components/Parameter/GenericParameter";
 import { GenericTableProps } from "../../generic/components/table/GenericTable";
@@ -51,10 +52,18 @@ export default function ViewParameter() {
     afterDeleteRedirectLink: `/parameters`,
   };
 
+  const displayedInfo = {
+    data: new Map([
+      [`Tipo de dado`, formatDataType(parameter.dataType)],
+      [`Unidade`, parameter.unit !== "" ? parameter.unit : "N/A"],
+    ]),
+    gridDefinition: [{ colspan: { default: 6 } }],
+  };
+
   return (
     <GenericViewPage
-      title={parameter.name + ` (${parameter.unit})`}
-      description={`Tipo de dado: ${formatDataType(parameter.dataType)}`}
+      title={parameter.name + formattedUnit(parameter.unit)}
+      displayedInfo={displayedInfo}
       navbarActiveLink={`/parameters`}
       setRecord={setParameter}
       fetchRecordLink={`/parameters/${id}`}

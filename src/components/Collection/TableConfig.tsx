@@ -1,6 +1,7 @@
 import { useHref } from "react-router-dom";
 import { Link } from "@cloudscape-design/components";
 import { createLabelFunction } from "../../generic/components/table/tableFunctions";
+import { formatDate } from "../../functions/util";
 
 interface Item {
   id: string;
@@ -40,7 +41,7 @@ export const columnDefinitions = [
     id: "startDate",
     header: "Data de início",
     cell: (item: Item) => (
-      <span>{new Date(item.startDate).toLocaleDateString("pt-BR")}</span>
+      <span>{formatDate(new Date(item.startDate), { type: "date" })}</span>
     ),
     ariaLabel: createLabelFunction("Data de início"),
     sortingField: "startDate",
@@ -49,7 +50,7 @@ export const columnDefinitions = [
     id: "endDate",
     header: "Data de fim",
     cell: (item: Item) => (
-      <span>{new Date(item.endDate).toLocaleDateString("pt-BR")}</span>
+      <span>{formatDate(new Date(item.endDate), { type: "date" })}</span>
     ),
     ariaLabel: createLabelFunction("Data de fim"),
     sortingField: "endDate",

@@ -38,11 +38,19 @@ export function toUpperCase(text: String) {
   return text.charAt(0).toLocaleUpperCase() + text.slice(1);
 }
 
-export function formatDate(date: Date) {
-  const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" });
+interface FormatDateOptions {
+  type?: "full" | "date" | "time";
+}
+export function formatDate(date: Date, options?: FormatDateOptions): string {
+  const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "medium",
+  });
   const timeFormatter = new Intl.DateTimeFormat("pt-BR", {
     timeStyle: "short",
     hour12: false,
   });
-  return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
+  if (options && options.type === "date") return dateFormatter.format(date);
+  else if (options && options.type === "time")
+    return timeFormatter.format(date);
+  else return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
 }

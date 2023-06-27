@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Project } from "../../types";
+import { formatDate } from "../../functions/util";
 
 import GenericTable, {
   GenericTableProps,
@@ -21,6 +22,7 @@ import {
   notLoadedRecord,
 } from "../../components/Project/GenericProject";
 import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
+import { GenericInfoPanelProps } from "../../generic/components/GenericInfoPanel";
 
 export default function ViewProject() {
   const { id } = useParams();
@@ -62,10 +64,25 @@ export default function ViewProject() {
     afterDeleteRedirectLink: `/projects`,
   };
 
+  const displayedInfo: GenericInfoPanelProps = {
+    data: new Map([
+      ["Descrição", project.description],
+      [
+        "Data de início",
+        formatDate(new Date(project.startDate), { type: "date" }),
+      ],
+      [
+        "Data de término",
+        formatDate(new Date(project.endDate), { type: "date" }),
+      ],
+    ]),
+    gridDefinition: [{ colspan: { default: 12 } }],
+  };
+
   return (
     <GenericViewPage
       title={project.title}
-      description={project.description}
+      displayedInfo={displayedInfo}
       navbarActiveLink={`/projects`}
       setRecord={setProject}
       fetchRecordLink={`/projects/${id}`}

@@ -1,25 +1,29 @@
 import { PropsWithChildren } from "react";
-import { Box, ColumnLayout } from "@cloudscape-design/components";
+import { Box, Grid, GridProps } from "@cloudscape-design/components";
 
-interface GenericInfoPanelProps {
-  displayedInfo: Map<string, string>;
+export interface GenericInfoPanelProps {
+  data: Map<string, string>;
+  gridDefinition?: Array<GridProps.ElementDefinition>;
 }
-
 export default function GenericInfoPanel(props: GenericInfoPanelProps) {
   let panels = Array<JSX.Element>();
+  let defaultGridDefinition = Array<GridProps.ElementDefinition>();
   let aux = 0;
-  props.displayedInfo.forEach((value, key) => {
+  props.data.forEach((value, key) => {
     panels.push(
       <ValueWithLabel label={key} key={key + aux}>
         {value}
       </ValueWithLabel>
     );
+    defaultGridDefinition.push({
+      colspan: { default: 12, xxs: 6, xs: 4, s: 3 },
+    });
     aux++;
   });
   return (
-    <ColumnLayout columns={3} variant="text-grid">
+    <Grid gridDefinition={props.gridDefinition ?? defaultGridDefinition}>
       {panels}
-    </ColumnLayout>
+    </Grid>
   );
 }
 

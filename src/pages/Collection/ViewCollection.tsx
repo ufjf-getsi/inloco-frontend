@@ -26,6 +26,8 @@ import {
 import RequiredEquipment from "../../components/RequiredEquipment";
 import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
 import Button from "@cloudscape-design/components/button";
+import { formatDate } from "../../functions/util";
+import { GenericInfoPanelProps } from "../../generic/components/GenericInfoPanel";
 
 export default function ViewCollection() {
   const { id } = useParams();
@@ -110,10 +112,24 @@ export default function ViewCollection() {
     incluindo todos os pontos e registros associados a si.`,
   };
 
+  const displayedInfo: GenericInfoPanelProps = {
+    data: new Map([
+      [
+        "Data de início",
+        formatDate(new Date(collection.startDate), { type: "date" }),
+      ],
+      [
+        "Data de término",
+        formatDate(new Date(collection.endDate), { type: "date" }),
+      ],
+    ]),
+    gridDefinition: [{ colspan: { default: 6 } }],
+  };
+
   return (
     <GenericViewPage
       title={collection.title}
-      description={""}
+      displayedInfo={displayedInfo}
       navbarActiveLink={`/projects`}
       setRecord={setCollection}
       fetchRecordLink={`/collections/${id}`}
