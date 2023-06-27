@@ -1,14 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 
-import { AlertProps } from "@cloudscape-design/components";
+import { handleFormSubmit } from "../../functions/controller";
+
 import { breadcrumpGroupItems } from "../../components/Point/GenericPoint";
 import { notLoadedRecord as notLoadedParent } from "../../components/Collection/GenericCollection";
-import { handleFormSubmit } from "../../generic/GenericFunctions";
 import GenericReorderPage, {
   GenericReorderPageProps,
-} from "../../generic/GenericPages/GenericReorderPage";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+} from "../../generic/pages/GenericReorderPage";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
+import { AlertProps } from "@cloudscape-design/components";
 import { BoardProps } from "@cloudscape-design/board-components";
 
 export default function ReorderPoints() {

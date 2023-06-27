@@ -1,6 +1,9 @@
+import { AxiosResponse } from "axios";
 import { useHref, useNavigate } from "react-router-dom";
 import { PropsWithChildren, ReactNode, useEffect } from "react";
 
+import { GenericRecordProps } from "../../clientTypes";
+import { fetchRecordData } from "../../functions/controller";
 import {
   AppLayout,
   ContentLayout,
@@ -12,10 +15,7 @@ import {
   AlertProps,
 } from "@cloudscape-design/components";
 import Navbar from "../../components/Navbar";
-import { GenericRecordProps } from "../GenericInterfaces";
-import GenericReturnMessageAlert from "../GenericReturnMessageAlert";
-import { fetchRecordData } from "../GenericFunctions";
-import { AxiosResponse } from "axios";
+import GenericReturnMessageAlert from "../components/GenericReturnMessageAlert";
 
 interface GenericBaseRecordFormProps {
   handleSubmit: Function;
@@ -64,7 +64,7 @@ export default function GenericCreateAndEditPage(
       fetchRecordData(
         props.fetchRecordLink,
         navigate,
-        function (response: AxiosResponse<any, any>) {
+        function (response: AxiosResponse) {
           props.setRecord(response.data);
         }
       );

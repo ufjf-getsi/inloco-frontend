@@ -1,16 +1,16 @@
 import { useHref, useParams } from "react-router-dom";
-import { Supply } from "../../types";
 
-import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
-import GenericCreateAndEditPage, {
-  GenericRecordFormProps,
-} from "../../generic/GenericPages/GenericCreateAndEditPage";
+import { Supply } from "../../types";
+import { PageType } from "../../clientTypes";
 import {
   convertStringToInteger,
   localizedPageTypeName,
-} from "../../generic/GenericFunctions";
-import { PageType } from "../../generic/GenericInterfaces";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+} from "../../functions/util";
+import GenericCreateAndEditPage, {
+  GenericRecordFormProps,
+} from "../../generic/pages/GenericCreateAndEditPage";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
+import { SpaceBetween, FormField, Input } from "@cloudscape-design/components";
 
 export interface Fields {
   name: string;

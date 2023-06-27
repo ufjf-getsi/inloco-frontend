@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Equipment, Parameter } from "../../types";
 
-import { AlertProps, SelectProps } from "@cloudscape-design/components";
+import { Parameter } from "../../types";
+import { handleFormSubmit } from "../../functions/controller";
+
 import {
   Fields,
   emptyFields,
@@ -13,7 +14,7 @@ import {
   getSendableData,
   formattedFields,
 } from "../../components/Parameter/GenericParameter";
-import { handleFormSubmit } from "../../generic/GenericFunctions";
+import { AlertProps, SelectProps } from "@cloudscape-design/components";
 
 export default function CreateEditParameter({ edit }: { edit: boolean }) {
   const navigate = useNavigate();

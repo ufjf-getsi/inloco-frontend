@@ -1,7 +1,7 @@
 import { Point } from "../../types";
 import { useHref } from "react-router-dom";
 import { Link } from "@cloudscape-design/components";
-import { createLabelFunction } from "../../generic/GenericTable/CommonTableFunctions";
+import { createLabelFunction } from "../../generic/components/table/tableFunctions";
 
 export interface Item {
   id: string;

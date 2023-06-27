@@ -1,6 +1,15 @@
 import { useHref } from "react-router-dom";
 import { ReactNode, useState } from "react";
 
+import { GenericRecordProps } from "../../../clientTypes";
+import { toUpperCase } from "../../../functions/util";
+import {
+  getMatchesCountText,
+  paginationLabels,
+  collectionPreferencesProps,
+  ColumnDefinitionInterface,
+} from "./tableFunctions";
+
 import { useCollection } from "@cloudscape-design/collection-hooks";
 import {
   Box,
@@ -13,14 +22,6 @@ import {
   TableProps,
   TextFilter,
 } from "@cloudscape-design/components";
-import {
-  getMatchesCountText,
-  paginationLabels,
-  collectionPreferencesProps,
-  ColumnDefinitionInterface,
-} from "./CommonTableFunctions";
-import { toUpperCase } from "../GenericFunctions";
-import { GenericRecordProps } from "../GenericInterfaces";
 
 export interface GenericTableProps extends GenericRecordProps {
   allRecords: {}[];

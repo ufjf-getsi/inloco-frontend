@@ -10,15 +10,6 @@ export function getMatchesCountText(count: number) {
   return count === 1 ? `1 corresponde` : `${count} correspondem`;
 }
 
-export function formatDate(date: Date) {
-  const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" });
-  const timeFormatter = new Intl.DateTimeFormat("pt-BR", {
-    timeStyle: "short",
-    hour12: false,
-  });
-  return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
-}
-
 export function createLabelFunction(columnName: string) {
   return ({ sorted, descending }: { sorted: boolean; descending: boolean }) => {
     const sortState = sorted

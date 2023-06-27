@@ -2,6 +2,16 @@ import { AxiosResponse } from "axios";
 import { useHref, useNavigate } from "react-router-dom";
 import { PropsWithChildren, ReactNode, useEffect } from "react";
 
+import { fetchRecordData } from "../../functions/controller";
+
+import Navbar from "../../components/Navbar";
+import GenericInfoPanel from "../components/GenericInfoPanel";
+import GenericTable, {
+  GenericTableProps,
+} from "../components/table/GenericTable";
+import GenericDeleteModal, {
+  GenericDeleteModalProps,
+} from "../components/GenericDeleteModal";
 import {
   AppLayout,
   ContentLayout,
@@ -10,13 +20,6 @@ import {
   SpaceBetween,
   Button,
 } from "@cloudscape-design/components";
-import Navbar from "../../components/Navbar";
-import GenericTable, { GenericTableProps } from "../GenericTable/GenericTable";
-import GenericDeleteModal, {
-  GenericDeleteModalProps,
-} from "../GenericDeleteModal";
-import { fetchRecordData } from "../GenericFunctions";
-import GenericInfoPanel from "../GenericInfoPanel";
 
 interface GenericViewPageProps {
   title: string;
@@ -41,7 +44,7 @@ export default function GenericViewPage(
     fetchRecordData(
       props.fetchRecordLink,
       navigate,
-      function (response: AxiosResponse<any, any>) {
+      function (response: AxiosResponse) {
         props.setRecord(response.data);
       }
     );

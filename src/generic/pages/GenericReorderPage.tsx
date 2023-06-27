@@ -1,6 +1,12 @@
+import { AxiosResponse } from "axios";
 import { useHref, useNavigate } from "react-router-dom";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 
+import { GenericRecordProps } from "../../clientTypes";
+import { fetchRecordData } from "../../functions/controller";
+
+import Navbar from "../../components/Navbar";
+import GenericReturnMessageAlert from "../components/GenericReturnMessageAlert";
 import {
   AppLayout,
   ContentLayout,
@@ -12,11 +18,6 @@ import {
   AlertProps,
   Box,
 } from "@cloudscape-design/components";
-import Navbar from "../../components/Navbar";
-import { GenericRecordProps } from "../GenericInterfaces";
-import GenericReturnMessageAlert from "../GenericReturnMessageAlert";
-import { fetchRecordData } from "../GenericFunctions";
-import { AxiosResponse } from "axios";
 import {
   Board,
   BoardItem,
@@ -49,7 +50,7 @@ export default function GenericReorderPage(props: GenericReorderPageProps) {
     fetchRecordData(
       props.fetchParentLink,
       navigate,
-      function (response: AxiosResponse<any, any>) {
+      function (response: AxiosResponse) {
         props.setParent(response.data);
       }
     );

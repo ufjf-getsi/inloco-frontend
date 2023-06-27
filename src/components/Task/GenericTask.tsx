@@ -9,16 +9,13 @@ import {
 } from "@cloudscape-design/components";
 import GenericCreateAndEditPage, {
   GenericRecordFormProps,
-} from "../../generic/GenericPages/GenericCreateAndEditPage";
+} from "../../generic/pages/GenericCreateAndEditPage";
 import {
   localizedPageTypeName,
   searchLabelByValue,
-} from "../../generic/GenericFunctions";
-import {
-  PageType,
-  OptionStringString as Option,
-} from "../../generic/GenericInterfaces";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
+} from "../../functions/util";
+import { PageType, OptionStringString as Option } from "../../clientTypes";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
 import { notLoadedRecord as notLoadedCollection } from "../Collection/GenericCollection";
 
 export interface Fields {

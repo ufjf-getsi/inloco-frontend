@@ -1,7 +1,17 @@
 import { AxiosResponse } from "axios";
 import { NavigateFunction, useHref, useParams } from "react-router-dom";
-import { DataType, Equipment, Parameter } from "../../types";
 
+import { DataType, Equipment, Parameter } from "../../types";
+import { OptionStringDataType as Option, PageType } from "../../clientTypes";
+import {
+  localizedPageTypeName,
+  searchLabelByValue,
+} from "../../functions/util";
+import { fetchRecordData } from "../../functions/controller";
+import GenericCreateAndEditPage, {
+  GenericRecordFormProps,
+} from "../../generic/pages/GenericCreateAndEditPage";
+import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
 import {
   SpaceBetween,
   FormField,
@@ -10,20 +20,7 @@ import {
   Multiselect,
   SelectProps,
 } from "@cloudscape-design/components";
-import GenericCreateAndEditPage, {
-  GenericRecordFormProps,
-} from "../../generic/GenericPages/GenericCreateAndEditPage";
-import {
-  OptionStringDataType as Option,
-  PageType,
-} from "../../generic/GenericInterfaces";
-import {
-  fetchRecordData,
-  localizedPageTypeName,
-  searchLabelByValue,
-} from "../../generic/GenericFunctions";
 import { OptionDefinition } from "@cloudscape-design/components/internal/components/option/interfaces";
-import GenericBreadcrumbGroup from "../../generic/GerenicBreadcrumbGroup";
 
 export interface Fields {
   name: string;

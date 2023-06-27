@@ -1,24 +1,23 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
-import { Task, TaskType } from "../../types";
 
-import { AlertProps } from "@cloudscape-design/components";
+import { Task, TaskType } from "../../types";
+import {
+  handleErrorRedirect,
+  handleFormSubmit,
+} from "../../functions/controller";
+
 import {
   emptyFields,
   Fields,
-  formatStatus,
   formattedFields,
-  formatTitle,
   getSendableData,
   notLoadedRecord,
   RecordForm,
   validateFields,
 } from "../../components/Task/GenericTask";
 import { notLoadedRecord as notLoadedParent } from "../../components/Collection/GenericCollection";
-import {
-  handleErrorRedirect,
-  handleFormSubmit,
-} from "../../generic/GenericFunctions";
+import { AlertProps } from "@cloudscape-design/components";
 
 export default function CreateEditTask({ edit }: { edit: boolean }) {
   const navigate = useNavigate();
