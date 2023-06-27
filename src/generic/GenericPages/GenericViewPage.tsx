@@ -16,12 +16,14 @@ import GenericDeleteModal, {
   GenericDeleteModalProps,
 } from "../GenericDeleteModal";
 import { fetchRecordData } from "../GenericFunctions";
+import GenericInfoPanel from "../GenericInfoPanel";
 
 interface GenericViewPageProps {
   title: string;
   description: string;
   navbarActiveLink: string;
   breadcrumbs: ReactNode;
+  displayedInfo?: Map<string, string>;
   setRecord: Function;
   fetchRecordLink: string;
   editRecordLink: string;
@@ -76,21 +78,26 @@ export default function GenericViewPage(
           }
         >
           <Container>
-            {props.table && (
-              <GenericTable
-                allRecords={props.table.allRecords}
-                columnDefinitions={props.table.columnDefinitions}
-                recordCategorySingular={props.table.recordCategorySingular}
-                recordCategoryPlural={props.table.recordCategoryPlural}
-                recordGenderFeminine={props.table.recordGenderFeminine}
-                addRecordLink={props.table.addRecordLink}
-                visibleContent={props.table.visibleContent}
-                setSelectedRecords={props.table.setSelectedRecords}
-                selectionType={props.table.selectionType}
-                otherHeaderActions={props.table.otherHeaderActions}
-              />
-            )}
-            {props.children}
+            <SpaceBetween size="xl">
+              {props.displayedInfo && (
+                <GenericInfoPanel displayedInfo={props.displayedInfo} />
+              )}
+              {props.table && (
+                <GenericTable
+                  allRecords={props.table.allRecords}
+                  columnDefinitions={props.table.columnDefinitions}
+                  recordCategorySingular={props.table.recordCategorySingular}
+                  recordCategoryPlural={props.table.recordCategoryPlural}
+                  recordGenderFeminine={props.table.recordGenderFeminine}
+                  addRecordLink={props.table.addRecordLink}
+                  visibleContent={props.table.visibleContent}
+                  setSelectedRecords={props.table.setSelectedRecords}
+                  selectionType={props.table.selectionType}
+                  otherHeaderActions={props.table.otherHeaderActions}
+                />
+              )}
+              {props.children}
+            </SpaceBetween>
           </Container>
           <GenericDeleteModal {...props.deleteModal} />
         </ContentLayout>

@@ -78,10 +78,7 @@ export default function ViewProject() {
       table={tableConfigCollections}
       deleteModal={deleteModalConfig}
     >
-      {/* // TODO: Show start and end dates */}
-      <div style={{ marginTop: "4vh" }}>
-        <GenericTable {...tableConfigPoints} />
-      </div>
+      <GenericTable {...tableConfigPoints} />
     </GenericViewPage>
   );
 }

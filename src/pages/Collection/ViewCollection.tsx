@@ -138,9 +138,7 @@ export default function ViewCollection() {
         </Button>,
       ]}
     >
-      <div style={{ marginTop: "4vh" }}>
-        <GenericTable {...tableConfigTasks} />
-      </div>
+      <GenericTable {...tableConfigTasks} />
       <RequiredEquipment
         key={`requiredEquipmentModal`}
         collectionId={collection.id}
