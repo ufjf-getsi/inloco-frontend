@@ -12,7 +12,7 @@ export function cancelLoadAndRedirectBackwards({
   error,
   previousPageLink,
 }: cancelLoadAndRedirectBackwardsProps) {
-  console.log(error);
+  console.error(error);
   navigate(
     import.meta.env.VITE_BASE_URL_HASH.slice(0, -1) + previousPageLink ?? `/`
   );
@@ -33,18 +33,18 @@ export function handleErrorRedirect(
   );
 }
 
-export function fetchRecordData(
+export async function fetchRecordData(
   relativeUrl: string,
   navigate: NavigateFunction,
   handleFetchResponse: Function
 ) {
   try {
-    axios(import.meta.env.VITE_SERVER_URL + relativeUrl, {
+    await axios(import.meta.env.VITE_SERVER_URL + relativeUrl, {
       validateStatus: function (status) {
         return status === 200;
       },
     })
-      .then((response) => handleFetchResponse(response))
+      .then(async (response) => await handleFetchResponse(response))
       .catch((error) => handleErrorRedirect(navigate, error));
   } catch (error) {
     console.log(error);

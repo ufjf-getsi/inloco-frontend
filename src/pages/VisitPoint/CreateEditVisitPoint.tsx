@@ -1,12 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 
-import { Collection, VisitPoint } from "../../types";
+import { Collection, Supply, VisitPoint } from "../../types";
 import { handleFormSubmit } from "../../functions/controller";
 
 import {
   emptyFields,
   fetchAllParameterOptionsList,
+  fetchAllPointsNotVisited,
+  fetchAllSupplies,
   Fields,
   formattedFields,
   getSendableData,
@@ -26,6 +28,9 @@ export default function CreateEditVisitPoint({ edit }: { edit: boolean }) {
   const [alertType, setAlertType] = useState<AlertProps.Type>("success");
   const [inputValues, setInputValues] = useState<Fields>(emptyFields);
   const [allParameterOptionsList, setAllParameterOptionsList] =
+    useState<SelectProps.Options>([]);
+  const [allSupplies, setAllSupplies] = useState<Supply>();
+  const [allPointsNotVisited, setAllPointsNotVisited] =
     useState<SelectProps.Options>([]);
 
   let commonCollectionId = ``;
@@ -68,7 +73,21 @@ export default function CreateEditVisitPoint({ edit }: { edit: boolean }) {
       navigate: navigate,
       setAllParameterOptionsList: setAllParameterOptionsList,
     });
+    fetchAllSupplies({
+      navigate: navigate,
+      setAllSupplies: setAllSupplies,
+    });
   }, []);
+
+  useEffect(() => {
+    if (commonCollectionId)
+      fetchAllPointsNotVisited({
+        navigate: navigate,
+        setAllPointsNotVisited: setAllPointsNotVisited,
+        collectionId: commonCollectionId,
+        point: visitPoint.point,
+      });
+  }, [commonCollectionId]);
 
   async function handleSubmit(event: FormEvent) {
     handleFormSubmit({
@@ -93,6 +112,8 @@ export default function CreateEditVisitPoint({ edit }: { edit: boolean }) {
     setInputValues: setInputValues,
     cancelRedirectLink: previousPageWebLink,
     allParameterOptionsList: allParameterOptionsList,
+    allSupplies: allSupplies,
+    allPointsNotVisited: allPointsNotVisited,
     collectionId: commonCollectionId,
     projectId: commonProjectId,
     hasParent: true,
