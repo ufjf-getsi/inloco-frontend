@@ -24,12 +24,15 @@ import CreateEditEquipment from "./pages/Equipment/CreateEditEquipment";
 import CreateEditSupply from "./pages/Supply/CreateEditSupply";
 import ReorderPoints from "./pages/Point/ReorderPoints";
 import ReorderTasks from "./pages/Task/ReorderTasks";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 function App() {
   return (
     <Routes>
       {/* Project */}
-      <Route index element={<Navigate to="/projects" />} />
+      <Route index element={<Navigate to="/login" />} />
+      <Route path={"/login"} element={<LoginPage edit={false} />} />
+
       <Route path={"/projects"} element={<ProjectsList />} />
       <Route
         path={"/projects/create"}
