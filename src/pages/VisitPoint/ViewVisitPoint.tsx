@@ -10,18 +10,25 @@ import {
   notLoadedRecord,
 } from "../../components/VisitPoint/GenericVisitPoint";
 import GenericBreadcrumbGroup from "../../generic/components/GerenicBreadcrumbGroup";
-import { GenericTableProps } from "../../generic/components/table/GenericTable";
+import GenericTable, { GenericTableProps } from "../../generic/components/table/GenericTable";
 import {
   Item as ItemMeasurements,
   columnDefinitions as columnDefinitionsMeasurements,
   visibleContent as visibleContentMeasurements,
 } from "../../components/Measurement/TableConfig";
+import {
+  Item as ItemSupply_VisitPointList,
+  columnDefinitions as columnDefinitionsSupply_VisitPointList,
+  visibleContent as visibleContentSupply_VisitPointList,
+} from "../../components/Supply_VisitPoint/TableConfig";
 
 export default function ViewVisitPoint() {
   const { id } = useParams();
 
   const [visitPoint, setVisitPoint] = useState<VisitPoint>(notLoadedRecord);
   const [selectedMeasurements, setSelectedMeasurements] = useState([]);
+  const [selectedSupply_VisitPointList, setSelectedSupply_VisitPointList] =
+    useState([]);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const projectId = visitPoint.collection?.project?.id ?? ``;
@@ -42,6 +49,25 @@ export default function ViewVisitPoint() {
     recordGenderFeminine: true,
     visibleContent: visibleContentMeasurements,
     setSelectedRecords: setSelectedMeasurements,
+  };
+
+  const tableConfigSupply_VisitPointList: GenericTableProps = {
+    allRecords: visitPoint.supply_VisitPointList.map(
+      (supply_VisitPointList): ItemSupply_VisitPointList => {
+        return {
+          id: supply_VisitPointList.id,
+          name: supply_VisitPointList.supply.name,
+          quantity: supply_VisitPointList.quantity,
+          stock: supply_VisitPointList.supply.stock,
+        };
+      }
+    ),
+    columnDefinitions: columnDefinitionsSupply_VisitPointList,
+    recordCategorySingular: `suprimento`,
+    recordCategoryPlural: `suprimentos`,
+    recordGenderFeminine: false,
+    visibleContent: visibleContentSupply_VisitPointList,
+    setSelectedRecords: setSelectedSupply_VisitPointList,
   };
 
   const deleteModalConfig: GenericDeleteModalProps = {
@@ -82,6 +108,8 @@ export default function ViewVisitPoint() {
       previousPageLink={`/collections/${collectionId}`}
       table={tableConfigMeasurements}
       deleteModal={deleteModalConfig}
-    />
+    >
+      <GenericTable {...tableConfigSupply_VisitPointList} />
+    </GenericViewPage>
   );
 }
